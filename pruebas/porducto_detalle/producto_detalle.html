@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalles de Producto</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+  <link rel='stylesheet' type='text/css' media='screen' href='detalles.css'>
+  
+  <!-- Custom CSS -->
+  <style>
+    /* Agrega estilos personalizados aquí si es necesario */
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="../logo.png" width="30" height="30" class=" fotologo d-inline-block align-top" alt="Imagen Logo Events Crafters"> Urban Threads
+    </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Productos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Contacto</a>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link btn btn-link" data-toggle="modal" data-target="#carritoModal"><i class="fas fa-shopping-cart"></i></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+ 
+  <div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-6">
+            <!-- Imagen del Producto -->
+            <img src="../camiseta.png" class="img-fluid mx-auto d-block mb-3" alt="Imagen del Producto">
+            
+            <!-- Contenedor de la Descripción y Sugerencias de Combinación -->
+            <div class="row">
+                <!-- Descripción del Producto -->
+                <div class="col-lg-12">
+                    <h3 class="mt-4">Descripción:</h3>
+                    <p>Camiseta rexulona para gente rexulona</p>
+                </div>
+
+                <!-- Sugerencias de Combinación -->
+                <div class="col-lg-12">
+                    <h3>Sugerencias de Combinación:</h3>
+                    <ul>
+                        <li>Jeans azules y zapatillas blancas</li>
+                        <li>Pantalones negros y chaqueta de cuero</li>
+                        <li>Falda corta y botas altas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <!-- Detalles del Producto -->
+            <h2>Camiseta</h2>
+            <p><strong>Precio:</strong> $XX.XX</p>
+            <p><strong>Disponibilidad:</strong> <span class="text-success">En Stock</span> <!--/ <span class="text-danger">Agotado</span>--></p>
+            <form>
+                <div class="form-group">
+                    <label for="sizeSelect">Talla:</label>
+                    <select class="form-control" id="sizeSelect">
+                        <option>XS</option>
+                        <option>S</option>
+                        <option selected>M</option>
+                        <option>L</option>
+                        <option>XL</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="colorSelect">Color:</label>
+                    <select class="form-control" id="colorSelect">
+                        <option>Rojo</option>
+                        <option selected>Azul</option>
+                        <option>Verde</option>
+                        <option>Amarillo</option>
+                        <option>Negro</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
+            </form>
+        </div>
+    </div><!-- Carrito de Compras Modal -->
+    <div class="modal fade" id="carritoModal" tabindex="-1" role="dialog" aria-labelledby="carritoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded shadow">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="carritoModalLabel">Carrito de Compras</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <!-- Contenido del carrito de compras -->
+            <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Nombre del Producto 1</h5>
+                  <small>Cantidad: 1</small>
+                </div>
+                <p class="mb-1">Descripción del producto 1. Aquí puedes agregar una descripción breve del producto.</p>
+                <small class="text-muted">$99.99</small>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Nombre del Producto 2</h5>
+                  <small>Cantidad: 2</small>
+                </div>
+                <p class="mb-1">Descripción del producto 2. Aquí puedes agregar una descripción breve del producto.</p>
+                <small class="text-muted">$49.99</small>
+              </a>
+              <a href="#" class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">Nombre del Producto 3</h5>
+                  <small>Cantidad: 1</small>
+                </div>
+                <p class="mb-1">Descripción del producto 3. Aquí puedes agregar una descripción breve del producto.</p>
+                <small class="text-muted">$79.99</small>
+              </a>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary">Pagar</button>
+          </div>
+        </div>
+      </div>
+
+</div>
+
+
+  <!-- Bootstrap JS y dependencias -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
