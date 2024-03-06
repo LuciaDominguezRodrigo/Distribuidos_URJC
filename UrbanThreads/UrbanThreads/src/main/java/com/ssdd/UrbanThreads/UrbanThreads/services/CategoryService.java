@@ -39,7 +39,7 @@ public class CategoryService {
     }
 
 
-    public void deleteCategory(Long id) {categories.remove(id);}
+    public void deleteCategory(Long id) { categories.remove(id);}
 
 
 }
