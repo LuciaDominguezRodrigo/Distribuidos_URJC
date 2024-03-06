@@ -1,8 +1,12 @@
-.foto {
-    max-width: 100%;
-    max-height: 200px;
 
-}
+
+    .foto {
+        max-width: 100%;
+         max-height: 100%;
+
+    }
+
+
 
 .lista {
     margin-top: 150px;
