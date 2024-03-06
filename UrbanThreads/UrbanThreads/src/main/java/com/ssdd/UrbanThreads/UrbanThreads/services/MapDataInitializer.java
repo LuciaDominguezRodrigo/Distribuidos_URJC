@@ -41,12 +41,12 @@ public class MapDataInitializer {
         categoryRepository.saveCategory(new Category(33L,"Niño/a"));
 
         // Agregar productos con sus fotos al mapa
-        productRepository.saveProduct(new Product(1L, "Camiseta", categoryRepository.findCategory(11L), Size.XS, 10.0, photo, "Descripción del producto 1"));
-        productRepository.saveProduct(new Product(2L, "Pantalon ancho", categoryRepository.findCategory(11L), Size.S, 20.0, photo2, "Descripción del producto 2"));
-        productRepository.saveProduct(new Product(3L, "Calcetines", categoryRepository.findCategory(22L), Size.M, 15.0, photo3, "Descripción del producto 3"));
-        productRepository.saveProduct(new Product(4L, "Abrigo", categoryRepository.findCategory(22L), Size.L, 25.0, photo4, "Descripción del producto 4"));
-        productRepository.saveProduct(new Product(5L, "Chaqueta", categoryRepository.findCategory(33L), Size.XL, 12.0, photo5, "Descripción del producto 5"));
-        productRepository.saveProduct(new Product(6L, "Sudadera", categoryRepository.findCategory(33L), Size.XXL, 18.0, photo6, "Descripción del producto 6"));
+        productRepository.saveProduct(new Product(0, "Camiseta", categoryRepository.findCategory(11L), Size.XS, 10.0, photo, "Descripción del producto 1"));
+        productRepository.saveProduct(new Product(1, "Pantalon ancho", categoryRepository.findCategory(11L), Size.S, 20.0, photo2, "Descripción del producto 2"));
+        productRepository.saveProduct(new Product(2, "Calcetines", categoryRepository.findCategory(22L), Size.M, 15.0, photo3, "Descripción del producto 3"));
+        productRepository.saveProduct(new Product(3, "Abrigo", categoryRepository.findCategory(22L), Size.L, 25.0, photo4, "Descripción del producto 4"));
+        productRepository.saveProduct(new Product(4, "Chaqueta", categoryRepository.findCategory(33L), Size.XL, 12.0, photo5, "Descripción del producto 5"));
+        productRepository.saveProduct(new Product(5, "Sudadera", categoryRepository.findCategory(33L), Size.XXL, 18.0, photo6, "Descripción del producto 6"));
 
 
     }

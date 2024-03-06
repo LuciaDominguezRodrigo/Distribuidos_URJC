@@ -7,15 +7,16 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ProductRepository {
 
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong nextId = new AtomicLong();
+    private final Map<Integer, Product> products = new HashMap<>();
+    private final AtomicInteger nextId = new AtomicInteger();
 
-    public Product findProduct(Long id){
+    public Product findProduct(int id){
         return products.get(id);
     }
 
@@ -24,23 +25,21 @@ public class ProductRepository {
     }
 
     public Product saveProduct(@NotNull Product product){
-        long id = nextId.incrementAndGet();
-        product.setId(id);
+        int id = nextId.getAndIncrement();
         products.put(id,product);
         return product;
 
     }
 
-    public Product updateProduct(Long id, Product product){
+    public Product updateProduct(int id, Product product){
         if (!products.containsKey(id)) {
             return null;
         }
-        product.setId(id);
         products.put(id, product);
         return product;
     }
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(int id) {
         products.remove(id);
     }
 }

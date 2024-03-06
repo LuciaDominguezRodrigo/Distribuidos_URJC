@@ -10,7 +10,7 @@ import java.util.Set;
 @Setter
 public class Product {
 
-    private Long id;
+    private int id;
     private String name;
     private Category category;
     private double price;
@@ -20,7 +20,7 @@ public class Product {
 
     public Product(){}
 
-    public Product(Long id,String name, Category category, Size size, double price, String photo, String description) {
+    public Product(int id,String name, Category category, Size size, double price, String photo, String description) {
         this.id = id;
         this.name = name;
         this.category = category;

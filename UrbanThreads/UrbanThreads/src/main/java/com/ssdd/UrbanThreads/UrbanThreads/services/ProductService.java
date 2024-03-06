@@ -16,7 +16,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product findProduct (Long id){
+    public Product findProduct (int id){
         return productRepository.findProduct(id);
     }
 
@@ -28,11 +28,11 @@ public class ProductService {
         return productRepository.saveProduct(product);
     }
 
-    public Product updateProduct (Long id, Product product){
+    public Product updateProduct (int id, Product product){
         return productRepository.updateProduct(id,product);
     }
 
-    public void deleteProduct(Long id) {
+    public void deleteProduct(int id) {
         productRepository.deleteProduct(id);
     }
 
