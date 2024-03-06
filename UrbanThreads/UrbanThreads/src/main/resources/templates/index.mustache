@@ -9,6 +9,7 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
     <link rel='stylesheet' type='text/css' media='screen' href='/css/index.css'>
+    <link rel="icon" href="/img/logo.png" type="image/png">
   <!-- Custom CSS -->
 
 </head>
@@ -60,18 +61,12 @@
             <h1 class = "titulo">Productos Del mes</h1>
             <div class="row">
                 <!-- Card de Producto -->
-                {{#productos}}
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <img src="{{photo}}" class="foto card-img-top" alt="  ¡Ups, foto no cargada!">
-                            <div class="card-body">
-                                <h5 class="card-title">{{name}}</h5>
-                                <p class="card-text">{{description}}</p>
-                                <a href="#" class="btn btn-primary">Ver Detalles</a>
-                            </div>
-                        </div>
-                    </div>
-                {{/productos}}
+                {{#products}}
+                    {{>moreProducts}}
+                {{/products}}
+                {{#additionalProducts}}
+                    {{>moreProducts}}
+                {{/additionalProducts}}
             </div>
         </div>
     </div>
