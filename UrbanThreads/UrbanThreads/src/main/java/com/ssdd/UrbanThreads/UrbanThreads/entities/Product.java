@@ -16,11 +16,11 @@ public class Product {
     private double price;
     private Set<String> sizes;
     private String description;
-    private Blob photo;
+    private String photo;
 
     public Product(){}
 
-    public Product(Long id,String name, Category category, Set<String> sizes, double price, Blob photo, String description) {
+    public Product(Long id,String name, Category category, Set<String> sizes, double price, String photo, String description) {
         this.id = id;
         this.name = name;
         this.category = category;
