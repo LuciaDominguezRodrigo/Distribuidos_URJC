@@ -19,7 +19,7 @@ Esta apliación albergará una web para una tienda de ropa. De esta manera, toda
 | ------------- | ------------- | ----------- |
 | Lucía Domínguez Rodrigo| l.dominguez.2021@alumnos.urjc.es | [@LuciaDominguezRodrigo](https://github.com/LuciaDominguezRodrigo) |
 | Marcos Jiménez Pulido  | m.jimenezp.2021@alumnos.urjc.es  | [@MarJ03](https://github.com/MarJ03) |
-| Ariel | | [@]() |
+| Ariel Carnés Blasco| | [@ArielCB](https://github.com/ArielCB) |
 
 ## 📚Entidades
 - **Producto**: entidad referente a los productos que se venderán en la tienda (ropa).
