@@ -1,45 +1,37 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
+import com.ssdd.UrbanThreads.UrbanThreads.repository.CategoryRepository;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
+
+@Service
 public class CategoryService {
-    private final Map<Long, Category> categories = new HashMap<>();
-    private final AtomicLong nextId = new AtomicLong();
 
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-    public Category getOrder (Long id){
-        return categories.get(id);
+    public Category findCategory(Long id){
+        return categoryRepository.findCategory(id);
     }
 
-    public Category createPorduct(@NotNull Category category){
-        long id = nextId.incrementAndGet();
-        category.setId(id);
-        categories.put(id,category);
-        return category;
-
+    public Collection<Category> findAllCategories () {
+        return categoryRepository.findAllCategories();
     }
 
-    public Collection<Category> getAllProducts() {
-        return categories.values();
+    public Category saveCategory (@NotNull Category category){
+        return categoryRepository.saveCategory(category);
     }
 
-    public Category updateProduct (Long id, Category category){
-        if (!categories.containsKey(id)) {
-            return null;
-        }
-        category.setId(id);
-        categories.put(id,category);
-        return category;
+    public Category updateCategory (Long id, Category category){
+        return categoryRepository.updateCategory(id,category);
     }
 
-
-    public void deleteCategory(Long id) { categories.remove(id);}
+    public void deleteCategory (Long id) { categoryRepository.deleteCategory(id);}
 
 
 }

@@ -1,53 +1,40 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
+import com.ssdd.UrbanThreads.UrbanThreads.repository.ProductRepository;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ProductService {
-    private final Map<Long, Product> products = new HashMap<>();
-    private final AtomicLong nextId = new AtomicLong();
 
+    @Autowired
+    private ProductRepository productRepository;
 
-    public Product getProduct (Long id){
-        return products.get(id);
+    public Product findProduct (Long id){
+        return productRepository.findProduct(id);
     }
 
-    public Product createProduct(@NotNull Product product){
-        long id = nextId.incrementAndGet();
-        product.setId(id);
-        products.put(id,product);
-        return product;
-
+    public Collection<Product> findAllProducts() {
+        return productRepository.findAllProducts();
     }
 
-    public Collection<Product> getAllProducts() {
-        return products.values();
+    public Product saveProduct(@NotNull Product product){
+        return productRepository.saveProduct(product);
     }
 
     public Product updateProduct (Long id, Product product){
-            if (!products.containsKey(id)) {
-                return null;
-            }
-            product.setId(id);
-            products.put(id, product);
-            return product;
-        }
-
-
-    public void deleteProduct(Long id) {
-        products.remove(id);
+        return productRepository.updateProduct(id,product);
     }
 
+    public void deleteProduct(Long id) {
+        productRepository.deleteProduct(id);
+    }
 
    @PostConstruct
     public void init() {
@@ -67,12 +54,12 @@ public class ProductService {
 
 
             // Agregar productos con sus fotos al mapa
-            createProduct(new Product(1L, "Camiseta", null, sizes, 10.0, photo, "Descripción del producto 1"));
-            createProduct(new Product(2L, "Pantalon ancho", null, sizes, 20.0, photo2, "Descripción del producto 2"));
-            createProduct(new Product(3L, "Calcetines", null, sizes, 15.0, photo3, "Descripción del producto 3"));
-            createProduct(new Product(4L, "Abrigo", null, sizes, 25.0, photo4, "Descripción del producto 4"));
-            createProduct(new Product(5L, "Chaqueta", null, sizes, 12.0, photo5, "Descripción del producto 5"));
-            createProduct(new Product(6L, "Sudadera", null, sizes, 18.0, photo6, "Descripción del producto 6"));
+            saveProduct(new Product(1L, "Camiseta", null, sizes, 10.0, photo, "Descripción del producto 1"));
+            saveProduct(new Product(2L, "Pantalon ancho", null, sizes, 20.0, photo2, "Descripción del producto 2"));
+            saveProduct(new Product(3L, "Calcetines", null, sizes, 15.0, photo3, "Descripción del producto 3"));
+            saveProduct(new Product(4L, "Abrigo", null, sizes, 25.0, photo4, "Descripción del producto 4"));
+            saveProduct(new Product(5L, "Chaqueta", null, sizes, 12.0, photo5, "Descripción del producto 5"));
+            saveProduct(new Product(6L, "Sudadera", null, sizes, 18.0, photo6, "Descripción del producto 6"));
 
 
     }

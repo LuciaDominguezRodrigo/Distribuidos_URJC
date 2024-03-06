@@ -20,7 +20,7 @@ public class ProductWebController {
     @GetMapping("/")
     public String index(Model model) {
         // Obtener todos los productos de la base de datos
-        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("products", productService.findAllProducts());
         return "index";
     }
 
