@@ -8,9 +8,8 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-    <link rel='stylesheet' type='text/css' media='screen' href='static.content/css/index.css'>
-    <link rel="icon" href="/img/logo.png" type="image/png">
-    <!-- Custom CSS -->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/index.css'>
+  <!-- Custom CSS -->
 
 </head>
 <body>
@@ -64,10 +63,10 @@
                 {{#productos}}
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            <img src="{{imagen}}" class="foto card-img-top" alt="...">
+                            <img src="/product/image/{productId}" class="foto card-img-top" alt="  ¡Ups, foto no cargada!">
                             <div class="card-body">
-                                <h5 class="card-title">{{nombre}}</h5>
-                                <p class="card-text">{{descripcion}}</p>
+                                <h5 class="card-title">{{name}}</h5>
+                                <p class="card-text">{{description}}</p>
                                 <a href="#" class="btn btn-primary">Ver Detalles</a>
                             </div>
                         </div>
@@ -99,7 +98,7 @@
                     {{#items}}
                         <a href="#" class="list-group-item list-group-item-action">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{nombre}}</h5>
+                                <h5 class="mb-1">{{name}}</h5>
                                 <small>Cantidad: {{cantidad}}</small>
                             </div>
                             <p class="mb-1">{{descripcion}}</p>

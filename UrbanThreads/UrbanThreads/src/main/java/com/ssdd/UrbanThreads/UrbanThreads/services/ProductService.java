@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -19,7 +20,7 @@ public class ProductService {
         return products.get(id);
     }
 
-    public Product createPorduct(@NotNull Product product){
+    public Product createProduct(@NotNull Product product){
         long id = nextId.incrementAndGet();
         product.setId(id);
         products.put(id,product);
@@ -43,6 +44,12 @@ public class ProductService {
 
     public void deleteProduct(Long id) {
         products.remove(id);
+    }
+
+    public Optional<Product> findById(Long id) {
+        return products.values().stream()
+                .filter(product -> product.getId().equals(id))
+                .findFirst();
     }
 }
 
