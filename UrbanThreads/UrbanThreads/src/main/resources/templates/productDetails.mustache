@@ -73,7 +73,13 @@
                         <option value="Negro">Negro</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Agregar al Carrito</button>
+                <div class="form-group">
+                    <label for="colorSelect">Cantidad:</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control" id="quantity" name="quantity" placeholder= "Cantidad" value="1" min="1" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="addToCart">Agregar al Carrito</button>
             </form>
             <div class="d-flex justify-content-between">
                 <form action="/editProduct">

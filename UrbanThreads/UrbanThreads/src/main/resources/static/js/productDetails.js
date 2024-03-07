@@ -10,19 +10,29 @@ function checkStock(xs, s, m, l, xl, xxl) {
         case 'XXL': selectedSizeQuantity = xxl;break;
         break;
     }
+
     let availabilityTag = document.getElementById("availability");
+    let addToCartButton = document.getElementById("addToCart")
 
     if (selectedSizeQuantity > 0){
         availabilityTag.innerText = ("En stock. Quedan " + selectedSizeQuantity + " unidades");
+
         availabilityTag.classList.remove("d-none");
         availabilityTag.classList.remove("text-danger");
         availabilityTag.classList.add("text-success");
+
+        addToCartButton.classList.remove("d-none");
+        addToCartButton.classList.add("d-block");
     }
     else{
         availabilityTag.innerText = ("No disponible en stock");
+
         availabilityTag.classList.remove("d-none");
         availabilityTag.classList.remove("text-success");
         availabilityTag.classList.add("text-danger");
+
+        addToCartButton.classList.remove("d-block");
+        addToCartButton.classList.add("d-none");
     }
 
 }
