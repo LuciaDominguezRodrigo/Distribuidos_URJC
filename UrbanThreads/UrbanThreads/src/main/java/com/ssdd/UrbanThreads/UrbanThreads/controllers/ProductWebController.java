@@ -107,4 +107,11 @@ public class ProductWebController {
         return "redirect:/";    
     }
 
+    @PostMapping("/deleteProduct/{id}")
+    public  String deleteProduct(@PathVariable int id){
+        Product producto = productService.findProduct(id);
+        productService.deleteProduct(id);
+        return "redirect:/";
+    }
+
 }

@@ -21,7 +21,7 @@
 
   <div class="container mt-4">
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-6" >
             <!-- Imagen del Producto -->
             <img src="{{product.photo}}" class="img-fluid mx-auto d-block mb-3" alt="Imagen del Producto">
             
@@ -86,7 +86,7 @@
                     <button type="submit" class="editBoton btn btn-warning">Editar producto</button>
                 </form>
                 <div class="d-inline">
-                    <form action="/deleteProduct">
+                    <form action="/deleteProduct/{{product.id}}" method="POST">
                         <button type="submit" class="editBoton btn btn-danger">Eliminar producto</button>
                     </form>
                 </div>
