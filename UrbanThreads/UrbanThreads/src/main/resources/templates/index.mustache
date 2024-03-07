@@ -18,7 +18,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             <img src="/img/logo.png" width="30" height="30" class=" fotologo d-inline-block align-top" alt="Imagen Logo Events Crafters"> Urban Threads
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,15 +59,35 @@
         <!-- Contenedor de Productos -->
         <div class="col-lg-9">
             <h1 class = "titulo">Productos Del mes</h1>
-            <div class="row">
+            <div class="row" id="productsChart">
                 <!-- Card de Producto -->
                 {{#products}}
-                    {{>moreProducts}}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <img src="{{photo}}" class="foto card-img-top" alt="  ¡Ups, foto no cargada!">
+                            <div class="card-body">
+                                <h5 class="card-title">{{name}}</h5>
+                                <p class="card-text">{{description}}</p>
+                                <a href="#" class="btn btn-primary">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
                 {{/products}}
-                {{#additionalProducts}}
-                    {{>moreProducts}}
-                {{/additionalProducts}}
             </div>
+
+            <div class="container text-center mt-4" id="home-load-more-btn-div">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <button class="btn btn-primary" id="home-load-more-btn" onclick="loadMore()">Cargar más productos</button>
+                    </div>
+                </div>
+            </div>
+
+            {{^products}}
+                <div class="text-center">
+                    <h5 class="no-events-message">No hay productos.</h5>
+                </div>
+            {{/products}}
         </div>
     </div>
 </div>
@@ -114,5 +134,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/index.js"></script>
 </body>
 </html>

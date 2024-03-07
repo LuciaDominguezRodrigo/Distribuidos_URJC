@@ -2,7 +2,6 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.ProductRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,12 @@ public class ProductService {
     public Collection<Product> findAllProducts() {
         return productRepository.findAllProducts();
     }
+
+    public List<Product> findByIdRange (int start, int end) {
+        return productRepository.findByIdRange(start,end);
+    }
+
+
 
     public Product saveProduct(@NotNull Product product){
         return productRepository.saveProduct(product);

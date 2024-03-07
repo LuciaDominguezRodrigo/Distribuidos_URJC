@@ -4,11 +4,8 @@ import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ProductRepository {
@@ -22,6 +19,16 @@ public class ProductRepository {
 
     public Collection<Product> findAllProducts() {
         return products.values();
+    }
+
+    public List<Product> findByIdRange (int start, int end) {
+        List<Product> foundProducts = new ArrayList<>();
+        for (Integer i : products.keySet()) {
+            if (i >= start && i <= end){
+                foundProducts.add(products.get(i));
+            }
+        }
+        return foundProducts;
     }
 
     public Product saveProduct(@NotNull Product product){
