@@ -48,7 +48,7 @@
             <!-- Detalles del Producto -->
             <h2>{{product.name}}</h2>
             <p><strong>Precio:</strong> {{product.price}}</p>
-            <p><strong>Disponibilidad:</strong> <span class="text-success">En Stock</span> <!--/ <span class="text-danger">Agotado</span>--></p>
+            <p><strong>Disponibilidad:</strong> <span class="text-{{stockState}}">{{availability}}</span> <!--/ <span class="text-danger">Agotado</span>--></p>
             <form>
                 <div class="form-group">
                     <label for="sizeSelect">Talla:</label>

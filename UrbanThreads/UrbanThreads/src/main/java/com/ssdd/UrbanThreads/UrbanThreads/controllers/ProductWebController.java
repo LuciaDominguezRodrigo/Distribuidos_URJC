@@ -60,6 +60,17 @@ public class ProductWebController {
     public String showProduct(Model model, @PathVariable int id) {
         Product product = productService.findProduct(id);
         model.addAttribute("product", product);
+        int availableUnits = product.getAvailableUnits();
+        model.addAttribute("availableUnits", availableUnits);
+        if(availableUnits != 0){
+            model.addAttribute("availability", "En stock");
+            model.addAttribute("stockState", "success");
+        }
+        else{
+            model.addAttribute("availability", "No disponible en stock");
+            model.addAttribute("stockState", "danger");
+        }
+
         return "productDetails";
     }
 
