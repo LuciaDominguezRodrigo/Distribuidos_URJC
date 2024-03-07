@@ -86,8 +86,8 @@
                     <button type="submit" class="editBoton btn btn-warning">Editar producto</button>
                 </form>
                 <div class="d-inline">
-                    <form action="/deleteProduct/{{product.id}}" method="POST">
-                        <button type="submit" class="editBoton btn btn-danger">Eliminar producto</button>
+                    <form  id="deleteform" action="/deleteProduct/{{product.id}}" method="POST">
+                        <button type="submit" onclick="return confirmDelete()" class="editBoton btn btn-danger">Eliminar producto</button>
                     </form>
                 </div>
             </div>
