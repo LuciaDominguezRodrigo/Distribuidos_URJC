@@ -14,4 +14,7 @@
     padding-bottom: 10px; /* Espacio entre el texto y la línea */
     margin-bottom: 20px; /* Espacio entre los títulos y el siguiente contenido */
   }
-  
+
+  .editBoton{
+    margin-top: 10%;
+  }
