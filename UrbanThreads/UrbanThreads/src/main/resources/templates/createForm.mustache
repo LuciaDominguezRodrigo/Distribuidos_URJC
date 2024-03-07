@@ -22,25 +22,84 @@
                 <div class="card-body">
                     <form action="/createProduct" method = "POST">
                         <div class="form-group">
+                            <p>Nombre del producto:</p>
                             <input type="text" class="form-control" id="name" name ="name" placeholder="Nombre" required>
                         </div>
                         <div class="form-group">
-                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="descripción" required></textarea>
+                            <p>Descripción:</p>
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Descripción" required></textarea>
                         </div>
                         <div class="form-group">
+                            <p>Precio (en dólares):</p>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">$</span>
                                 </div>
-                                <input type="number" class="form-control" id="price" name="price" placeholder= "precio" required>
+                                <input type="number" class="form-control" id="price" name="price" placeholder= "Precio" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="number" id="numberP" name="numberP" min="1" value="1" required>
+                            <p>Cantidades de cada talla:</p>
+
+                            <!--Cantidad de la talla XS-->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">XS</span>
+                                </div>
+                                <input type="number" class="form-control" id="sizeXS" name="sizeXS" placeholder= "Cantidad" min="0" required>
+                            </div>
+                            <br>
+
+                            <!--Cantidad de la talla S-->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">S</span>
+                                </div>
+                                <input type="number" class="form-control" id="sizeS" name="sizeS" placeholder= "Cantidad" min="0" required>
+                            </div>
+                            <br>
+
+                            <!--Cantidad de la talla M-->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">M</span>
+                                </div>
+                                <input type="number" class="form-control" id="sizeM" name="sizeM" placeholder= "Cantidad" min="0" required>
+                            </div>
+                            <br>
+
+                            <!--Cantidad de la talla L-->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">L</span>
+                                </div>
+                                <input type="number" class="form-control" id="sizeL" name="sizeL" placeholder= "Cantidad" min="0" required>
+                            </div>
+                            <br>
+
+                            <!--Cantidad de la talla XL-->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">XL</span>
+                                </div>
+                                <input type="number" class="form-control" id="sizeXL" name="sizeXL" placeholder= "Cantidad" min="0" required>
+                            </div>
+                            <br>
+
+                            <!--Cantidad de la talla XXL-->
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">XXL</span>
+                                </div>
+                                <input type="number" class="form-control" id="sizeXXL" name="sizeXXL" placeholder= "Cantidad" min="0" required>
+                            </div>
+                            <br>
                         </div>
                         <div class="form-group">
+                            <p>URL de la foto:</p>
                             <input type="text" class="form-control" id="photo" name="photo" placeholder="URL foto" required>
                         </div>
+
                         <button type="submit" class="btn btn-primary btn-block">Crear</button>
                     </form>
 

@@ -10,7 +10,9 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -40,13 +42,21 @@ public class MapDataInitializer {
         categoryRepository.saveCategory(new Category(22L,"Mujer"));
         categoryRepository.saveCategory(new Category(33L,"Niño/a"));
 
+        Map<Size, Integer> availableSizes = new HashMap<>();
+        availableSizes.put(Size.XS, 50);
+        availableSizes.put(Size.S, 40);
+        availableSizes.put(Size.M, 30);
+        availableSizes.put(Size.L, 20);
+        availableSizes.put(Size.XL, 10);
+        availableSizes.put(Size.XXL, 0);
+
         // Agregar productos con sus fotos al mapa
-        productRepository.saveProduct(new Product( "Camiseta", categoryRepository.findCategory(11L), Size.XS, 10.0, photo, "Descripción del producto 1", 50));
-        productRepository.saveProduct(new Product("Pantalon ancho", categoryRepository.findCategory(11L), Size.S, 20.0, photo2, "Descripción del producto 2", 40));
-        productRepository.saveProduct(new Product("Calcetines", categoryRepository.findCategory(22L), Size.M, 15.0, photo3, "Descripción del producto 3", 30));
-        productRepository.saveProduct(new Product("Abrigo", categoryRepository.findCategory(22L), Size.L, 25.0, photo4, "Descripción del producto 4", 20));
-        productRepository.saveProduct(new Product("Chaqueta", categoryRepository.findCategory(33L), Size.XL, 12.0, photo5, "Descripción del producto 5", 10));
-        productRepository.saveProduct(new Product("Sudadera", categoryRepository.findCategory(33L), Size.XXL, 18.0, photo6, "Descripción del producto 6", 0));
+        productRepository.saveProduct(new Product("Camiseta", categoryRepository.findCategory(11L), 10.0, photo, "Descripción del producto 1", availableSizes));
+        productRepository.saveProduct(new Product("Pantalon ancho", categoryRepository.findCategory(11L), 20.0, photo2, "Descripción del producto 2", availableSizes));
+        productRepository.saveProduct(new Product("Calcetines", categoryRepository.findCategory(22L), 15.0, photo3, "Descripción del producto 3", availableSizes));
+        productRepository.saveProduct(new Product("Abrigo", categoryRepository.findCategory(22L), 25.0, photo4, "Descripción del producto 4", availableSizes));
+        productRepository.saveProduct(new Product("Chaqueta", categoryRepository.findCategory(33L), 12.0, photo5, "Descripción del producto 5", availableSizes));
+        productRepository.saveProduct(new Product("Sudadera", categoryRepository.findCategory(33L), 18.0, photo6, "Descripción del producto 6", availableSizes));
 
 
     }

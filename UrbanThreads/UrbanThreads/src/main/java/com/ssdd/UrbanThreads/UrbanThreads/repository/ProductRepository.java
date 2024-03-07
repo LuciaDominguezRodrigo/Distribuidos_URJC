@@ -32,10 +32,9 @@ public class ProductRepository {
     }
 
     public Product saveProduct(@NotNull Product product){
-        int id = nextId.getAndIncrement();
+        int id = this.nextId.getAndIncrement();
         products.put(id,product);
         return product;
-
     }
 
     public Product updateProduct(int id, Product product){

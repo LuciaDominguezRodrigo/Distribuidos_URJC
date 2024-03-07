@@ -2,6 +2,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -62,7 +65,7 @@ public class ProductWebController {
     public String showProduct(Model model, @PathVariable int id) {
         Product product = productService.findProduct(id);
         model.addAttribute("product", product);
-        int availableUnits = product.getAvailableUnits();
+        int availableUnits = 0/*product.getAvailableUnits()*/;
         model.addAttribute("availableUnits", availableUnits);
         if(availableUnits != 0){
             model.addAttribute("availability", "En stock");
@@ -85,13 +88,25 @@ public class ProductWebController {
     public String newProduct(@RequestParam("name") String name,
                              @RequestParam("description") String description,
                              @RequestParam("price") double price,
-                             @RequestParam("numberP") int numberP,
+                             @RequestParam("sizeXS") int xsUnits,
+                             @RequestParam("sizeS") int sUnits,
+                             @RequestParam("sizeM") int mUnits,
+                             @RequestParam("sizeL") int lUnits,
+                             @RequestParam("sizeXL") int xlUnits,
+                             @RequestParam("sizeXXL") int xxlUnits,
                              @RequestParam ("photo") String photo) {
 
+        Map<Size, Integer> availableSizes = new HashMap<>();
+        availableSizes.put(Size.XS, xsUnits);
+        availableSizes.put(Size.S, sUnits);
+        availableSizes.put(Size.M, mUnits);
+        availableSizes.put(Size.L, lUnits);
+        availableSizes.put(Size.XL, xlUnits);
+        availableSizes.put(Size.XXL, xxlUnits);
 
-        Product newProduct = new Product(name,null,null,price,photo,description,numberP);
+        Product newProduct = new Product(name, null, price, photo, description, availableSizes);
+        productService.saveProduct(newProduct);
 
-        //implementar
         return "redirect:/";    
     }
 
