@@ -11,6 +11,12 @@ function checkStock(xs, s, m, l, xl, xxl) {
         break;
     }
 
+    let quantityField = document.getElementById("quantity");
+    quantityField.max = selectedSizeQuantity;
+    if(quantityField.value > selectedSizeQuantity){
+        quantityField.value = selectedSizeQuantity;
+    }
+
     let availabilityTag = document.getElementById("availability");
     let addToCartButton = document.getElementById("addToCart")
 
