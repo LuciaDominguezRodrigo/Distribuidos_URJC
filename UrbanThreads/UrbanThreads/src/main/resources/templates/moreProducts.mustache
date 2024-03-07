@@ -1,11 +1,13 @@
 {{#additionalProducts}}
-<div class="col-md-3 mb-4">
+<div class="col-md-3 mb-4" id="product-{{id}}">
     <div class="card">
         <img src="{{photo}}" class="foto card-img-top" alt="  ¡Ups, foto no cargada!">
         <div class="card-body">
             <h5 class="card-title">{{name}}</h5>
             <p class="card-text">{{description}}</p>
-            <a href="#" class="btn btn-primary">Ver Detalles</a>
+            <form action="/product/{{id}}" method="GET">
+                <button class="btn btn-primary" type="submit">Ver Detalles</button>
+            </form>
         </div>
     </div>
 </div>

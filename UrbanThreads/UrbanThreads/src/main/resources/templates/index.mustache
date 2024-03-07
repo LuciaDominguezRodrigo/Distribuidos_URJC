@@ -15,63 +15,25 @@
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <img src="/img/logo.png" width="30" height="30" class=" fotologo d-inline-block align-top" alt="Imagen Logo Events Crafters"> Urban Threads
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contacto</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Subir nuevo producto</a>
-                </li>
-                <li class="nav-item dropdown"> <!-- Agrega las clases dropdown y nav-item -->
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Categorias <!-- Cambiado de Categorias a Carrito -->
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown"> <!-- Agregar el div con la clase dropdown-menu para el contenido del desplegable -->
-                        <!-- Aquí puedes agregar los elementos del desplegable -->
-                        <a class="dropdown-item" href="#">Hombre</a>
-                        <a class="dropdown-item" href="#">Mujer</a>
-                        <a class="dropdown-item" href="#"><span class="text-danger"><strong>Rebajas</strong></span></a>
-                        <!-- También puedes agregar más elementos con el mismo formato si es necesario -->
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link btn btn-link" data-toggle="modal" data-target="#carritoModal"><i class="fas fa-shopping-cart"></i></button>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-</nav>
+{{>navbar}}
 
 <!-- Contenido Principal -->
-<div class="container fluid mt-4">s
+<div class="container fluid mt-4">
         <!-- Contenedor de Productos -->
         <div class="col-lg-12">
             <h1 class = "titulo">Productos Del mes</h1>
             <div class="row" id="productsChart">
                 <!-- Card de Producto -->
                 {{#products}}
-                    <div class="col-md-3 mb-4">
+                    <div class="col-md-3 mb-4" id="product-{{id}}">
                         <div class="card">
                             <img src="{{photo}}" class="foto card-img-top" alt="  ¡Ups, foto no cargada!">
                             <div class="card-body">
                                 <h5 class="card-title">{{name}}</h5>
                                 <p class="card-text">{{description}}</p>
-                                <a href="#" class="btn btn-primary">Ver Detalles</a>
+                                <form action="/product/{{id}}" method="GET">
+                                    <button class="btn btn-primary" type="submit">Ver Detalles</button>
+                                </form>
                             </div>
                         </div>
                     </div>
