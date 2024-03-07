@@ -22,7 +22,6 @@ public class Product {
     public Product(){}
 
     public Product(String name, Category category, double price, String photo, String description, Map<Size, Integer> sizeUnits) {
-        this.id = id;
         this.name = name;
         this.category = category;
         this.price = price;

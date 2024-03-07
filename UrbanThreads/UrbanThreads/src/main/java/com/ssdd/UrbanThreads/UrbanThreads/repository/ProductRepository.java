@@ -33,6 +33,7 @@ public class ProductRepository {
 
     public Product saveProduct(@NotNull Product product){
         int id = this.nextId.getAndIncrement();
+        product.setId(id);
         products.put(id,product);
         return product;
     }
