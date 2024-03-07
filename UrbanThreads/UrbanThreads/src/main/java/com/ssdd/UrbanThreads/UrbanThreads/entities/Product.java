@@ -21,7 +21,7 @@ public class Product {
 
     public Product(){}
 
-    public Product(int id, String name, Category category, Size size, double price, String photo, String description, int stock) {
+    public Product(String name, Category category, Size size, double price, String photo, String description, int stock) {
         this.id = id;
         this.name = name;
         this.category = category;

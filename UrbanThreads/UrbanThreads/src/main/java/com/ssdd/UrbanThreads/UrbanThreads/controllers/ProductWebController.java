@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,9 +77,22 @@ public class ProductWebController {
     }
 
     @GetMapping("/createProduct")
-    public String newProduct(Model model) {
-        //implementar
+    public String newProductCharge(){
         return "createForm";
+    }
+
+    @PostMapping("/createProduct")
+    public String newProduct(@RequestParam("name") String name,
+                             @RequestParam("description") String description,
+                             @RequestParam("price") double price,
+                             @RequestParam("numberP") int numberP,
+                             @RequestParam ("photo") String photo) {
+
+
+        Product newProduct = new Product(name,null,null,price,photo,description,numberP);
+
+        //implementar
+        return "index";
     }
 
 }
