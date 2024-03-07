@@ -65,16 +65,13 @@ public class ProductWebController {
     public String showProduct(Model model, @PathVariable int id) {
         Product product = productService.findProduct(id);
         model.addAttribute("product", product);
-        int availableUnits = 0/*product.getAvailableUnits()*/;
-        model.addAttribute("availableUnits", availableUnits);
-        if(availableUnits != 0){
-            model.addAttribute("availability", "En stock");
-            model.addAttribute("stockState", "success");
-        }
-        else{
-            model.addAttribute("availability", "No disponible en stock");
-            model.addAttribute("stockState", "danger");
-        }
+        model.addAttribute("availableSizes", product.getAvailableSizes());
+        model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
+        model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
+        model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
+        model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L));
+        model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
+        model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
 
         return "productDetails";
     }
