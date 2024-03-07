@@ -92,7 +92,7 @@ public class ProductWebController {
         Product newProduct = new Product(name,null,null,price,photo,description,numberP);
 
         //implementar
-        return "index";
+        return "redirect:/";    
     }
 
 }
