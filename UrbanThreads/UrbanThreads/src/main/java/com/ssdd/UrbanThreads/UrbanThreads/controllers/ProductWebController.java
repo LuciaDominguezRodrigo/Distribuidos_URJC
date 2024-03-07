@@ -63,4 +63,10 @@ public class ProductWebController {
         return "productDetails";
     }
 
+    @GetMapping("/createProduct")
+    public String newProduct(Model model) {
+        //implementar
+        return "createForm";
+    }
+
 }
