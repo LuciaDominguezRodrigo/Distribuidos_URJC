@@ -21,7 +21,8 @@ public class ProductWebController {
     private ProductService productService;
 
     private int nextProductIndex = 3;
-    private int productsRefreshSize = 3;
+    private int productsRefreshSize = 4; //this number controls how many elements are charged
+                                         //with 'cargar más'button
 
 
     @GetMapping("/")
