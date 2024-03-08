@@ -145,24 +145,25 @@
     });
 
 
+    var cart = [];
+
     function addToCart(product) {
-        var cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.push(product);
-        localStorage.setItem("cart", JSON.stringify(cart));
+        var existingProductIndex = cart.findIndex(item => item.name === product.name);
+        if (existingProductIndex !== -1) {
+            cart[existingProductIndex].quantity += product.quantity;
+        } else {
+            cart.push(product);
+        }
         displayCart();
     }
 
-
     function displayCart() {
-        var cart = JSON.parse(localStorage.getItem("cart")) || [];
         var cartItemsElement = document.getElementById("cartItems");
         cartItemsElement.innerHTML = "";
-
 
         cart.forEach(function(product, index) {
             var productElement = document.createElement("div");
             productElement.classList.add("cart-item");
-
 
             productElement.innerHTML = `
             <div class="cart-item-info">
@@ -174,25 +175,35 @@
                 <button onclick="deleteProduct(${index})">Eliminar</button>
             </div>
         `;
-
             cartItemsElement.appendChild(productElement);
         });
     }
 
-    // Función para eliminar un producto del carrito
     function deleteProduct(index) {
-        var cart = JSON.parse(localStorage.getItem("cart")) || [];
-
         cart.splice(index, 1);
-        localStorage.setItem("cart", JSON.stringify(cart));
         displayCart();
     }
+
+    window.onload = function() {
+        displayCart();
+    };
+
 
 
     window.onload = function() {
         displayCart();
     };
 
+    // Limpiar el carrito al cargar la página
+    window.onload = function() {
+        clearCart();
+        displayCart();
+    };
+
+    // Función para limpiar el carrito del almacenamiento local
+    function clearCart() {
+        localStorage.removeItem("cart");
+    }
 </script>
 </body>
 </html>
