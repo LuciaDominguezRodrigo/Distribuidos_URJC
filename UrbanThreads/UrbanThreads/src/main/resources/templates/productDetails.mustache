@@ -105,32 +105,11 @@
           </div>
           <div class="modal-body">
             <!-- Contenido del carrito de compras -->
+              <div id="cartItems">
             <div class="list-group">
-              <a href="#" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">Nombre del Producto 1</h5>
-                  <small>Cantidad: 1</small>
-                </div>
-                <p class="mb-1">Descripción del producto 1. Aquí puedes agregar una descripción breve del producto.</p>
-                <small class="text-muted">$99.99</small>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">Nombre del Producto 2</h5>
-                  <small>Cantidad: 2</small>
-                </div>
-                <p class="mb-1">Descripción del producto 2. Aquí puedes agregar una descripción breve del producto.</p>
-                <small class="text-muted">$49.99</small>
-              </a>
-              <a href="#" class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">Nombre del Producto 3</h5>
-                  <small>Cantidad: 1</small>
-                </div>
-                <p class="mb-1">Descripción del producto 3. Aquí puedes agregar una descripción breve del producto.</p>
-                <small class="text-muted">$79.99</small>
-              </a>
+
             </div>
+          </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -139,6 +118,7 @@
         </div>
       </div>
     </div>
+  </div>
 
 
   <!-- Bootstrap JS y dependencias -->
@@ -146,5 +126,86 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="/js/productDetails.js"></script>
+<script>
+    document.getElementById("addToCart").addEventListener("click", function(event) {
+        event.preventDefault();
+        var productName = "{{product.name}}";
+        var productPrice = "{{product.price}}";
+        var productQuantity = document.getElementById("quantity").value;
+
+        var product = {
+            name: productName,
+            price: productPrice,
+            quantity: productQuantity
+        };
+
+        addToCart(product);
+        alert("Producto agregado al carrito");
+
+    });
+
+
+    function addToCart(product) {
+        var cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        displayCart();
+    }
+
+
+    function displayCart() {
+        var cart = JSON.parse(localStorage.getItem("cart")) || [];
+        var cartItemsElement = document.getElementById("cartItems");
+        cartItemsElement.innerHTML = "";
+
+
+        cart.forEach(function(product, index) {
+            var productElement = document.createElement("div");
+            productElement.classList.add("cart-item");
+
+
+            productElement.innerHTML = `
+            <div class="cart-item-info">
+                <h4>${product.name}</h4>
+                <p>Precio: ${product.price}</p>
+                <p>Cantidad: ${product.quantity}</p>
+            </div>
+            <div class="cart-item-actions">
+                <button onclick="editProduct(${index})">Editar</button>
+                <button onclick="deleteProduct(${index})">Eliminar</button>
+            </div>
+        `;
+
+            cartItemsElement.appendChild(productElement);
+        });
+    }
+
+    // Función para eliminar un producto del carrito
+    function deleteProduct(index) {
+        // Obtiene el carrito del Local Storage
+        var cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        cart.splice(index, 1);
+
+        // Actualiza el carrito en el Local Storage
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // Actualiza visualmente el carrito
+        displayCart();
+    }
+
+    // Función para editar un producto del carrito
+    function editProduct(index) {
+        // Aquí podrías implementar la lógica para editar un producto del carrito
+        // Por ejemplo, podrías mostrar un formulario modal con los detalles del producto y permitir al usuario editarlos
+        // Luego, al guardar los cambios, actualizas el producto en el carrito y vuelves a mostrar el carrito
+    }
+
+    // Llama a la función displayCart() al cargar la página para mostrar los productos en el carrito
+    window.onload = function() {
+        displayCart();
+    };
+
+</script>
 </body>
 </html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/productDetails.css'>
+</head>
+<body>
+
+<!-- Include the Mustache template for the cart -->
+<script id="carritoTemplate" type="text/template">
+    <div class="modal-content rounded shadow">
+        <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">Carrito de Compras</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            {{#productos}}
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{nombre}}</h5>
+                        <small>Cantidad: {{cantidad}}</small>
+                    </div>
+                    <p class="mb-1">{{descripcion}}</p>
+                    <small class="text-muted">{{precio}}</small>
+                </div>
+            {{/productos}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary">Pagar</button>
+        </div>
+    </div>
+</script>
+
+<!-- Your HTML content -->
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Your JavaScript for cart functionality -->
+
+</body>
+</html>
