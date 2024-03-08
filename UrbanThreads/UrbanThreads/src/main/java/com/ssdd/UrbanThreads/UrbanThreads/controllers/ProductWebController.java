@@ -1,10 +1,12 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 
 
 @Controller
@@ -65,7 +70,6 @@ public class ProductWebController {
     public String showProduct(Model model, @PathVariable int id) {
         Product product = productService.findProduct(id);
         model.addAttribute("product", product);
-        model.addAttribute("availableSizes", product.getAvailableSizes());
         model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
         model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
         model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
@@ -76,9 +80,56 @@ public class ProductWebController {
         return "productDetails";
     }
 
-    @GetMapping("/createProduct")
-    public String newProductCharge(){
-        return "createForm";
+    @GetMapping("/editProduct/{id}")
+    public String editEvent(@PathVariable int id, Model model) {
+        Product product = productService.findProduct(id);
+
+        //List<Category> categories = categoryService.findAll();
+        model.addAttribute("product", product);
+        //model.addAttribute("categories", categories);
+        model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
+        model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
+        model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
+        model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L));
+        model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
+        model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
+
+        return "editEvent";
+    }
+
+    @PostMapping("/editProduct/{id}")
+    public String editEvent(@PathVariable int id,
+                            @RequestParam("name") String name,
+                            @RequestParam("description") String description,
+                            @RequestParam("price") double price,
+                            @RequestParam("sizeXS") int xsUnits,
+                            @RequestParam("sizeS") int sUnits,
+                            @RequestParam("sizeM") int mUnits,
+                            @RequestParam("sizeL") int lUnits,
+                            @RequestParam("sizeXL") int xlUnits,
+                            @RequestParam("sizeXXL") int xxlUnits,
+                            @RequestParam ("photo") String photo){
+
+        Product product = productService.findProduct(id);
+
+        product.setName(name);
+        //product.setCategory(categoryService.findCategory(categoryId));
+        product.setPrice(price);
+        product.setDescription(description);
+
+        Map<Size, Integer> availableSizes = new HashMap<>();
+        availableSizes.put(Size.XS, xsUnits);
+        availableSizes.put(Size.S, sUnits);
+        availableSizes.put(Size.M, mUnits);
+        availableSizes.put(Size.L, lUnits);
+        availableSizes.put(Size.XL, xlUnits);
+        availableSizes.put(Size.XXL, xxlUnits);
+
+        product.setAvailableSizes(availableSizes);
+        product.setPhoto(photo);
+        productService.updateProduct(id,product);
+
+        return "redirect:/";
     }
 
     @PostMapping("/createProduct")
@@ -105,6 +156,12 @@ public class ProductWebController {
         productService.saveProduct(newProduct);
 
         return "redirect:/";    
+    }
+
+    @GetMapping("/createProduct")
+    public String newProductCharge(Model model){
+        model.addAttribute("product", new Product());
+        return "createForm";
     }
 
     @PostMapping("/deleteProduct/{id}")

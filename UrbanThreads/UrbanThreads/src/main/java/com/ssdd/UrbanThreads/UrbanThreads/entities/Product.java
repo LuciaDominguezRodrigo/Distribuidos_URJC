@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Blob;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,7 +20,8 @@ public class Product {
     private String description;
     private String photo;
 
-    public Product(){}
+    public Product(){
+    }
 
     public Product(String name, Category category, double price, String photo, String description, Map<Size, Integer> sizeUnits) {
         this.name = name;
