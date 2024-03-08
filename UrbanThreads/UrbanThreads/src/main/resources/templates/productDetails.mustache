@@ -171,7 +171,6 @@
                 <p>Cantidad: ${product.quantity}</p>
             </div>
             <div class="cart-item-actions">
-                <button onclick="editProduct(${index})">Editar</button>
                 <button onclick="deleteProduct(${index})">Eliminar</button>
             </div>
         `;
@@ -182,26 +181,14 @@
 
     // Función para eliminar un producto del carrito
     function deleteProduct(index) {
-        // Obtiene el carrito del Local Storage
         var cart = JSON.parse(localStorage.getItem("cart")) || [];
 
         cart.splice(index, 1);
-
-        // Actualiza el carrito en el Local Storage
         localStorage.setItem("cart", JSON.stringify(cart));
-
-        // Actualiza visualmente el carrito
         displayCart();
     }
 
-    // Función para editar un producto del carrito
-    function editProduct(index) {
-        // Aquí podrías implementar la lógica para editar un producto del carrito
-        // Por ejemplo, podrías mostrar un formulario modal con los detalles del producto y permitir al usuario editarlos
-        // Luego, al guardar los cambios, actualizas el producto en el carrito y vuelves a mostrar el carrito
-    }
 
-    // Llama a la función displayCart() al cargar la página para mostrar los productos en el carrito
     window.onload = function() {
         displayCart();
     };
