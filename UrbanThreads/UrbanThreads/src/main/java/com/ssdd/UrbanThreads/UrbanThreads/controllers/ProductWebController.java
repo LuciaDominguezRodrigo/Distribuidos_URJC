@@ -94,7 +94,7 @@ public class ProductWebController {
         model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
         model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
 
-        return "editEvent";
+        return "createForm";
     }
 
     @PostMapping("/editProduct/{id}")
@@ -159,8 +159,7 @@ public class ProductWebController {
     }
 
     @GetMapping("/createProduct")
-    public String newProductCharge(Model model){
-        model.addAttribute("product", new Product());
+    public String newProductCharge(){
         return "createForm";
     }
 
