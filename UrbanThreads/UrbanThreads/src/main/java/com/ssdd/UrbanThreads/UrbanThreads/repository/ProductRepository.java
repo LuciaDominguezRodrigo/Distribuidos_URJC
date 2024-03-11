@@ -13,9 +13,7 @@ public class ProductRepository {
     private final Map<Integer, Product> products = new HashMap<>();
     private final AtomicInteger nextId = new AtomicInteger();
 
-    public Product findProduct(int id){
-        return products.get(id);
-    }
+    public Product findProduct(int id){ return products.get(id); }
 
     public Collection<Product> findAllProducts() {
         return products.values();

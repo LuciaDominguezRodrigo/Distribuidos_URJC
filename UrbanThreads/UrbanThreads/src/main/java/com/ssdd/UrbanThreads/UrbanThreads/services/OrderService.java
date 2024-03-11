@@ -17,7 +17,9 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order findOrder(Long id) {
+    public int getSelectedOrder(){ return orderRepository.getSelectedOrder(); }
+
+    public Order findOrder(int id) {
         return orderRepository.findOrder(id);
     }
 
@@ -26,26 +28,26 @@ public class OrderService {
     }
 
     public Order saveOrder(@NotNull Order order) {
-        return orderRepository.saveOrder(order);
+        return orderRepository.saveOrder(order, this.getSelectedOrder());
     }
 
-    public Order updateOrder(Long id, Order order) {
+    public Order updateOrder(int id, Order order) {
         return orderRepository.updateOrder(id, order);
     }
 
-    public void deleteOrder(Long id) {
+    public void deleteOrder(int id) {
         orderRepository.deleteOrder(id);
     }
 
-    public void addProductToOrder(Product product) {
-        long latestOrderId = orderRepository.getNextId(); // Get the latest order ID
-        Order order = orderRepository.findOrder(latestOrderId);
+    public void addProductToCurrentOrder(Product product) {
+        Order order = orderRepository.findOrder(orderRepository.getSelectedOrder());
         if (order != null) {
             order.getOrderProducts().add(product);
-            orderRepository.updateOrder(latestOrderId, order);
+            orderRepository.updateOrder(orderRepository.getSelectedOrder(), order);
         } else {
             order = new Order();
-            orderRepository.saveOrder(order);
+            order.getOrderProducts().add(product);
+            orderRepository.saveOrder(order, orderRepository.getSelectedOrder());
         }
     }
 
@@ -59,17 +61,6 @@ public class OrderService {
         }
 
         return allProductsInOrder;
-    }
-    public Product getProductById(Long productId) {
-        Collection<Order> allOrders = orderRepository.findAllOrders();
-        for (Order order : allOrders) {
-            for (Product product : order.getOrderProducts()) {
-                if (product.getId() == productId) {
-                    return product;
-                }
-            }
-        }
-        return null; // Si no se encuentra el producto con el ID especificado
     }
 
 }

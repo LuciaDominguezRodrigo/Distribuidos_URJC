@@ -7,18 +7,21 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class OrderRepository {
-    private final Map<Long, Order> orders = new HashMap<>();
-    private final AtomicLong nextId = new AtomicLong();
+    private final Map<Integer, Order> orders = new HashMap<>();
+    private final AtomicInteger nextId = new AtomicInteger();
+    private final int selectedOrder = 0;
 
-    public Long getNextId() {
+    public int getSelectedOrder(){ return this.selectedOrder; }
+
+    public int getNextId() {
         return nextId.get();
     }
 
-    public Order findOrder(Long id){
+    public Order findOrder(int id){
         return orders.get(id);
     }
 
@@ -26,14 +29,12 @@ public class OrderRepository {
         return orders.values();
     }
 
-    public Order saveOrder(@NotNull Order order){
-        long id = nextId.incrementAndGet();
-        order.setId(id);
-        orders.put(id,order);
+    public Order saveOrder(@NotNull Order order, int numOrder){
+        orders.put(numOrder,order);
         return order;
     }
 
-    public Order updateOrder(Long id, Order order){
+    public Order updateOrder(int id, Order order){
         if (!orders.containsKey(id)) {
             return null;
         }
@@ -42,7 +43,7 @@ public class OrderRepository {
         return order;
     }
 
-    public void deleteOrder(Long id) {orders.remove(id);}
+    public void deleteOrder(int id) {orders.remove(id);}
 
 
 

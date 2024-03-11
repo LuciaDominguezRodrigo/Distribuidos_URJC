@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Order {
-    private Long id;
+    private int id;
     private Long orderNumber;
     private String orderStatus;
     private List<Product> orderProducts;
@@ -16,7 +16,7 @@ public class Order {
 
     public Order(){};
 
-    public Order(Long id, Long orderNumber, String orderStatus, List<Product> orderProducts) {
+    public Order(int id, Long orderNumber, String orderStatus, List<Product> orderProducts) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.orderStatus = orderStatus;
