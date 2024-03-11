@@ -23,31 +23,36 @@ public class OrderWebController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/order")
-    public String order(){
-        return "orderPage";
-    }
+    private List<Product> productList = new ArrayList<>();
+
 
     @PostMapping("/newProductInOrder")
     public String addToOrder(Model model, @RequestParam("id") int productId,
-                                          @RequestParam("selectedSize") String size,
-                                          @RequestParam("selectedColor") String color,
-                                          @RequestParam("quantity") int quantity){
+                             @RequestParam("selectedSize") String size,
+                             @RequestParam("selectedColor") String color,
+                             @RequestParam("quantity") int quantity) {
 
         Product product = productService.findProduct(productId);
         orderService.addProductToCurrentOrder(product);
-        Order products = orderService.findOrder(orderService.getSelectedOrder());
-        List<Product> productList = new ArrayList<>();
-        for (Product p : products.getOrderProducts()) {
-            Product product1 = new Product();
-            product1.setName(p.getName());
-            product1.setPrice(p.getPrice());
-            product1.setSize(p.getAvailableSizes().get(Size.valueOf(size)).toString());
-            product1.setColor(color);
-            product1.setQuantity(quantity);
-            productList.add(product1);
-        }
 
+
+        Product product1 = new Product();
+        product1.setName(product.getName());
+        product1.setPrice(product.getPrice());
+        product1.setSize(size);
+        product1.setColor(color);
+        product1.setQuantity(quantity);
+        productList.add(product1);
+
+
+        model.addAttribute("productList", productList);
+
+        return "redirect:/orderPage";
+    }
+
+
+    @GetMapping("/orderPage")
+    public String showOrderPage(Model model) {
         model.addAttribute("productList", productList);
         return "orderPage";
     }
