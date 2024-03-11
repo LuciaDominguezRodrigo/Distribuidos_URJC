@@ -165,9 +165,9 @@ public class ProductWebController {
 
     @PostMapping("/deleteProduct/{id}")
     public  String deleteProduct(@PathVariable int id){
-        Product producto = productService.findProduct(id);
         productService.deleteProduct(id);
         return "redirect:/";
     }
-
+    @GetMapping ("/contact")
+    public String contact(){return "contact";}
 }
