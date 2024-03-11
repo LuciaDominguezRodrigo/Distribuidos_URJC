@@ -30,7 +30,7 @@ function checkStock(xs, s, m, l, xl, xxl) {
     }
 
     let availabilityTag = document.getElementById("availability");
-    let addToCartButton = document.getElementById("addToCart")
+    let addToCartButton = document.getElementById("addToCart");
 
     if (selectedSizeQuantity > 0) {
         availabilityTag.innerText = ("En stock. Quedan " + selectedSizeQuantity + " unidades");

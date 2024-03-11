@@ -3,6 +3,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.entities;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -11,7 +12,7 @@ public class Order {
     private int id;
     private Long orderNumber;
     private String orderStatus;
-    private List<Product> orderProducts;
+    private List<Product> orderProducts = new ArrayList<>();
 
 
     public Order(){};
@@ -21,10 +22,6 @@ public class Order {
         this.orderNumber = orderNumber;
         this.orderStatus = orderStatus;
         this.orderProducts = orderProducts;
-    }
-
-    public List<Product> getOrderProducts() {
-        return orderProducts;
     }
 
 }

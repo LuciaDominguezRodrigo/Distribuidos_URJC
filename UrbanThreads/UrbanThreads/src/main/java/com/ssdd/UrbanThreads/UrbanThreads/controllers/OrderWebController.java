@@ -31,12 +31,7 @@ public class OrderWebController {
                                           @RequestParam("quantity") int quantity){
 
         Product product = productService.findProduct(productId);
-        if(product.getAvailableSizes().get(Size.valueOf(size)) <= quantity){
-            orderService.addProductToCurrentOrder(product);
-        } else {
-            //Throw a message indicating product is not available (extra checking apart of Mustache "Add to cart" button hiding)
-            return "redirect:/";
-        }
+        orderService.addProductToCurrentOrder(product);
 
         model.addAttribute("order", orderService.findOrder(orderService.getSelectedOrder()));
         return "orderPage";
