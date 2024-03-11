@@ -22,4 +22,9 @@ public class Order {
         this.orderStatus = orderStatus;
         this.orderProducts = orderProducts;
     }
+
+    public List<Product> getOrderProducts() {
+        return orderProducts;
+    }
+
 }

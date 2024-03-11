@@ -1,12 +1,10 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -15,13 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 
@@ -33,18 +25,17 @@ public class ProductWebController {
 
     private int nextProductIndex = 3;
     private int productsRefreshSize = 4; //this number controls how many elements are charged
-                                         //with 'cargar más'button
+    //with 'cargar más'button
 
 
     @GetMapping("/")
     public String index(Model model) {
         nextProductIndex = productsRefreshSize;
-        List<Product> products = productService.findByIdRange(0, nextProductIndex-1);
+        List<Product> products = productService.findByIdRange(0, nextProductIndex - 1);
 
-        if (products.isEmpty()){
+        if (products.isEmpty()) {
             model.addAttribute("products", new ArrayList<Product>());
-        }
-        else {
+        } else {
             model.addAttribute("products", products);
         }
         nextProductIndex = products.size();
@@ -54,12 +45,12 @@ public class ProductWebController {
 
     @GetMapping("/newProducts")
     public String newEvents(Model model) {
-        List<Product> products = productService.findByIdRange(nextProductIndex, (nextProductIndex+productsRefreshSize)-1);
+        List<Product> products = productService.findByIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
         nextProductIndex += products.size();
         model.addAttribute("additionalProducts", products);
-        if(nextProductIndex > productService.findAllProducts().size()){ //To show / hide Load more products button
+        if (nextProductIndex > productService.findAllProducts().size()) { //To show / hide Load more products button
             model.addAttribute("loadMoreProducts", false);
-        } else{
+        } else {
             model.addAttribute("loadMoreProducts", true);
         }
 
@@ -108,7 +99,7 @@ public class ProductWebController {
                             @RequestParam("sizeL") int lUnits,
                             @RequestParam("sizeXL") int xlUnits,
                             @RequestParam("sizeXXL") int xxlUnits,
-                            @RequestParam ("photo") String photo){
+                            @RequestParam("photo") String photo) {
 
         Product product = productService.findProduct(id);
 
@@ -127,7 +118,7 @@ public class ProductWebController {
 
         product.setAvailableSizes(availableSizes);
         product.setPhoto(photo);
-        productService.updateProduct(id,product);
+        productService.updateProduct(id, product);
 
         return "redirect:/";
     }
@@ -142,7 +133,7 @@ public class ProductWebController {
                              @RequestParam("sizeL") int lUnits,
                              @RequestParam("sizeXL") int xlUnits,
                              @RequestParam("sizeXXL") int xxlUnits,
-                             @RequestParam ("photo") String photo) {
+                             @RequestParam("photo") String photo) {
 
         Map<Size, Integer> availableSizes = new HashMap<>();
         availableSizes.put(Size.XS, xsUnits);
@@ -155,19 +146,25 @@ public class ProductWebController {
         Product newProduct = new Product(name, null, price, photo, description, availableSizes);
         productService.saveProduct(newProduct);
 
-        return "redirect:/";    
+        return "redirect:/";
     }
 
     @GetMapping("/createProduct")
-    public String newProductCharge(){
+    public String newProductCharge() {
         return "createForm";
     }
 
     @PostMapping("/deleteProduct/{id}")
-    public  String deleteProduct(@PathVariable int id){
+    public String deleteProduct(@PathVariable int id) {
         productService.deleteProduct(id);
         return "redirect:/";
     }
-    @GetMapping ("/contact")
-    public String contact(){return "contact";}
+
+    @GetMapping("/contact")
+    public String contact() {
+        return "contact";
+    }
+
+
+
 }

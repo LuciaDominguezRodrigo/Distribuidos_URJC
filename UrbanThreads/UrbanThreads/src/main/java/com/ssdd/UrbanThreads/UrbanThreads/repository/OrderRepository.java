@@ -14,6 +14,9 @@ public class OrderRepository {
     private final Map<Long, Order> orders = new HashMap<>();
     private final AtomicLong nextId = new AtomicLong();
 
+    public Long getNextId() {
+        return nextId.get();
+    }
 
     public Order findOrder(Long id){
         return orders.get(id);
@@ -40,6 +43,9 @@ public class OrderRepository {
     }
 
     public void deleteOrder(Long id) {orders.remove(id);}
+
+
+
 }
 
 

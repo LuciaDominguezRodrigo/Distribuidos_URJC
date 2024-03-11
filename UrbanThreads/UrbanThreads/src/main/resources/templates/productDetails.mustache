@@ -8,7 +8,7 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-  <link rel='stylesheet' type='text/css' media='screen' href='/css/productDetails.css'>
+  <link rel='stylesheet' type='text/css' media='screen' href='/static/css/productDetails.css'>
   
   <!-- Custom CSS -->
   <style>
@@ -79,7 +79,7 @@
                         <input type="number" class="form-control" id="quantity" name="quantity" placeholder= "Cantidad" value="1" min="1" max="" required>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" id="addToCart">Agregar al Carrito</button>
+
             </form>
             <div class="d-flex justify-content-between">
                 <form action="/editProduct/{{product.id}}">
@@ -90,34 +90,15 @@
                         <button type="submit" onclick="return confirmDelete()" class="editBoton btn btn-danger">Eliminar producto</button>
                     </form>
                 </div>
+                <form action="/newProductInOrder" method = "POST">
+                    <input type="hidden" name="id" value="{{product.id}}">
+                    <button type="submit" class="btn btn-primary" id="addToOrder">Agregar al Carrito</button>
+                </form>
             </div>
 
         </div>
-    </div><!-- Carrito de Compras Modal -->
-    <div class="modal fade" id="carritoModal" tabindex="-1" role="dialog" aria-labelledby="carritoModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content rounded shadow">
-          <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title" id="carritoModalLabel">Carrito de Compras</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!-- Contenido del carrito de compras -->
-              <div id="cartItems">
-            <div class="list-group">
-
-            </div>
-          </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            <button type="button" class="btn btn-primary">Pagar</button>
-          </div>
-        </div>
-      </div>
     </div>
+
   </div>
 
 
@@ -125,93 +106,8 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="/js/productDetails.js"></script>
-<script>
-    var cart = [];
+  <script src="/static/js/productDetails.js"></script>
 
-    // Función para cargar el carrito desde el almacenamiento local
-    function loadCartFromLocalStorage() {
-        var savedCart = localStorage.getItem("cart");
-        if (savedCart) {
-            cart = JSON.parse(savedCart);
-        }
-    }
 
-    // Función para guardar el carrito en el almacenamiento local
-    function saveCartToLocalStorage() {
-        localStorage.setItem("cart", JSON.stringify(cart));
-    }
-
-    // Función para agregar un producto al carrito
-    function addToCart(product) {
-        var existingProductIndex = cart.findIndex(item => item.name === product.name);
-        if (existingProductIndex !== -1) {
-            cart[existingProductIndex].quantity += product.quantity;
-        } else {
-            cart.push(product);
-        }
-        displayCart();
-        saveCartToLocalStorage(); // Guardar el carrito después de agregar un producto
-    }
-
-    // Función para mostrar el carrito
-    function displayCart() {
-        var cartItemsElement = document.getElementById("cartItems");
-        cartItemsElement.innerHTML = "";
-
-        cart.forEach(function(product, index) {
-            var productElement = document.createElement("div");
-            productElement.classList.add("cart-item");
-
-            productElement.innerHTML = `
-        <div class="cart-item-info">
-            <h4>${product.name}</h4>
-            <p>Precio: ${product.price}</p>
-            <p>Cantidad: ${product.quantity}</p>
-        </div>
-        <div class="cart-item-actions">
-            <button onclick="deleteProduct(${index})">Eliminar</button>
-        </div>
-    `;
-            cartItemsElement.appendChild(productElement);
-        });
-    }
-
-    // Función para eliminar un producto del carrito
-    function deleteProduct(index) {
-        cart.splice(index, 1);
-        displayCart();
-        saveCartToLocalStorage(); // Guardar el carrito después de eliminar un producto
-    }
-
-    // Función para limpiar el carrito del almacenamiento local
-    function clearCart() {
-        localStorage.removeItem("cart");
-    }
-
-    // Función para cargar el carrito al cargar la página
-    window.onload = function() {
-        loadCartFromLocalStorage();
-        displayCart();
-    };
-
-    // Agregar producto al carrito al hacer clic en el botón
-    document.getElementById("addToCart").addEventListener("click", function(event) {
-        event.preventDefault();
-        var productName = "{{product.name}}";
-        var productPrice = "{{product.price}}";
-        var productQuantity = parseInt(document.getElementById("quantity").value);
-
-        var product = {
-            name: productName,
-            price: productPrice,
-            quantity: productQuantity
-        };
-
-        addToCart(product);
-        alert("Producto agregado al carrito");
-    });
-
-</script>
 </body>
 </html>
