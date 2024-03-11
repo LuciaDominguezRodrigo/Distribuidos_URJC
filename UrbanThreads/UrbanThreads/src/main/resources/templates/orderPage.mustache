@@ -17,9 +17,13 @@
 <!-- Content -->
 <div class="container mt-4">
     <h1>Contenido del Pedido</h1>
-    {{#order.orderProducts}}
-        <li>"He detectado un producto"</li>
-    {{/order.orderProducts}}
+    {{#productList}}
+        <li>Nombre: {{name}}</li>
+        <li>Precio: {{price}}</li>
+        <li>Talla: {{size}}</li>
+        <li>Color: {{color}}</li>
+        <li>Cantidad: {{quantity}}</li>
+    {{/productList}}
 
 </div>
 
