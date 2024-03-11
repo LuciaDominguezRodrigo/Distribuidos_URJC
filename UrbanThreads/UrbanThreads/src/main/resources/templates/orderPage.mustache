@@ -16,16 +16,28 @@
 
 <!-- Content -->
 <div class="container mt-4">
-    <h1>Contenido del Pedido</h1>
-    {{#productList}}
-        <li>Nombre: {{name}}</li>
-        <li>Precio: {{price}}</li>
-        <li>Talla: {{size}}</li>
-        <li>Color: {{color}}</li>
-        <li>Cantidad: {{quantity}}</li>
-    {{/productList}}
-
+    <h1 class="text-center mb-4">Contenido del Pedido</h1>
+    <ul class="list-group">
+        {{#productList}}
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4 class="mb-1">{{name}}</h4>
+                        <p class="mb-1">Precio: {{price}}</p>
+                        <p class="mb-1">Talla: {{size}}</p>
+                        <p class="mb-1">Color: {{color}}</p>
+                        <p class="mb-1">Cantidad: {{quantity}}</p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <!-- Add any additional actions or buttons here -->
+                    </div>
+                </div>
+            </li>
+        {{/productList}}
+    </ul>
 </div>
+
+
 
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
