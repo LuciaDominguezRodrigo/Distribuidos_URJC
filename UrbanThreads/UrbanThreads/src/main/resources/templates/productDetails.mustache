@@ -127,26 +127,22 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="/js/productDetails.js"></script>
 <script>
-    document.getElementById("addToCart").addEventListener("click", function(event) {
-        event.preventDefault();
-        var productName = "{{product.name}}";
-        var productPrice = "{{product.price}}";
-        var productQuantity = document.getElementById("quantity").value;
-
-        var product = {
-            name: productName,
-            price: productPrice,
-            quantity: productQuantity
-        };
-
-        addToCart(product);
-        alert("Producto agregado al carrito");
-
-    });
-
-
     var cart = [];
 
+    // Función para cargar el carrito desde el almacenamiento local
+    function loadCartFromLocalStorage() {
+        var savedCart = localStorage.getItem("cart");
+        if (savedCart) {
+            cart = JSON.parse(savedCart);
+        }
+    }
+
+    // Función para guardar el carrito en el almacenamiento local
+    function saveCartToLocalStorage() {
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    // Función para agregar un producto al carrito
     function addToCart(product) {
         var existingProductIndex = cart.findIndex(item => item.name === product.name);
         if (existingProductIndex !== -1) {
@@ -155,8 +151,10 @@
             cart.push(product);
         }
         displayCart();
+        saveCartToLocalStorage(); // Guardar el carrito después de agregar un producto
     }
 
+    // Función para mostrar el carrito
     function displayCart() {
         var cartItemsElement = document.getElementById("cartItems");
         cartItemsElement.innerHTML = "";
@@ -166,44 +164,54 @@
             productElement.classList.add("cart-item");
 
             productElement.innerHTML = `
-            <div class="cart-item-info">
-                <h4>${product.name}</h4>
-                <p>Precio: ${product.price}</p>
-                <p>Cantidad: ${product.quantity}</p>
-            </div>
-            <div class="cart-item-actions">
-                <button onclick="deleteProduct(${index})">Eliminar</button>
-            </div>
-        `;
+        <div class="cart-item-info">
+            <h4>${product.name}</h4>
+            <p>Precio: ${product.price}</p>
+            <p>Cantidad: ${product.quantity}</p>
+        </div>
+        <div class="cart-item-actions">
+            <button onclick="deleteProduct(${index})">Eliminar</button>
+        </div>
+    `;
             cartItemsElement.appendChild(productElement);
         });
     }
 
+    // Función para eliminar un producto del carrito
     function deleteProduct(index) {
         cart.splice(index, 1);
         displayCart();
+        saveCartToLocalStorage(); // Guardar el carrito después de eliminar un producto
     }
-
-    window.onload = function() {
-        displayCart();
-    };
-
-
-
-    window.onload = function() {
-        displayCart();
-    };
-
-    // Limpiar el carrito al cargar la página
-    window.onload = function() {
-        clearCart();
-        displayCart();
-    };
 
     // Función para limpiar el carrito del almacenamiento local
     function clearCart() {
         localStorage.removeItem("cart");
     }
+
+    // Función para cargar el carrito al cargar la página
+    window.onload = function() {
+        loadCartFromLocalStorage();
+        displayCart();
+    };
+
+    // Agregar producto al carrito al hacer clic en el botón
+    document.getElementById("addToCart").addEventListener("click", function(event) {
+        event.preventDefault();
+        var productName = "{{product.name}}";
+        var productPrice = "{{product.price}}";
+        var productQuantity = parseInt(document.getElementById("quantity").value);
+
+        var product = {
+            name: productName,
+            price: productPrice,
+            quantity: productQuantity
+        };
+
+        addToCart(product);
+        alert("Producto agregado al carrito");
+    });
+
 </script>
 </body>
 </html>
