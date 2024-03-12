@@ -1,6 +1,7 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
@@ -37,6 +38,7 @@ public class ProductWebController {
             model.addAttribute("products", new ArrayList<Product>());
         } else {
             model.addAttribute("products", products);
+
         }
         nextProductIndex = products.size();
         return "index";
@@ -67,6 +69,8 @@ public class ProductWebController {
         model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L));
         model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
         model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
+
+        model.addAttribute("categoryName", product.getCategory().getName());
 
         return "productDetails";
     }

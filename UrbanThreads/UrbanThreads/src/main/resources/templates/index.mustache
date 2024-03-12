@@ -11,7 +11,15 @@
     <link rel='stylesheet' type='text/css' media='screen' href='/static/css/index.css'>
     <link rel="icon" href="/img/logo.png" type="image/png">
   <!-- Custom CSS -->
-
+<STYLE>
+    .card-category {
+        background-color: #f0f0f0; /* Color claro */
+        border: 1px solid #cccccc; /* Borde del cuadro */
+        border-radius: 5px; /* Borde redondeado */
+        padding: 5px; /* Espaciado interno */
+        text-align: center; /* Centrar texto */
+    }
+</STYLE>
 </head>
 <body>
 
@@ -30,6 +38,7 @@
                             <img src="{{photo}}" class="foto card-img-top" alt="  ¡Ups, foto no cargada!">
                             <div class="card-body">
                                 <h5 class="card-title">{{name}}</h5>
+                                <h5 class="card-category">{{category.name}}</h5>
                                 <p class="card-text">{{description}}</p>
                                 <form action="/product/{{id}}" method="GET">
                                     <button class="btn btn-primary" type="submit">Ver Detalles</button>
