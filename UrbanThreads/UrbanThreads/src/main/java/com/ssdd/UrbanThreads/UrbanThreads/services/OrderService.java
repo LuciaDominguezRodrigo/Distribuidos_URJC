@@ -32,6 +32,12 @@ public class OrderService {
     public Order saveOrder(@NotNull Order order) {
         return orderRepository.saveOrder(order, this.getSelectedOrder());
     }
+    public int saveOrderT() {
+        Order order = orderRepository.findOrder(orderRepository.getSelectedOrder());
+        orderRepository.saveOrder(order, this.getSelectedOrder());
+        return order.getId();
+
+    }
 
     public Order updateOrder(int id, Order order) {
         return orderRepository.updateOrder(id, order);
@@ -90,5 +96,6 @@ public class OrderService {
         }
         return productId;
     }
+
 }
 
