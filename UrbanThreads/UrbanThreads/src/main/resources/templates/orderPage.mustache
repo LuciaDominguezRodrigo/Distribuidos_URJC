@@ -42,7 +42,9 @@
     <div class ="buttons">
         <div class="row justify-content-between mb-4">
             <div class="col-sm-6">
-                <button class="btn btn-primary mr-2" onclick="realizarPedido()">Realizar Pedido</button>
+                <form action = "/orderReady" method ="POST">
+                <button class="btn btn-primary mr-2" onclick="return realizarPedido()">Realizar Pedido</button>
+                </form>
             </div>
             <div class="col-sm-6">
                 <form action="/cancelOrder" method="POST">
@@ -101,6 +103,18 @@
             return true;
         } else {
             alert("El pedido sigue vigente");
+            return false;
+        }
+    }
+
+    function realizarPedido(){
+        var confirmation = confirm("Si acepta, realizará su pedido");
+
+        if (confirmation) {
+            alert("El pedido ha sido realizado");
+            return true;
+        } else {
+            alert("El pedido no se ha realizado, puede continuar su compra");
             return false;
         }
     }

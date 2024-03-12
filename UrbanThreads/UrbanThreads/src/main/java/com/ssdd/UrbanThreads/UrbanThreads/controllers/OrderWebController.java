@@ -46,10 +46,6 @@ public class OrderWebController {
         product1.setQuantity(quantity);
         productList.add(product1);
 
-        List<Integer> productIds = new ArrayList<>();
-        for (Product p : productList) {
-            productIds.add(p.getId());
-        }
 
         model.addAttribute("productList", productList);
        // model.addAttribute("productIds", productIds);
@@ -79,6 +75,12 @@ public class OrderWebController {
         productList.clear();
         orderService.deleteOrderT();
         return "redirect:/";
+    }
+
+    @PostMapping ("/orderReady")
+    public String makeOrder(Model model){
+        model.addAttribute("productList", productList);
+        return "orderMade";
     }
 }
 

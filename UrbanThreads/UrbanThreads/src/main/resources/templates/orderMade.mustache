@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen del Pedido</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">¡Pedido Realizado!</h1>
+    <div class="alert alert-success" role="alert">
+        Su pedido ha sido realizado con éxito. Aquí está el resumen:
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Detalles del Pedido:</h6>
+            <ul class="list-group">
+                {{#productList}}
+                    <li class="list-group-item">
+                        <p>Producto: {{name}}</p>
+                        <p>Precio por unidad: {{price}}</p>
+                        <p>Cantidad: {{quantity}}</p>
+                        <p>Talla: {{size}}</p>
+                        <p>Color: {{color}}</p>
+                    </li>
+                {{/productList}}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
