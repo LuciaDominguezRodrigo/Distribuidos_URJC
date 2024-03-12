@@ -46,10 +46,13 @@ public class OrderWebController {
         product1.setQuantity(quantity);
         productList.add(product1);
 
-
+        List<Integer> productIds = new ArrayList<>();
+        for (Product p : productList) {
+            productIds.add(p.getId());
+        }
 
         model.addAttribute("productList", productList);
-
+       // model.addAttribute("productIds", productIds);
 
         return "redirect:/orderPage";
     }
@@ -59,6 +62,23 @@ public class OrderWebController {
     public String showOrderPage(Model model) {
         model.addAttribute("productList", productList);
         return "orderPage";
+    }
+
+    /*
+    @PostMapping("/deleteProductOrder")
+    public String eliminarProductoDeOrden(Model model, @RequestParam("productId") int productId) {
+
+        productList.remove(orderService.deletePorductfromCurrentOrder(productId));
+        model.addAttribute("productList", productList);
+
+        return "redirect:/orderPage";
+    }*/
+
+    @PostMapping ("/cancelOrder")
+    public String cancelOrder(){
+        productList.clear();
+        orderService.deleteOrderT();
+        return "redirect:/";
     }
 }
 

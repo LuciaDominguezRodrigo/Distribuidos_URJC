@@ -17,7 +17,9 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public int getSelectedOrder(){ return orderRepository.getSelectedOrder(); }
+    public int getSelectedOrder() {
+        return orderRepository.getSelectedOrder();
+    }
 
     public Order findOrder(int id) {
         return orderRepository.findOrder(id);
@@ -37,6 +39,10 @@ public class OrderService {
 
     public void deleteOrder(int id) {
         orderRepository.deleteOrder(id);
+    }
+    public void deleteOrderT( ) {
+        Order order = orderRepository.findOrder(orderRepository.getSelectedOrder());
+        orderRepository.deleteOrder(order.getId());
     }
 
     public void addProductToCurrentOrder(Product product) {
@@ -63,5 +69,26 @@ public class OrderService {
         return allProductsInOrder;
     }
 
+    public Product findProductInOrder(Order order, int productId) {
+        return order.getOrderProducts().stream()
+                .filter(product -> product.getId() == productId)
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    public int deletePorductfromCurrentOrder(int productId) {
+        Order order = orderRepository.findOrder(orderRepository.getSelectedOrder());
+        if (order != null) {
+
+            for (Product orderProduct : order.getOrderProducts()) {
+                if (orderProduct.getId() == productId) {
+                    order.getOrderProducts().remove(orderProduct);
+                }
+            }
+            orderRepository.updateOrder(orderRepository.getSelectedOrder(), order);
+        }
+        return productId;
+    }
 }
 
