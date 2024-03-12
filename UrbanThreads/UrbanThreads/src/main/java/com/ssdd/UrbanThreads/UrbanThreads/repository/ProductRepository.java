@@ -47,4 +47,15 @@ public class ProductRepository {
     public void deleteProduct(int id) {
         products.remove(id);
     }
+
+    public List<Product> findByCategoryName(String categoria) {
+            List<Product> matchingProducts = new ArrayList<>();
+            for (Product product : products.values()) {
+                if (product.getCategory().getName().equalsIgnoreCase(categoria)) {
+                    matchingProducts.add(product);
+                }
+            }
+            return matchingProducts;
+        }
+
 }
