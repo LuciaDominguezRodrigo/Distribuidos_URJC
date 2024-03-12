@@ -1,0 +1,9 @@
+.buttons .btn {
+    padding: 10px 20px; 
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.buttons .btn:hover {
+    opacity: 0.8;
+}

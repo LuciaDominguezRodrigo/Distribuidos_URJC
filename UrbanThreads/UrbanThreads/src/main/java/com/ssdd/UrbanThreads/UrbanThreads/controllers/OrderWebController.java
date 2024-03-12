@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 @Controller
 public class OrderWebController {
     @Autowired
@@ -45,7 +47,9 @@ public class OrderWebController {
         productList.add(product1);
 
 
+
         model.addAttribute("productList", productList);
+
 
         return "redirect:/orderPage";
     }

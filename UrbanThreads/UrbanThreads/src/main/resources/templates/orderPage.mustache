@@ -8,6 +8,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' media='screen' href='/static/css/pedido.css'>
 </head>
 <body>
 
@@ -23,18 +24,25 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <h4 class="mb-1">{{name}}</h4>
-                        <p class="mb-1">Precio: {{price}}</p>
+                        <p class="mb-1">Precio por unidad: {{price}}</p>
+                        <p class="mb-1">Cantidad: {{quantity}}</p>
                         <p class="mb-1">Talla: {{size}}</p>
                         <p class="mb-1">Color: {{color}}</p>
                         <p class="mb-1">Cantidad: {{quantity}}</p>
+
                     </div>
                     <div class="col-sm-6 text-right">
-                        <!-- Add any additional actions or buttons here -->
+                        <!-- Botones adicionales -->
                     </div>
                 </div>
             </li>
         {{/productList}}
     </ul>
+    <div class ="buttons">
+        <button class="btn btn-primary mr-2" onclick="realizarPedido()">Realizar Pedido</button>
+        <button class="btn btn-warning mr-2" onclick="editarPedido()">Editar</button>
+        <button class="btn btn-danger" onclick="cancelarPedido()">Cancelar</button>
+    </div>
 </div>
 
 
