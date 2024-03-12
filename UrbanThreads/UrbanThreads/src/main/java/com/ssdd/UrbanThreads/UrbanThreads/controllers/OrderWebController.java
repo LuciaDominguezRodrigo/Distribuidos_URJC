@@ -79,10 +79,7 @@ public class OrderWebController {
 
     @PostMapping ("/orderReady")
     public String makeOrder(Model model){
-        int i = orderService.saveOrderT();
-        model.addAttribute("id",i);
         model.addAttribute("productList", productList);
-
         return "orderMade";
     }
 }
