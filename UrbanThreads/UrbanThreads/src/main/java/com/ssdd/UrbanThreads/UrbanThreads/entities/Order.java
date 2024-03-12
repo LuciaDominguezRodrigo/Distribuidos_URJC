@@ -25,4 +25,7 @@ public class Order {
     }
 
 
+    public Object getProducts() {
+        return orderProducts;
+    }
 }

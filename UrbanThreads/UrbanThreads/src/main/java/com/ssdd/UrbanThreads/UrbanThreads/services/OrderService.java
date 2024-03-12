@@ -90,5 +90,31 @@ public class OrderService {
         }
         return productId;
     }
+
+    public void addProductToOrder(Order currentOrder, Product product, String size, String color, int quantity) {
+        // Verificar si el pedido actual es nulo
+        if (currentOrder == null) {
+            // Si es nulo, crear un nuevo pedido
+            currentOrder = new Order();
+            currentOrder.setOrderProducts(new ArrayList<>());
+            // Guardar el nuevo pedido
+            orderRepository.saveOrder(currentOrder, orderRepository.getSelectedOrder());
+        }
+
+        // Crear una nueva instancia de Producto para asociarlo con el pedido
+        Product newProduct = new Product();
+        newProduct.setName(product.getName());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setSize(size);
+        newProduct.setColor(color);
+        newProduct.setQuantity(quantity);
+
+        // Agregar el nuevo producto al pedido actual
+        currentOrder.getOrderProducts().add(newProduct);
+
+        // Actualizar el pedido en el repositorio
+        orderRepository.updateOrder(orderRepository.getSelectedOrder(), currentOrder);
+    }
+
 }
 

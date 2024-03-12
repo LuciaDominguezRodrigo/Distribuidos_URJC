@@ -17,6 +17,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
+
 @Controller
 public class OrderWebController {
     @Autowired
@@ -25,8 +26,7 @@ public class OrderWebController {
     @Autowired
     private ProductService productService;
 
-    private List<Product> productList = new ArrayList<>();
-
+    private Order currentOrder;
 
     @PostMapping("/newProductInOrder")
     public String addToOrder(Model model, @RequestParam("id") int productId,
@@ -35,52 +35,39 @@ public class OrderWebController {
                              @RequestParam("quantity") int quantity) {
 
         Product product = productService.findProduct(productId);
-        orderService.addProductToCurrentOrder(product);
-
-
-        Product product1 = new Product();
-        product1.setName(product.getName());
-        product1.setPrice(product.getPrice());
-        product1.setSize(size);
-        product1.setColor(color);
-        product1.setQuantity(quantity);
-        productList.add(product1);
-
-
-        model.addAttribute("productList", productList);
-       // model.addAttribute("productIds", productIds);
+        if (currentOrder == null) {
+            currentOrder = new Order();
+        }
+        orderService.addProductToOrder(currentOrder, product, size, color, quantity);
 
         return "redirect:/orderPage";
     }
-
 
     @GetMapping("/orderPage")
     public String showOrderPage(Model model) {
-        model.addAttribute("productList", productList);
+        if (currentOrder != null) {
+            model.addAttribute("productList", currentOrder.getProducts());
+        }
         return "orderPage";
     }
 
-    /*
-    @PostMapping("/deleteProductOrder")
-    public String eliminarProductoDeOrden(Model model, @RequestParam("productId") int productId) {
-
-        productList.remove(orderService.deletePorductfromCurrentOrder(productId));
-        model.addAttribute("productList", productList);
-
-        return "redirect:/orderPage";
-    }*/
-
-    @PostMapping ("/cancelOrder")
-    public String cancelOrder(){
-        productList.clear();
-        orderService.deleteOrderT();
+    @PostMapping("/cancelOrder")
+    public String cancelOrder() {
+        currentOrder = null;
         return "redirect:/";
     }
 
-    @PostMapping ("/orderReady")
-    public String makeOrder(Model model){
-        model.addAttribute("productList", productList);
-        return "orderMade";
+    @PostMapping("/orderReady")
+    public String makeOrder(Model model) {
+        if (currentOrder != null) {
+            model.addAttribute("productList", currentOrder.getProducts());
+
+            currentOrder = null;
+            return "orderMade";
+        } else {
+            
+            return "redirect:/";
+        }
     }
 }
 
