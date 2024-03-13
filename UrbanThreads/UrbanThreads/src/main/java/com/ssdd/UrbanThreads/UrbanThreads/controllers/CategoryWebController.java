@@ -67,13 +67,13 @@ public String productosPorCategoria(Model model, @RequestParam("categoria") Stri
             }
     }
     @PostMapping("/createNewCategory")
-    public String createCategory(@RequestParam ("newCategoryName") String categoryName){
+    public String createCategory(@RequestParam ("newCategoryName") String categoryName, @RequestParam("categoryColor") String color){
 
     Category newCategory = new Category();
+
     newCategory.setName(categoryName);
-
+    newCategory.setColor(color);
     categoryService.addNewCategory(newCategory);
-
     return "redirect:/editCategory";
     }
 

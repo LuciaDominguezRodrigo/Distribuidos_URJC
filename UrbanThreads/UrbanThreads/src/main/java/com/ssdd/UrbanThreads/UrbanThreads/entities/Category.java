@@ -9,12 +9,14 @@ public class Category {
 
     private long id;
     private String name;
+    private String color;
 
     public Category(){};
 
-    public Category(long id,String name) {
+    public Category(long id,String name, String color) {
         this.id = id;
         this.name = name;
+        this.color = color;
     }
 
 

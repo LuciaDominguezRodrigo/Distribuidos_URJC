@@ -15,7 +15,7 @@
 <div class="container mt-4">
     <h1>Lista de Categorías</h1>
     {{#categories}}
-        <div class="card mt-4">
+        <div class="card mt-4" style="border-radius: 10px; border-width: medium;  border-color: {{color}};">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <h5 class="card-title">{{name}}</h5>
                 <div>
@@ -42,17 +42,25 @@
                 </div>
                 <div class="modal-body">
                     <!-- Formulario para ingresar el nombre de la nueva categoría -->
-                    <form id="createCategoryForm" action="/createNewCategory" method="POST">
+                    <form action="/createNewCategory" method="POST" id="createCategoryForm">
                         <div class="form-group">
                             <label for="categoryName">Nombre de la Categoría</label>
-                            <input type="text" class="form-control" id="newCategoryName" name="newCategoryName" required>
+                            <input type="text" class="form-control" id="categoryName" name="newCategoryName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryColor">Color de la categoría</label>
+                            <input type="color" class="form-control" id="categoryColor" name="categoryColor" placeholder="Color del tag">
+                            <input type="text" class="form-control" id="hexColor" name="hexColor" placeholder="Color hexadecimal" readonly>
                         </div>
                     </form>
-                </div>
+
+
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <form action ="/createNewCategory" method = "POST">
+
                      <button type="submit" form="createCategoryForm" class="btn btn-primary" onclick = "return warnCreate()">Aceptar</button>
+                </div>
                     </form>
                 </div>
             </div>

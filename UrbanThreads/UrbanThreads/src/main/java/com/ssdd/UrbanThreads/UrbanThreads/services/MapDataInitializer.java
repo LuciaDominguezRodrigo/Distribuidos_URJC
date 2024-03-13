@@ -29,7 +29,6 @@ public class MapDataInitializer {
 
     @PostConstruct
     public void init() {
-        // Agregar fotos al mapa
 
         String photo =  "/img/camiseta.jpg";
         String photo2 =  "/img/pantalon.jpg";
@@ -39,9 +38,9 @@ public class MapDataInitializer {
         String photo6 =  "/img/sudadera.jpg";
 
 
-        Category hombre = new Category(11L,"Hombre");
-        Category mujer = new Category(22L,"Mujer");
-        Category sin = new Category(33L,"Sin Categoria");
+        Category hombre = new Category(11L,"Hombre", "#D1F2EB");
+        Category mujer = new Category(22L,"Mujer", "#FCF3CF");
+        Category sin = new Category(33L,"Sin Categoria",  "#D2B4DE" );
 
         categoryRepository.saveCategory(hombre);
         categoryRepository.saveCategory(mujer);
