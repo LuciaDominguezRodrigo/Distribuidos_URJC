@@ -38,4 +38,11 @@ public class CategoryService {
     public Collection<Category> getAllCategories() {
             return categoryRepository.findAllCategories();
     }
+
+    public Category findCategoryByName(String name) {
+        return categoryRepository.findCategoryByName(name);
+
+    }
+
+
 }

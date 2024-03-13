@@ -1,5 +1,6 @@
 package com.ssdd.UrbanThreads.UrbanThreads.repository;
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -49,13 +50,14 @@ public class ProductRepository {
     }
 
     public List<Product> findByCategoryName(String categoria) {
-            List<Product> matchingProducts = new ArrayList<>();
-            for (Product product : products.values()) {
-                if (product.getCategory().getName().equalsIgnoreCase(categoria)) {
-                    matchingProducts.add(product);
-                }
+        List<Product> matchingProducts = new ArrayList<>();
+        for (Product product : products.values()) {
+            Category category = product.getCategory();
+            if (category != null && category.getName() != null && category.getName().equalsIgnoreCase(categoria)) {
+                matchingProducts.add(product);
             }
-            return matchingProducts;
         }
+        return matchingProducts;
 
+    }
 }

@@ -38,7 +38,9 @@
                             <img src="{{photo}}" class="foto card-img-top" alt="  ¡Ups, foto no cargada!">
                             <div class="card-body">
                                 <h5 class="card-title">{{name}}</h5>
-                                <h5 class="card-category">{{category.name}}</h5>
+                                {{#category}} <!-- Aquí comienza el bloque para acceder a la categoría -->
+                                    <h5 class="card-category">{{name}}</h5>
+                                {{/category}} 
                                 <p class="card-text">{{description}}</p>
                                 <form action="/product/{{id}}" method="GET">
                                     <button class="btn btn-primary" type="submit">Ver Detalles</button>

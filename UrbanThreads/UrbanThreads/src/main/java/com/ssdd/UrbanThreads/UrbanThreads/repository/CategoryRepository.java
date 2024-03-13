@@ -43,4 +43,13 @@ public class CategoryRepository {
     public void deleteCategory(Long id) {
         categories.remove(id);
     }
+
+    public Category findCategoryByName(String categoryName) {
+        for (Category category : categories.values()) {
+            if (category.getName().equals(categoryName)) {
+                return category;
+            }
+        }
+        return null;
+    }
 }

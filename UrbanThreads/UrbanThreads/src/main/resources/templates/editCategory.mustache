@@ -12,17 +12,24 @@
 {{>navbar}}
 
 <div class="container mt-4">
-    <h1 class="text-center mb-4">Lista de Categorías</h1>
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <ul class="list-group">
-                {{#categories}}
-                    <li class="list-group-item">{{name}}</li>
-                {{/categories}}
-            </ul>
+    <h1>Lista de Categorías</h1>
+    {{#categories}}
+        <div class="card mt-4">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <h5 class="card-title">{{name}}</h5>
+                <div>
+                    <button class="btn btn-primary editar-categoria">Editar</button>
+                    <form action="/deleteCategory" method="POST" class="d-inline">
+                        <input type="hidden" name="name" value = "{{name}}">
+                        <button class="btn btn-danger eliminar-categoria">Eliminar</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
+
+    {{/categories}}
 </div>
+
 
 <!-- Bootstrap JS y dependencias -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
