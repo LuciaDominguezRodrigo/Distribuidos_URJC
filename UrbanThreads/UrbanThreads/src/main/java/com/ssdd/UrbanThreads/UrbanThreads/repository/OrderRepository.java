@@ -38,7 +38,7 @@ public class OrderRepository {
         if (!orders.containsKey(id)) {
             return null;
         }
-        order.setId(id);
+        order.setOrderId(id);
         orders.put(id,order);
         return order;
     }

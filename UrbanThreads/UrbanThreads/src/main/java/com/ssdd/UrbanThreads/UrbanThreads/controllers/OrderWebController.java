@@ -8,12 +8,12 @@ import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Integer.parseInt;
 
@@ -38,15 +38,19 @@ public class OrderWebController {
         if (currentOrder == null) {
             currentOrder = new Order();
         }
-        orderService.addProductToOrder(currentOrder, product, size, color, quantity);
+        orderService.addProductToOrder(currentOrder, productId, product, size, color, quantity);
 
         return "redirect:/orderPage";
     }
 
     @GetMapping("/orderPage")
     public String showOrderPage(Model model) {
+        List<Product> orderProducts = currentOrder.getProducts();
+        for (Product p : orderProducts) {
+            p.setSelectedSizeAvailableUnits(productService.findProduct(p.getId()).getAvailableSizes().get(Size.valueOf(p.getSize())));
+        }
         if (currentOrder != null) {
-            model.addAttribute("productList", currentOrder.getProducts());
+            model.addAttribute("productList", orderProducts);
         }
         return "orderPage";
     }
@@ -68,6 +72,23 @@ public class OrderWebController {
             
             return "redirect:/";
         }
+    }
+
+    @PostMapping("/editOrder")
+    public String newProduct(@RequestParam int productId,
+                             @RequestParam String productSize,
+                             @RequestParam String productColor,
+                             @RequestParam("quantity") int quantity) {
+
+        Product changedProduct = new Product();
+        for (Product orderProduct : currentOrder.getOrderProducts()) { //If product is ordered, must be found
+            if(orderProduct.getId() == productId && orderProduct.getSize().equals(productSize) && orderProduct.getColor().equals(productColor)){
+                changedProduct = orderProduct;
+            }
+        }
+        changedProduct.setQuantity(quantity);
+
+        return "redirect:/orderPage";
     }
 }
 

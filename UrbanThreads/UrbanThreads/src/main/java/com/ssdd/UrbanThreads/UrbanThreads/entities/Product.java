@@ -21,6 +21,7 @@ public class Product {
     private String photo;
 
     private String size;
+    private int selectedSizeAvailableUnits;
     private String color;
     private int quantity;
 

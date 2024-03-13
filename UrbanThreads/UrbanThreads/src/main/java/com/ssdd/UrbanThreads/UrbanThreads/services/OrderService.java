@@ -42,7 +42,7 @@ public class OrderService {
     }
     public void deleteOrderT( ) {
         Order order = orderRepository.findOrder(orderRepository.getSelectedOrder());
-        orderRepository.deleteOrder(order.getId());
+        orderRepository.deleteOrder(order.getOrderId());
     }
 
     public void addProductToCurrentOrder(Product product) {
@@ -91,7 +91,7 @@ public class OrderService {
         return productId;
     }
 
-    public void addProductToOrder(Order currentOrder, Product product, String size, String color, int quantity) {
+    public void addProductToOrder(Order currentOrder, int id, Product product, String size, String color, int quantity) {
         // Verificar si el pedido actual es nulo
         if (currentOrder == null) {
             // Si es nulo, crear un nuevo pedido
@@ -103,6 +103,7 @@ public class OrderService {
 
         // Crear una nueva instancia de Producto para asociarlo con el pedido
         Product newProduct = new Product();
+        newProduct.setId(id);
         newProduct.setName(product.getName());
         newProduct.setPrice(product.getPrice());
         newProduct.setSize(size);

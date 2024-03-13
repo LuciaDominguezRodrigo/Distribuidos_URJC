@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Order {
-    private int id;
+    private int orderId;
     private Long orderNumber;
     private String orderStatus;
     private List<Product> orderProducts = new ArrayList<>();
@@ -17,15 +17,15 @@ public class Order {
 
     public Order(){};
 
-    public Order(int id, Long orderNumber, String orderStatus, List<Product> orderProducts) {
-        this.id = id;
+    public Order(int orderId, Long orderNumber, String orderStatus, List<Product> orderProducts) {
+        this.orderId = orderId;
         this.orderNumber = orderNumber;
         this.orderStatus = orderStatus;
         this.orderProducts = orderProducts;
     }
 
 
-    public Object getProducts() {
+    public List<Product> getProducts() {
         return orderProducts;
     }
 }

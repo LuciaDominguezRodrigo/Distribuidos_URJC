@@ -8,7 +8,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
-    <link rel='stylesheet' type='text/css' media='screen' href='/static/css/pedido.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/pedido.css'>
 </head>
 <body>
 
@@ -25,20 +25,30 @@
                     <div class="col-sm-6">
                         <h4 class="mb-1">{{name}}</h4>
                         <p class="mb-1">Precio por unidad: {{price}}</p>
-                        <p class="mb-1">Cantidad: {{quantity}}</p>
+                        <p class="mb-1" id="currentQuantity-{{id}}">Cantidad: {{quantity}}</p>
                         <p class="mb-1">Talla: {{size}}</p>
                         <p class="mb-1">Color: {{color}}</p>
-                        <p class="mb-1">Cantidad: {{quantity}}</p>
-
                     </div>
-                    <div class="col-sm-6 text-right">
-                        <button class="btn btn-warning mr-2" onclick="editarPedido()">Editar</button>
-
+                    <div class="col-sm-6 text-right" id="editButton-{{id}}">
+                        <button class="btn btn-warning mr-2" onclick="editarProducto({{id}});">Editar cantidad</button>
+                    </div>
+                    <div class="col-sm-6 text-right d-none" id="editQuantity-{{id}}">
+                        <p class="mb-1">Cantidad:</p>
+                        <form action="/editOrder" method="POST">
+                            <div class="input-group">
+                                <input type="hidden" name="productId" value="{{id}}">
+                                <input type="hidden" name="productSize" value="{{size}}">
+                                <input type="hidden" name="productColor" value="{{color}}">
+                                <input type="number" class="form-control" id="quantity" name="quantity" max="{{selectedSizeAvailableUnits}}" value="{{quantity}}" required>
+                                <button type="submit" class="btn btn-primary" id="addToCart">Confirmar edición</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </li>
         {{/productList}}
     </ul>
+    <br>
     <div class ="buttons">
         <div class="row justify-content-between mb-4">
             <div class="col-sm-6">
@@ -78,7 +88,7 @@
 </div>
 
 <script>
-    function editarPedido() {
+    function editarPedidoMostrar() {
         $('#eliminarProductoModal').modal('show');
     }
 /*
@@ -118,6 +128,13 @@
             return false;
         }
     }
+
+    function editarProducto(id){
+        document.getElementById("editButton-"+id).classList.add("d-none");
+        document.getElementById("currentQuantity-"+id).classList.add("d-none");
+        document.getElementById("editQuantity-"+id).classList.remove("d-none");
+    }
+
 
 </script>
 
