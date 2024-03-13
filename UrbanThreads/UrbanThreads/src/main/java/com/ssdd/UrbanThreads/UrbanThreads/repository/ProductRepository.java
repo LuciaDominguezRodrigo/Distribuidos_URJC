@@ -60,4 +60,13 @@ public class ProductRepository {
         return matchingProducts;
 
     }
+
+    public Product findProductByName(String name) {
+        for (Product product : products.values()) {
+            if (product.getName() != null && product.getName().equalsIgnoreCase(name)) {
+                return product;
+            }
+        }
+        return null;
+    }
 }

@@ -43,6 +43,16 @@ public class ProductService {
         return productRepository.findByCategoryName(categoria);
 
     }
+
+    public String findProductName(int id) {
+       return  productRepository.findProduct(id).getName();
+
+
+    }
+
+    public Product findProductByName(String name) {
+        return productRepository.findProductByName(name);
+    }
 }
 
 
