@@ -45,14 +45,16 @@ public class OrderWebController {
 
     @GetMapping("/orderPage")
     public String showOrderPage(Model model) {
-        List<Product> orderProducts = currentOrder.getProducts();
-        for (Product p : orderProducts) {
-            p.setSelectedSizeAvailableUnits(productService.findProduct(p.getId()).getAvailableSizes().get(Size.valueOf(p.getSize())));
-        }
-        if (currentOrder != null) {
+        if(currentOrder == null){
+            return "redirect:/";
+        } else{
+            List<Product> orderProducts = currentOrder.getProducts();
+            for (Product p : orderProducts) {
+                p.setSelectedSizeAvailableUnits(productService.findProduct(p.getId()).getAvailableSizes().get(Size.valueOf(p.getSize())));
+            }
             model.addAttribute("productList", orderProducts);
+            return "orderPage";
         }
-        return "orderPage";
     }
 
     @PostMapping("/cancelOrder")
