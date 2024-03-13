@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class CategoryWebController{
@@ -33,7 +35,13 @@ public String productosPorCategoria(Model model, @RequestParam("categoria") Stri
     @GetMapping("/editCategory")
     public String showEditCategoriesPage(Model model) {
         Collection<Category> categories = categoryService.getAllCategories();
-        model.addAttribute("categories", categories);
+        List<Category> showC = new ArrayList<>();
+        for (Category c: categories){
+            if (!Objects.equals(c.getName(), "Sin Categoria")){
+                    showC.add(c);
+            }
+        }
+        model.addAttribute("categories", showC);
         return "editCategory";
     }
 
