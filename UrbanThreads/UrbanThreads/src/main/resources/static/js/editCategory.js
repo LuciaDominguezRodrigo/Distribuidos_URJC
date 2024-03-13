@@ -5,7 +5,6 @@ function  warnDelete() {
         alert("La categoria ha sido eliminada");
         return true;
     } else {
-        alert("La categoria no ha sido eliminada");
         return false;
     }
 }
@@ -19,10 +18,8 @@ function  warnCreate() {
     var confirmation = confirm("¿deseas crear esta nueva categoria?");
 
     if (confirmation) {
-        alert("La categoria ha sido creada");
         return true;
     } else {
-        alert("La categoria no ha sido creada");
         return false;
     }
 }

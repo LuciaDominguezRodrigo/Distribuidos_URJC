@@ -4,6 +4,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
+import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ public class ProductWebController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private CategoryService categoryService;
 
     private int nextProductIndex = 3;
     private int productsRefreshSize = 4; //this number controls how many elements are charged
@@ -129,6 +133,7 @@ public class ProductWebController {
 
     @PostMapping("/createProduct")
     public String newProduct(@RequestParam("name") String name,
+                             @RequestParam ("category") String category,
                              @RequestParam("description") String description,
                              @RequestParam("price") double price,
                              @RequestParam("sizeXS") int xsUnits,
@@ -147,14 +152,25 @@ public class ProductWebController {
         availableSizes.put(Size.XL, xlUnits);
         availableSizes.put(Size.XXL, xxlUnits);
 
-        Product newProduct = new Product(name, null, price, photo, description, availableSizes);
+        Category c = categoryService.findCategoryByName(category);
+
+        Product newProduct = new Product(name, c , price, photo, description, availableSizes);
         productService.saveProduct(newProduct);
 
         return "redirect:/";
     }
 
     @GetMapping("/createProduct")
-    public String newProductCharge() {
+    public String newProductCharge(Model model) {
+
+        Collection<Category> categories = categoryService.findAllCategories();
+        List<Category> shownC  = new ArrayList<>();
+        for (Category c:categories) {
+            if (!Objects.equals(c.getName(), "Sin Categoria")){
+                shownC.add(c);
+            }
+        }
+        model.addAttribute("categories", shownC);
         return "createForm";
     }
 
