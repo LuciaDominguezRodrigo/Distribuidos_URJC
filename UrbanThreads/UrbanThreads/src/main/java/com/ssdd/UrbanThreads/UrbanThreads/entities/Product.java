@@ -1,5 +1,6 @@
 package com.ssdd.UrbanThreads.UrbanThreads.entities;
 
+import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +26,7 @@ public class Product {
     private String color;
     private int quantity;
 
-    public Product(){
+    public Product() {
     }
 
     public Product(String name, Category category, double price, String photo, String description, Map<Size, Integer> sizeUnits) {
@@ -36,6 +37,4 @@ public class Product {
         this.photo = photo;
         this.availableSizes = sizeUnits;
     }
-
-
 }

@@ -21,7 +21,7 @@
                     <button class="btn btn-primary editar-categoria">Editar</button>
                     <form action="/deleteCategory" method="POST" class="d-inline">
                         <input type="hidden" name="name" value = "{{name}}">
-                        <button class="btn btn-danger eliminar-categoria">Eliminar</button>
+                        <button class="btn btn-danger eliminar-categoria" onclick = "return warnDelete()">Eliminar</button>
                     </form>
                 </div>
             </div>
@@ -35,5 +35,6 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src = "/js/editCategory.js" ></script>
 </body>
 </html>

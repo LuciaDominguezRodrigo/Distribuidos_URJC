@@ -39,30 +39,24 @@ public String productosPorCategoria(Model model, @RequestParam("categoria") Stri
 
     @PostMapping("/deleteCategory")
     public String deleteCategoryAndReplace(@RequestParam("name") String categoryName) {
-        // Buscar la categoría a eliminar
-        Category deleteCategory = categoryService.findCategoryByName(categoryName);
 
-        // Si la categoría a eliminar existe
-        if (deleteCategory != null) {
-            // Obtener la categoría "Sin categoría"
-            Category changeCategory = categoryService.findCategoryByName("Sin categoria");
+            Category deleteCategory = categoryService.findCategoryByName(categoryName);
+            if (deleteCategory != null) {
+                Category changeCategory = categoryService.findCategoryByName("Sin Categoria");
 
-            // Obtener todos los productos que pertenecen a la categoría a eliminar
-            List<Product> productsInCategory = productService.findProductsByCategory(categoryName);
+                List<Product> productsInCategory = productService.findProductsByCategory(categoryName);
 
-            // Iterar sobre los productos y reemplazar la categoría
-            for (Product product : productsInCategory) {
-                product.setCategory(changeCategory);
-                productService.updateProduct(product.getId(), product);
+                for (Product product : productsInCategory) {
+                    product.setCategory(changeCategory);
+                    productService.updateProduct(product.getId(), product);
+                }
+
+                categoryService.deleteCategory(deleteCategory.getId());
+
+                return "redirect:/";
+            } else {
+                return "La categoría especificada no existe.";
             }
-
-            // Finalmente, eliminar la categoría
-            categoryService.deleteCategory(deleteCategory.getId());
-
-            return "redirect:/";
-        } else {
-            return "La categoría especificada no existe.";
-        }
     }
 
 
