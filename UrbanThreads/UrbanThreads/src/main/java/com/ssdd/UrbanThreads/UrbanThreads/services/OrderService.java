@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class OrderService {
@@ -16,6 +18,21 @@ public class OrderService {
 
     public Order getCurrentOrder() {
         return orderRepository.getCurrentOrder();
+    }
+
+    public void changeCurrentOrder(int orderId){
+        orderRepository.setSelectedOrderId(orderId);
+    }
+
+    public List<Integer> getAllOrdersId() {
+        Set<Integer> aux = orderRepository.getAllOrdersId();
+        List<Integer> allOrdersId = new ArrayList<>();
+        allOrdersId.addAll(aux);
+        return allOrdersId;
+    }
+
+    public void addNewOrder (Order o){
+        orderRepository.addNewOrder(o);
     }
 
     public void addProductToCurrentOrder(int id, Product product, String size, String color, int quantity) {
@@ -37,6 +54,10 @@ public class OrderService {
 
         currentOrder.getOrderProducts().add(newProduct);
 
+        orderRepository.saveCurrentOrder(currentOrder);
+    }
+
+    public void saveCurrentOrder(Order currentOrder){
         orderRepository.saveCurrentOrder(currentOrder);
     }
 

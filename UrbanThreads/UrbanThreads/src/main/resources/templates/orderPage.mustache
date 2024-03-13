@@ -18,6 +18,22 @@
 <!-- Content -->
 <div class="container mt-4">
     <h1 class="text-center mb-4">Contenido del Pedido</h1>
+
+    <div class="form-group pt-3">
+        <form action="/changeOrder" id="orderSelection" method="POST">
+            <select class="form-control" id="orderSelect" name="selectedOrder" onchange="cambiarPedido();" required>
+                <option value="" disabled selected>Selecciona el pedido al que quieres cambiar</option> <!-- Opción inicial deshabilitada -->
+                {{#allOrdersId}}
+                    <option value="{{.}}">{{.}}</option>
+                {{/allOrdersId}}
+            </select>
+        </form>
+        <br>
+        <form action="/newOrder" method="POST">
+            <button type="submit" class="btn btn-primary">Nuevo pedido</button>
+        </form>
+    </div>
+    <h6>Pedido nº: {{orderId}}</h6>
     <ul class="list-group">
         {{#productList}}
             <li class="list-group-item">
@@ -46,6 +62,11 @@
                     </div>
                 </div>
             </li>
+        {{/productList}}
+        {{^productList}}
+            <div class="col-sm-6">
+                <h4 class="mb-1">Todavía no hay productos en este pedido.</h4>
+            </div>
         {{/productList}}
     </ul>
     <br>
@@ -87,60 +108,10 @@
 
 </div>
 
-<script>
-    function editarPedidoMostrar() {
-        $('#eliminarProductoModal').modal('show');
-    }
-/*
-    function eliminarProducto( productId ) {
-        $.ajax({
-            type: "POST",
-            url: "/deleteProductOrder",
-            data: { productId: productId },
-            success: function(response) {
-                window.location.href = "/orderPage";
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
-        });*/
-
-    function cancelarPedido(){
-        var confirmation = confirm("Si cancela, se borrará su pedido y deberá empezar de nuevo");
-
-        if (confirmation) {
-            alert("El pedido ha sido eliminado");
-            return true;
-        } else {
-            alert("El pedido sigue vigente");
-            return false;
-        }
-    }
-
-    function realizarPedido(){
-        var confirmation = confirm("Si acepta, realizará su pedido");
-
-        if (confirmation) {
-            alert("El pedido ha sido realizado");
-            return true;
-        } else {
-            alert("El pedido no se ha realizado, puede continuar su compra");
-            return false;
-        }
-    }
-
-    function editarProducto(id){
-        document.getElementById("editButton-"+id).classList.add("d-none");
-        document.getElementById("currentQuantity-"+id).classList.add("d-none");
-        document.getElementById("editQuantity-"+id).classList.remove("d-none");
-    }
-
-
-</script>
-
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/js/orderPage.js"></script>
 </body>
 </html>

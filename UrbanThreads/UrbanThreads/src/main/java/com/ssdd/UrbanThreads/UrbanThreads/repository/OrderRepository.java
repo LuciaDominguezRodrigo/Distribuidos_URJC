@@ -7,33 +7,36 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class OrderRepository {
     private final Map<Integer, Order> orders = new HashMap<>();
     private final AtomicInteger nextId = new AtomicInteger();
-    private final int selectedOrder = 0;
+    private int selectedOrder = 0;
 
     public int getSelectedOrderId(){ return this.selectedOrder; }
 
-    public Order getCurrentOrder(){ return orders.get(selectedOrder); }
+    public void setSelectedOrderId(int id){ this.selectedOrder = id; }
 
-    public int getNextId() {
-        return nextId.get();
+    public Set<Integer> getAllOrdersId (){
+        return orders.keySet();
     }
+
+    public void addNewOrder(Order o){
+        o.setOrderId(nextId.get());
+        this.orders.put(nextId.getAndIncrement(), o);
+    }
+
+    public Order getCurrentOrder(){ return orders.get(selectedOrder); }
 
     public Order findOrder(int id){
         return orders.get(id);
     }
 
-    public Collection<Order> findAllOrders() {
-        return orders.values();
-    }
-
-    public Order saveCurrentOrder(@NotNull Order order){
+    public void saveCurrentOrder(@NotNull Order order){
         orders.put(selectedOrder,order);
-        return order;
     }
 
     public void deleteCurrentOrder() { orders.remove(selectedOrder); }

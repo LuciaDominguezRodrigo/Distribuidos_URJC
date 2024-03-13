@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,15 +39,18 @@ public class OrderWebController {
     public String showOrderPage(Model model) {
         Order currentOrder = orderService.getCurrentOrder();
         if(currentOrder == null){
-            return "redirect:/";
-        } else{
-            List<Product> orderProducts = currentOrder.getProducts();
-            for (Product p : orderProducts) {
-                p.setSelectedSizeAvailableUnits(productService.findProduct(p.getId()).getAvailableSizes().get(Size.valueOf(p.getSize())));
-            }
-            model.addAttribute("productList", orderProducts);
-            return "orderPage";
+            currentOrder = new Order();
+            orderService.addNewOrder(currentOrder);
+            orderService.changeCurrentOrder(currentOrder.getOrderId());
         }
+        List<Product> orderProducts = currentOrder.getProducts();
+        for (Product p : orderProducts) {
+            p.setSelectedSizeAvailableUnits(productService.findProduct(p.getId()).getAvailableSizes().get(Size.valueOf(p.getSize())));
+        }
+        model.addAttribute("orderId", currentOrder.getOrderId());
+        model.addAttribute("allOrdersId", orderService.getAllOrdersId());
+        model.addAttribute("productList", orderProducts);
+        return "orderPage";
     }
 
     @PostMapping("/cancelOrder")
@@ -82,6 +86,20 @@ public class OrderWebController {
         }
         changedProduct.setQuantity(quantity);
 
+        return "redirect:/orderPage";
+    }
+
+    @PostMapping("/changeOrder")
+    public String changeOrder(@RequestParam int selectedOrder) {
+        orderService.changeCurrentOrder(selectedOrder);
+        return "redirect:/orderPage";
+    }
+
+    @PostMapping("/newOrder")
+    public String newOrder() {
+        Order newOrder = new Order();
+        orderService.addNewOrder(newOrder);
+        orderService.changeCurrentOrder(newOrder.getOrderId());
         return "redirect:/orderPage";
     }
 }
