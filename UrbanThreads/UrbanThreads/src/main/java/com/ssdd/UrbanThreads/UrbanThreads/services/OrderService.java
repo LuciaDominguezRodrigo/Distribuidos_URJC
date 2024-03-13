@@ -1,15 +1,12 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Service
 public class OrderService {
@@ -17,10 +14,37 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public int getSelectedOrder() {
-        return orderRepository.getSelectedOrder();
+    public Order getCurrentOrder() {
+        return orderRepository.getCurrentOrder();
     }
 
+    public void addProductToCurrentOrder(int id, Product product, String size, String color, int quantity) {
+        Order currentOrder = orderRepository.findOrder(orderRepository.getSelectedOrderId());
+
+        if (currentOrder == null) {
+            currentOrder = new Order();
+            currentOrder.setOrderProducts(new ArrayList<>());
+            orderRepository.saveCurrentOrder(currentOrder);
+        }
+
+        Product newProduct = new Product();
+        newProduct.setId(id);
+        newProduct.setName(product.getName());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setSize(size);
+        newProduct.setColor(color);
+        newProduct.setQuantity(quantity);
+
+        currentOrder.getOrderProducts().add(newProduct);
+
+        orderRepository.saveCurrentOrder(currentOrder);
+    }
+
+    public void deleteCurrentOrder(){
+        orderRepository.deleteCurrentOrder();
+    }
+
+    /*
     public Order findOrder(int id) {
         return orderRepository.findOrder(id);
     }
@@ -77,7 +101,7 @@ public class OrderService {
     }
 
 
-    public int deletePorductfromCurrentOrder(int productId) {
+    public int deleteProductFromCurrentOrder(int productId) {
         Order order = orderRepository.findOrder(orderRepository.getSelectedOrder());
         if (order != null) {
 
@@ -90,32 +114,6 @@ public class OrderService {
         }
         return productId;
     }
-
-    public void addProductToOrder(Order currentOrder, int id, Product product, String size, String color, int quantity) {
-        // Verificar si el pedido actual es nulo
-        if (currentOrder == null) {
-            // Si es nulo, crear un nuevo pedido
-            currentOrder = new Order();
-            currentOrder.setOrderProducts(new ArrayList<>());
-            // Guardar el nuevo pedido
-            orderRepository.saveOrder(currentOrder, orderRepository.getSelectedOrder());
-        }
-
-        // Crear una nueva instancia de Producto para asociarlo con el pedido
-        Product newProduct = new Product();
-        newProduct.setId(id);
-        newProduct.setName(product.getName());
-        newProduct.setPrice(product.getPrice());
-        newProduct.setSize(size);
-        newProduct.setColor(color);
-        newProduct.setQuantity(quantity);
-
-        // Agregar el nuevo producto al pedido actual
-        currentOrder.getOrderProducts().add(newProduct);
-
-        // Actualizar el pedido en el repositorio
-        orderRepository.updateOrder(orderRepository.getSelectedOrder(), currentOrder);
-    }
-
+    */
 }
 

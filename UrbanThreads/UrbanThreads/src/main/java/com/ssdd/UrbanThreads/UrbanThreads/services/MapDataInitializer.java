@@ -60,7 +60,7 @@ public class MapDataInitializer {
 
         // Agregar productos con sus fotos al mapa
         productRepository.saveProduct(new Product("Camiseta", hombre, 10.0, photo, "Descripción del producto 1", availableSizes));
-        productRepository.saveProduct(new Product("Pantalon ancho", hombre, 20.0, photo2, "Descripción del producto 2", availableSizes));
+        productRepository.saveProduct(new Product("Pantalón ancho", hombre, 20.0, photo2, "Descripción del producto 2", availableSizes));
         productRepository.saveProduct(new Product("Calcetines", mujer, 15.0, photo3, "Descripción del producto 3", availableSizes));
         productRepository.saveProduct(new Product("Abrigo", hombre, 25.0, photo4, "Descripción del producto 4", availableSizes));
         productRepository.saveProduct(new Product("Chaqueta", mujer, 12.0, photo5, "Descripción del producto 5", availableSizes));

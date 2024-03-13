@@ -15,7 +15,9 @@ public class OrderRepository {
     private final AtomicInteger nextId = new AtomicInteger();
     private final int selectedOrder = 0;
 
-    public int getSelectedOrder(){ return this.selectedOrder; }
+    public int getSelectedOrderId(){ return this.selectedOrder; }
+
+    public Order getCurrentOrder(){ return orders.get(selectedOrder); }
 
     public int getNextId() {
         return nextId.get();
@@ -29,22 +31,12 @@ public class OrderRepository {
         return orders.values();
     }
 
-    public Order saveOrder(@NotNull Order order, int numOrder){
-        orders.put(numOrder,order);
+    public Order saveCurrentOrder(@NotNull Order order){
+        orders.put(selectedOrder,order);
         return order;
     }
 
-    public Order updateOrder(int id, Order order){
-        if (!orders.containsKey(id)) {
-            return null;
-        }
-        order.setOrderId(id);
-        orders.put(id,order);
-        return order;
-    }
-
-    public void deleteOrder(int id) {orders.remove(id);}
-
+    public void deleteCurrentOrder() { orders.remove(selectedOrder); }
 
 
 }
