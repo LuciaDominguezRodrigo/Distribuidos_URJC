@@ -45,4 +45,7 @@ public class CategoryService {
     }
 
 
+    public void addNewCategory(Category newCategory) {
+        categoryRepository.addCategory(newCategory);
+    }
 }

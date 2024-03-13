@@ -52,4 +52,11 @@ public class CategoryRepository {
         }
         return null;
     }
+
+    public void addCategory(Category newCategory) {
+        long id = nextId.incrementAndGet();
+        newCategory.setId(id);
+        categories.put(id, newCategory);
+
+    }
 }

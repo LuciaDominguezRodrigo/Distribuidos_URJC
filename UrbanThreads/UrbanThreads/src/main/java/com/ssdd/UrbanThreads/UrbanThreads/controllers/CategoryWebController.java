@@ -66,6 +66,15 @@ public String productosPorCategoria(Model model, @RequestParam("categoria") Stri
                 return "La categoría especificada no existe.";
             }
     }
+    @PostMapping("/createNewCategory")
+    public String createCategory(@RequestParam ("newCategoryName") String categoryName){
 
+    Category newCategory = new Category();
+    newCategory.setName(categoryName);
+
+    categoryService.addNewCategory(newCategory);
+
+    return "redirect:/editCategory";
+    }
 
 }

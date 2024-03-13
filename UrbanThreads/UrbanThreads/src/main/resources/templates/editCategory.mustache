@@ -6,6 +6,7 @@
     <title>Lista de Categorías</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel='stylesheet' type='text/css' media='screen' href='/css/editCategory.css'>
 </head>
 <body>
 
@@ -26,8 +27,37 @@
                 </div>
             </div>
         </div>
-
     {{/categories}}
+     <button class="btn btn-warning createButton">Crear nueva categoria</button>
+
+
+    <div class="modal fade" id="createCategoryModal" tabindex="-1" role="dialog" aria-labelledby="createCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createCategoryModalLabel">Crear Nueva Categoría</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario para ingresar el nombre de la nueva categoría -->
+                    <form id="createCategoryForm" action="/createNewCategory" method="POST">
+                        <div class="form-group">
+                            <label for="categoryName">Nombre de la Categoría</label>
+                            <input type="text" class="form-control" id="newCategoryName" name="newCategoryName" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <form action ="/createNewCategory" method = "POST">
+                     <button type="submit" form="createCategoryForm" class="btn btn-primary" onclick = "return warnCreate()">Aceptar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
