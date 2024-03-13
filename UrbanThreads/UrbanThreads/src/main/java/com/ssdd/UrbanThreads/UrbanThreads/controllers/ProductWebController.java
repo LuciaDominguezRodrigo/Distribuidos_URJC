@@ -100,6 +100,7 @@ public class ProductWebController {
     public String editEvent(@PathVariable int id,
                             @RequestParam("name") String name,
                             @RequestParam("description") String description,
+                            @RequestParam ("category") String category,
                             @RequestParam("price") double price,
                             @RequestParam("sizeXS") int xsUnits,
                             @RequestParam("sizeS") int sUnits,
@@ -126,6 +127,8 @@ public class ProductWebController {
 
         product.setAvailableSizes(availableSizes);
         product.setPhoto(photo);
+
+        product.setCategory(categoryService.findCategoryByName(category));
         productService.updateProduct(id, product);
 
         return "redirect:/";
