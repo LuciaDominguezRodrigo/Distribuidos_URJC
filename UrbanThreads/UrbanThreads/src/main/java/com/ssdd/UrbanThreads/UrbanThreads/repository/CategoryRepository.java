@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class CategoryRepository {
     private final Map<Long, Category> categories = new HashMap<>();
-    private final AtomicLong nextId = new AtomicLong(0);
+    private final AtomicLong nextId = new AtomicLong(-1);
 
 
     public Category findCategory(Long id){
