@@ -1,6 +1,8 @@
 package com.ssdd.UrbanThreads.UrbanThreads.repository;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,9 @@ public class CategoryRepository {
     private final Map<Long, Category> categories = new HashMap<>();
     private final AtomicLong nextId = new AtomicLong(-1);
 
+    @Setter
+    @Getter
+    private String currentCategoryFilter = "";
 
     public Category findCategory(Long id){
         return categories.get(id);

@@ -1,5 +1,6 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ import java.util.*;
 public class ProductService {
 
     @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
     private ProductRepository productRepository;
 
     public Product findProduct (int id){
@@ -23,8 +27,18 @@ public class ProductService {
         return productRepository.findAllProducts();
     }
 
-    public List<Product> findByIdRange (int start, int end) {
-        return productRepository.findByIdRange(start,end);
+    public List<Product> findByCurrentCategoryAndIdRange(int start, int end) {
+        List<Product> productsByCategory = this.findProductsByCategory(categoryService.getCurrentCategoryFilter());
+        List<Product> selectedProducts = new ArrayList<>();
+        if(start > productsByCategory.size()-1){
+            return selectedProducts;
+        }
+        else if(end > productsByCategory.size()-1){
+            return productsByCategory.subList(start,productsByCategory.size());
+        }
+        else {
+            return productsByCategory.subList(start,end+1);
+        }
     }
 
     public Product saveProduct(@NotNull Product product){

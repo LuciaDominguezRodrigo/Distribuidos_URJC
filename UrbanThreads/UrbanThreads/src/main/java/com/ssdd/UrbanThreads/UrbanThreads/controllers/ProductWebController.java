@@ -36,7 +36,7 @@ public class ProductWebController {
     @GetMapping("/")
     public String index(Model model) {
         nextProductIndex = productsRefreshSize;
-        List<Product> products = productService.findByIdRange(0, nextProductIndex - 1);
+        List<Product> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex - 1);
 
         if (products.isEmpty()) {
             model.addAttribute("products", new ArrayList<Product>());
@@ -52,7 +52,7 @@ public class ProductWebController {
 
     @GetMapping("/newProducts")
     public String newEvents(Model model) {
-        List<Product> products = productService.findByIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
+        List<Product> products = productService.findByCurrentCategoryAndIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
         nextProductIndex += products.size();
         model.addAttribute("additionalProducts", products);
         if (nextProductIndex > productService.findAllProducts().size()) { //To show / hide Load more products button

@@ -28,11 +28,9 @@ public class CategoryWebController{
 
     @GetMapping("/filter")
     public String filterProductsByCategory(Model model, @RequestParam("selectedFilter") String categoria) {
-        List<Product> productsByCategory = productService.findProductsByCategory(categoria);
-        model.addAttribute("products", productsByCategory);
-        model.addAttribute("allCategories", categoryService.findAllCategories());
-    return "index";
-   }
+        categoryService.setCurrentCategoryFilter(categoria);
+        return "redirect:/";
+    }
 
     @GetMapping("/editCategory")
     public String showEditCategoriesPage(Model model) {

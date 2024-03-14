@@ -16,8 +16,10 @@ public class ProductRepository {
 
     public Product findProduct(int id){ return products.get(id); }
 
-    public Collection<Product> findAllProducts() {
-        return products.values();
+    public List<Product> findAllProducts() {
+        List<Product> productList = new ArrayList<>();
+        productList.addAll(products.values());
+        return productList;
     }
 
     public List<Product> findByIdRange (int start, int end) {
@@ -50,15 +52,17 @@ public class ProductRepository {
     }
 
     public List<Product> findByCategoryName(String categoria) {
-        List<Product> matchingProducts = new ArrayList<>();
-        for (Product product : products.values()) {
-            Category category = product.getCategory();
-            if (category != null && category.getName() != null && category.getName().equalsIgnoreCase(categoria)) {
-                matchingProducts.add(product);
+        if(categoria.equals("")){ return findAllProducts(); }
+        else{
+            List<Product> matchingProducts = new ArrayList<>();
+            for (Product product : products.values()) {
+                Category category = product.getCategory();
+                if (category != null && category.getName() != null && category.getName().equalsIgnoreCase(categoria)) {
+                    matchingProducts.add(product);
+                }
             }
+            return matchingProducts;
         }
-        return matchingProducts;
-
     }
 
     public Product findProductByName(String name) {

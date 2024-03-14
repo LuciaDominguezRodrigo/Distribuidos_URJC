@@ -24,6 +24,14 @@ public class CategoryService {
         return categoryRepository.findAllCategories();
     }
 
+    public String getCurrentCategoryFilter() {
+        return categoryRepository.getCurrentCategoryFilter();
+    }
+
+    public void setCurrentCategoryFilter(String currentCategoryFilter) {
+        categoryRepository.setCurrentCategoryFilter(currentCategoryFilter);
+    }
+
     public Category saveCategory (@NotNull Category category){
         return categoryRepository.saveCategory(category);
     }
