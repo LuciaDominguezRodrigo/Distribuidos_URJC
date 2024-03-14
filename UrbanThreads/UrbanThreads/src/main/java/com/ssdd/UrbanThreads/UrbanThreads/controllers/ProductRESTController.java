@@ -29,8 +29,8 @@ public class ProductRESTController {
             return ResponseEntity.status(404).build();
         }
 
-        ProductDTO productoDTO = new ProductDTO(product);
-        return ResponseEntity.ok(productoDTO);
+        ProductDTO productDTO = new ProductDTO(product);
+        return ResponseEntity.status(200).body(productDTO);
     }
 
     @PostMapping("/new")

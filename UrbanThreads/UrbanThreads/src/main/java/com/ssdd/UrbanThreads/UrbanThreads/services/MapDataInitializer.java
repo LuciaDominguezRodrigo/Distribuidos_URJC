@@ -38,9 +38,9 @@ public class MapDataInitializer {
         String photo6 =  "/img/sudadera.jpg";
 
 
-        Category hombre = new Category(11L,"Hombre", "#D1F2EB");
-        Category mujer = new Category(22L,"Mujer", "#FCF3CF");
-        Category sin = new Category(33L,"Sin Categoria",  "#D2B4DE" );
+        Category hombre = new Category("Hombre", "#D1F2EB");
+        Category mujer = new Category("Mujer", "#FCF3CF");
+        Category sin = new Category("Sin Categoria",  "#D2B4DE" );
 
         categoryRepository.saveCategory(hombre);
         categoryRepository.saveCategory(mujer);

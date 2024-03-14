@@ -19,5 +19,10 @@ public class Category {
         this.color = color;
     }
 
+    public Category(String name, String color) {
+        this.name = name;
+        this.color = color;
+    }
+
 
 }
