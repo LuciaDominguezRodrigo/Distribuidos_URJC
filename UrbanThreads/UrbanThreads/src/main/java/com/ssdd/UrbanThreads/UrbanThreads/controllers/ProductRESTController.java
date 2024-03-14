@@ -48,6 +48,16 @@ public class ProductRESTController {
                 .toUri();
 
         ProductDTO productDTO = new ProductDTO(nuevoProducto);
-        return ResponseEntity.created(location).body(productDTO);
+        return ResponseEntity.status(201).location(location).body(productDTO);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable int id) {
+        Product product = productService.findProduct(id);
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        productService.deleteProduct(id);
+        return ResponseEntity.status(200).build();
     }
 }
