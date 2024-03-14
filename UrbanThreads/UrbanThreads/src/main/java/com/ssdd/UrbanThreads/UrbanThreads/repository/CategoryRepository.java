@@ -57,6 +57,5 @@ public class CategoryRepository {
         long id = nextId.incrementAndGet();
         newCategory.setId(id);
         categories.put(id, newCategory);
-
     }
 }
