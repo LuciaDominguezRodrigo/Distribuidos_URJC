@@ -53,7 +53,7 @@
         <div class="col-lg-6">
             <!-- Detalles del Producto -->
             <h2>{{product.name}}</h2>
-            <p><strong></strong> <span class="category-box">{{categoryName}}</span></p>
+            <p><strong></strong> <span class="category-box" style = "border-color:{{product.category.color}}">{{categoryName}}</span></p>
             <p><strong>Precio:</strong> {{product.price}}</p>
             <p><strong>Disponibilidad:</strong> <span class="" id="availability"></span></p>
             <form action="/newProductInOrder" method = "POST">

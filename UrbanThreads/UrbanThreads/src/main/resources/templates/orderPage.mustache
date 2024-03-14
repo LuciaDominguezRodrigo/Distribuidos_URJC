@@ -47,6 +47,11 @@
                     </div>
                     <div class="col-sm-6 text-right" id="editButton-{{id}}">
                         <button class="btn btn-warning mr-2" onclick="editarProducto({{id}});">Editar cantidad</button>
+                        <form action="/deleteProductOrder" method="POST">
+                            <input type="hidden" name="productId" value="{{id}}">
+                            <input type="hidden" name="orderId" value="{{orderId}}">
+                            <button type="submit" class="btn btn-danger mr-2" onclick ="return deleteW()" style ="margin-top: 10px">Eliminar producto</button>
+                        </form>
                     </div>
                     <div class="col-sm-6 text-right d-none" id="editQuantity-{{id}}">
                         <p class="mb-1">Cantidad:</p>
@@ -85,27 +90,6 @@
         </div>
     </div>
 
-    <!-- Modal para confirmar la eliminación de un producto -->
-    <div class="modal fade" id="eliminarProductoModal" tabindex="-1" role="dialog" aria-labelledby="eliminarProductoModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="eliminarProductoModalLabel">Eliminar Producto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Estás seguro de que deseas eliminar este producto?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" onclick="eliminarProducto()">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
 
 <!-- Bootstrap JS -->
@@ -113,5 +97,18 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="/js/orderPage.js"></script>
+<script>
+    function deleteW(){
+    var confirmation = confirm("Si acepta, eliminará el producto del pedido");
+
+    if (confirmation) {
+        alert("El producto ha sido eliminado");
+        return true;
+    } else {
+        alert("El producto sigue en su pedido");
+        return false;
+    }
+}
+</script>
 </body>
 </html>

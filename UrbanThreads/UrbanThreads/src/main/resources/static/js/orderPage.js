@@ -15,6 +15,7 @@ function editarPedidoMostrar() {
             }
         });*/
 
+
 function cancelarPedido(){
     var confirmation = confirm("Si cancela, se borrará su pedido y deberá empezar de nuevo");
 
@@ -48,3 +49,4 @@ function editarProducto(id){
     document.getElementById("currentQuantity-"+id).classList.add("d-none");
     document.getElementById("editQuantity-"+id).classList.remove("d-none");
 }
+

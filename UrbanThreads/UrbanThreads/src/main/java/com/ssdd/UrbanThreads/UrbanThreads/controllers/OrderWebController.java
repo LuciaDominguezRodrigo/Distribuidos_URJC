@@ -120,5 +120,17 @@ public class OrderWebController {
         orderService.changeCurrentOrder(newOrder.getOrderId());
         return "redirect:/orderPage";
     }
+
+
+
+    @PostMapping("/deleteProductOrder")
+    public String  eliminarProductoDePedido(@RequestParam("orderId") int pedidoId, @RequestParam("productId") int productoId) {
+        orderService.deleteProductOrder(pedidoId, productoId);
+
+        Product productoEliminado = orderService.obtenerProductoEliminado(productoId);
+        productService.saveProduct(productoEliminado);
+
+        return "redirect:/orderPage";
+    }
 }
 

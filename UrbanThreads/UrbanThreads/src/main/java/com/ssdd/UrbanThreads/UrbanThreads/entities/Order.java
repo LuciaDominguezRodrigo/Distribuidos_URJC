@@ -9,6 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Order {
+    @Getter
     private int orderId;
     private Long orderNumber;
     private String orderStatus;
@@ -28,4 +29,5 @@ public class Order {
     public List<Product> getProducts() {
         return orderProducts;
     }
+
 }

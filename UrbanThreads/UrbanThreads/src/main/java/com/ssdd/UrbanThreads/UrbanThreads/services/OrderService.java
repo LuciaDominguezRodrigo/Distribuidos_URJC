@@ -3,18 +3,19 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderRepository;
+import com.ssdd.UrbanThreads.UrbanThreads.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     public Order getCurrentOrder() {
         return orderRepository.getCurrentOrder();
@@ -63,6 +64,31 @@ public class OrderService {
 
     public void deleteCurrentOrder(){
         orderRepository.deleteCurrentOrder();
+    }
+
+    public void deleteProductOrder(int orderId, int productId) {
+        Order currentOrder = orderRepository.findOrder(orderId);
+
+        if (currentOrder != null) {
+            boolean productoEncontrado = false;
+            Iterator<Product> iterator = currentOrder.getOrderProducts().iterator();
+            while (iterator.hasNext()) {
+                Product product = iterator.next();
+                if (product.getId() == productId) {
+                    iterator.remove();
+                    productoEncontrado = true;
+                }
+            }
+
+            if (productoEncontrado) {
+                orderRepository.saveCurrentOrder(currentOrder);
+            }
+        }
+    }
+
+    public Product obtenerProductoEliminado(int productoId) {
+        Product optionalProduct = productRepository.findProduct(productoId);
+        return optionalProduct;
     }
 
     /*
