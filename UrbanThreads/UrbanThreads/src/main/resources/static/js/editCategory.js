@@ -14,6 +14,12 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+    $('.editCategory').click(function() {
+        $('#editCategoryModal').modal('show');
+    });
+});
+
 
 document.getElementById('categoryColor').addEventListener('input', function() {
     let rgbColor = this.value.match(/\d+/g);
