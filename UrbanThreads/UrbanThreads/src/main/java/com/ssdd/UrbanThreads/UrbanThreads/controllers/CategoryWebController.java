@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -77,4 +78,17 @@ public String productosPorCategoria(Model model, @RequestParam("categoria") Stri
     return "redirect:/editCategory";
     }
 
+    @PostMapping("/editOneCategory/{id}")
+    public String editCategory(@PathVariable Long id, @RequestParam("editCategoryName") String nombre, @RequestParam("editCategoryColor") String color) {
+        Category category = categoryService.findCategory(id);
+        if (category != null) {
+            category.setName(nombre);
+            category.setColor(color);
+            categoryService.updateCategory(id, category);
+            return "redirect:/editCategory";
+        } else {
+            // Manejo de error si la categoría no se encuentra
+            return "redirect:/editCategory";
+        }
+    }
 }
