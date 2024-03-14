@@ -4,9 +4,7 @@ import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
@@ -27,8 +25,10 @@ public class CategoryRepository {
 
     }
 
-    public Collection<Category> findAllCategories() {
-        return categories.values();
+    public List<Category> findAllCategories() {
+        List<Category> allCategories = new ArrayList<>();
+        allCategories.addAll(categories.values());
+        return allCategories;
     }
 
     public Category updateCategory(Long id, Category category){

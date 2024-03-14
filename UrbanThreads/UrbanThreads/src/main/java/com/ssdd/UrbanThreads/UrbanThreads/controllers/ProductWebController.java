@@ -82,10 +82,16 @@ public class ProductWebController {
     @GetMapping("/editProduct/{id}")
     public String editEvent(@PathVariable int id, Model model) {
         Product product = productService.findProduct(id);
-
-        //List<Category> categories = categoryService.findAll();
         model.addAttribute("product", product);
-        //model.addAttribute("categories", categories);
+        Category currentCategory = product.getCategory();
+        model.addAttribute("currentCategory", currentCategory);
+        List<Category> otherCategories = new ArrayList<>();
+        for (Category c : categoryService.findAllCategories()) {
+            if(!c.equals(currentCategory)){
+                otherCategories.add(c);
+            }
+        }
+        model.addAttribute("otherCategories", otherCategories);
         model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
         model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
         model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
