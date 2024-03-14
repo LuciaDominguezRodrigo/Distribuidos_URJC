@@ -24,9 +24,10 @@ public class OrderRepository {
         return orders.keySet();
     }
 
-    public void addNewOrder(Order o){
+    public int addNewOrder(Order o){
         o.setOrderId(nextId.get());
         this.orders.put(nextId.getAndIncrement(), o);
+        return o.getOrderId();
     }
 
     public Order getCurrentOrder(){ return orders.get(selectedOrder); }

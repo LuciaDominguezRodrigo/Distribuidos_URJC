@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -56,6 +54,16 @@ public class OrderWebController {
     @PostMapping("/cancelOrder")
     public String cancelOrder() {
         orderService.deleteCurrentOrder();
+
+        //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
+        List<Integer> allOrdersId = orderService.getAllOrdersId();
+        if(!allOrdersId.isEmpty()){
+            orderService.changeCurrentOrder(allOrdersId.get(0));
+        } else{
+            int newOrderId = orderService.addNewOrder(new Order());
+            orderService.changeCurrentOrder(newOrderId);
+        }
+
         return "redirect:/";
     }
 
@@ -65,6 +73,16 @@ public class OrderWebController {
         if (currentOrder != null) {
             model.addAttribute("productList", currentOrder.getProducts());
             orderService.deleteCurrentOrder();
+
+            //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
+            List<Integer> allOrdersId = orderService.getAllOrdersId();
+            if(!allOrdersId.isEmpty()){
+                orderService.changeCurrentOrder(allOrdersId.get(0));
+            } else{
+                int newOrderId = orderService.addNewOrder(new Order());
+                orderService.changeCurrentOrder(newOrderId);
+            }
+
             return "orderMade";
         } else {
             return "redirect:/";

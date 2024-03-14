@@ -31,8 +31,8 @@ public class OrderService {
         return allOrdersId;
     }
 
-    public void addNewOrder (Order o){
-        orderRepository.addNewOrder(o);
+    public int addNewOrder (Order o){
+        return orderRepository.addNewOrder(o);
     }
 
     public void addProductToCurrentOrder(int id, Product product, String size, String color, int quantity) {
