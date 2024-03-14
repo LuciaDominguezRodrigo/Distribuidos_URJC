@@ -22,7 +22,6 @@ public class ProductRESTController {
 
 
 
-
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> obtenerProducto(@PathVariable int id) {
         Product product = productService.findProduct(id);
@@ -40,7 +39,6 @@ public class ProductRESTController {
         if (existingProduct != null) {
             return ResponseEntity.status(409).build();
         }
-
         Product nuevoProducto = productService.saveProduct(product);
 
         URI location = ServletUriComponentsBuilder
@@ -50,7 +48,6 @@ public class ProductRESTController {
                 .toUri();
 
         ProductDTO productDTO = new ProductDTO(nuevoProducto);
-
         return ResponseEntity.created(location).body(productDTO);
     }
 }
