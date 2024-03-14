@@ -60,4 +60,20 @@ public class ProductRESTController {
         productService.deleteProduct(id);
         return ResponseEntity.status(200).build();
     }
+
+    @PutMapping("edit/{id}")
+    public ResponseEntity<ProductDTO> actualizarProducto(@PathVariable int id, @RequestBody Product product) {
+        Product existingProduct = productService.findProduct(id);
+        if (existingProduct == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        existingProduct.setName(product.getName());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setDescription(product.getDescription());
+
+        Product updatedProduct = productService.saveProduct(existingProduct);
+        ProductDTO productDTO = new ProductDTO(updatedProduct);
+        return ResponseEntity.status(200).body(productDTO);
+    }
 }
