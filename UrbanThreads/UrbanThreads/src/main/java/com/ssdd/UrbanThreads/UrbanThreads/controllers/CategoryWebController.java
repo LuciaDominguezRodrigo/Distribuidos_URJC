@@ -26,10 +26,11 @@ public class CategoryWebController{
     @Autowired
     private CategoryService categoryService;
 
-@GetMapping("/productosPorCategoria")
-public String productosPorCategoria(Model model, @RequestParam("categoria") String categoria) {
-    List<Product> productsByCategory = productService.findProductsByCategory(categoria);
-    model.addAttribute("products", productsByCategory);
+    @GetMapping("/filter")
+    public String filterProductsByCategory(Model model, @RequestParam("selectedFilter") String categoria) {
+        List<Product> productsByCategory = productService.findProductsByCategory(categoria);
+        model.addAttribute("products", productsByCategory);
+        model.addAttribute("allCategories", categoryService.findAllCategories());
     return "index";
    }
 

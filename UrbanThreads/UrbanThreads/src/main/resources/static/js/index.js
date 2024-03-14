@@ -4,3 +4,7 @@ async function loadMore() {
     const eventContainerStructure = document.getElementById("productsChart");
     eventContainerStructure.innerHTML += newEvent;
 }
+
+async function filtrarProductos(){
+    document.getElementById("filterSelection").submit();
+}

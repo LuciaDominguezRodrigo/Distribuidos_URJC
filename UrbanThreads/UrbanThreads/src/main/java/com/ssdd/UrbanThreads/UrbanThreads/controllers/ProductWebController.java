@@ -45,6 +45,7 @@ public class ProductWebController {
 
         }
         nextProductIndex = products.size();
+        model.addAttribute("allCategories", categoryService.findAllCategories());
         return "index";
     }
 

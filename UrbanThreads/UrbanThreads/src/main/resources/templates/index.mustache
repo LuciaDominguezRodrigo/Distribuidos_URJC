@@ -8,9 +8,11 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <link rel='stylesheet' type='text/css' media='screen' href='/css/index.css'>
+
     <link rel="icon" href="/img/logo.png" type="image/png">
-  <!-- Custom CSS -->
+
 <STYLE>
     .card-category {
         background-color: #dcfad3;
@@ -30,6 +32,19 @@
         <!-- Contenedor de Productos -->
         <div class="col-lg-12">
             <h1 class = "titulo">Productos Del mes</h1>
+            <div>
+                <form action="/filter" id="filterSelection" method="GET">
+                    <div class="form-group">
+                        <label for="filterSelect">Filtrar por:</label>
+                        <select class="form-control" name="selectedFilter" onchange="filtrarProductos()" required>
+                            <option value="" disabled selected>Selecciona un filtro: </option> <!-- Opción inicial deshabilitada -->
+                            {{#allCategories}}
+                                <option value="{{name}}">{{name}}</option>
+                            {{/allCategories}}
+                        </select>
+                    </div>
+                </form>
+            </div>
             <div class="row" id="productsChart">
                 <!-- Card de Producto -->
                 {{#products}}
