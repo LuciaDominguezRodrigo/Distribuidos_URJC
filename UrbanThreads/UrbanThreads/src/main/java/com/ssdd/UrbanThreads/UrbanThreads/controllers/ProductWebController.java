@@ -85,13 +85,15 @@ public class ProductWebController {
         model.addAttribute("product", product);
         Category currentCategory = product.getCategory();
         model.addAttribute("currentCategory", currentCategory);
+
         List<Category> otherCategories = new ArrayList<>();
         for (Category c : categoryService.findAllCategories()) {
-            if(!c.equals(currentCategory)){
+            if(!c.equals(currentCategory) && !Objects.equals(c.getName(), "Sin Categoria")){
                 otherCategories.add(c);
             }
         }
-        model.addAttribute("otherCategories", otherCategories);
+        model.addAttribute("otherCategories",otherCategories);
+
         model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
         model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
         model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
@@ -171,7 +173,6 @@ public class ProductWebController {
 
     @GetMapping("/createProduct")
     public String newProductCharge(Model model) {
-
         Collection<Category> categories = categoryService.findAllCategories();
         List<Category> shownC  = new ArrayList<>();
         for (Category c:categories) {
@@ -179,7 +180,7 @@ public class ProductWebController {
                 shownC.add(c);
             }
         }
-        model.addAttribute("categories", shownC);
+        model.addAttribute("allCategories", shownC);
         return "createForm";
     }
 
