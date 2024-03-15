@@ -51,7 +51,7 @@ public class ProductRESTController {
         }
         return ResponseEntity.status(200).body(cDTO);
     }
-    
+
     @PostMapping("/new")
     public ResponseEntity<ProductDTO> crearProducto(@RequestBody Product product) {
         Product existingProduct = productService.findProductByName(product.getName());
@@ -81,7 +81,7 @@ public class ProductRESTController {
     }
 
     @PutMapping("edit/{id}")
-    public ResponseEntity<ProductDTO> actualizarProducto(@PathVariable int id, @RequestBody Product product) {
+    public ResponseEntity<ProductDTO> editP(@PathVariable int id, @RequestBody Product product) {
         Product existingProduct = productService.findProduct(id);
         if (existingProduct == null) {
             return ResponseEntity.notFound().build();
@@ -90,6 +90,28 @@ public class ProductRESTController {
         existingProduct.setName(product.getName());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setDescription(product.getDescription());
+
+        Product updatedProduct = productService.saveProduct(existingProduct);
+        ProductDTO productDTO = new ProductDTO(updatedProduct);
+        return ResponseEntity.status(200).body(productDTO);
+    }
+
+    @PatchMapping("editP/{id}")
+    public ResponseEntity<ProductDTO> editP2(@PathVariable int id, @RequestBody Product partialProduct) {
+        Product existingProduct = productService.findProduct(id);
+        if (existingProduct == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (partialProduct.getName() != null) {
+            existingProduct.setName(partialProduct.getName());
+        }
+        if (partialProduct.getPrice() != 0.0) {
+            existingProduct.setPrice(partialProduct.getPrice());
+        }
+        if (partialProduct.getDescription() != null) {
+            existingProduct.setDescription(partialProduct.getDescription());
+        }
 
         Product updatedProduct = productService.saveProduct(existingProduct);
         ProductDTO productDTO = new ProductDTO(updatedProduct);

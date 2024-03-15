@@ -88,6 +88,26 @@ public class CategoryRESTController {
 
         return ResponseEntity.status(200).build();
     }
+
+    @PatchMapping("edit/{id}")
+    public ResponseEntity<CategoryDTO> editCategoryP(@PathVariable long id, @RequestBody CategoryDTO partialCategoryDTO) {
+        Category existingCategory = categoryService.findCategory(id);
+        if (existingCategory == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (partialCategoryDTO.getName() != null) {
+            existingCategory.setName(partialCategoryDTO.getName());
+        }
+        if (partialCategoryDTO.getColor() != null) {
+            existingCategory.setColor(partialCategoryDTO.getColor());
+        }
+
+        categoryService.saveCategory(existingCategory);
+
+        return ResponseEntity.status(200).body(new CategoryDTO(existingCategory));
+    }
+
 }
 
 
