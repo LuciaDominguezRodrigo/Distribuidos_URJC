@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryRESTController {
@@ -22,6 +26,22 @@ public class CategoryRESTController {
         }
         CategoryDTO categoryDTO = new CategoryDTO(category);
         return ResponseEntity.status(200).body(categoryDTO);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<Collection<CategoryDTO>> getCategoryAll() {
+       Collection<Category> categories = categoryService.getAllCategories();
+       Collection<CategoryDTO> cDTO = new ArrayList<>();
+        if (categories== null) {
+            return ResponseEntity.notFound().build();
+        }
+        for (Category c: categories){
+            CategoryDTO categoryDTO = new CategoryDTO(c);
+            assert false;
+            cDTO.add(categoryDTO);
+
+        }
+        return ResponseEntity.status(200).body(cDTO);
     }
 
     @PostMapping("new")
