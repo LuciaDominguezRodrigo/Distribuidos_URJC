@@ -21,6 +21,11 @@ public class OrderService {
         return orderRepository.getCurrentOrder();
     }
 
+    public Order getOrderById(int id) { return orderRepository.getOrderById(id); }
+
+    public List<Order> getAllOrders(){
+        return orderRepository.getAllOrders();
+    }
     public void changeCurrentOrder(int orderId){
         orderRepository.setSelectedOrderId(orderId);
     }

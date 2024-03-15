@@ -11,16 +11,16 @@ import java.util.List;
 public class Order {
     @Getter
     private int orderId;
-    private Long orderNumber;
-    private String orderStatus;
+    private OrderStatus orderStatus;
     private List<Product> orderProducts = new ArrayList<>();
 
 
-    public Order(){};
+    public Order(){
+        this.orderStatus = OrderStatus.PENDING;
+    };
 
-    public Order(int orderId, Long orderNumber, String orderStatus, List<Product> orderProducts) {
+    public Order(int orderId, OrderStatus orderStatus, List<Product> orderProducts) {
         this.orderId = orderId;
-        this.orderNumber = orderNumber;
         this.orderStatus = orderStatus;
         this.orderProducts = orderProducts;
     }

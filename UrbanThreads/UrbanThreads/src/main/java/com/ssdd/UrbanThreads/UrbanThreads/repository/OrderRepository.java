@@ -4,10 +4,7 @@ import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -17,6 +14,12 @@ public class OrderRepository {
     private int selectedOrder = 0;
 
     public int getSelectedOrderId(){ return this.selectedOrder; }
+
+    public Order getOrderById(int id) { return orders.get(id); }
+
+    public List<Order> getAllOrders(){
+        return new ArrayList<>(orders.values());
+    }
 
     public void setSelectedOrderId(int id){ this.selectedOrder = id; }
 
