@@ -1,6 +1,8 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
+import com.ssdd.UrbanThreads.UrbanThreads.DTO.CategoryDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.ProductDTO;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @RestController
 @RequestMapping ("/api/products")
@@ -32,7 +36,22 @@ public class ProductRESTController {
         ProductDTO productDTO = new ProductDTO(product);
         return ResponseEntity.status(200).body(productDTO);
     }
+    @GetMapping("/all")
+    public ResponseEntity<Collection<ProductDTO>> getAll(){
+        Collection<Product> products = productService.findAllProducts();
+        Collection<ProductDTO> cDTO = new ArrayList<>();
+        if (products== null) {
+            return ResponseEntity.notFound().build();
+        }
+        for (Product c: products){
+            ProductDTO pDTO = new ProductDTO(c);
+            assert false;
+            cDTO.add(pDTO);
 
+        }
+        return ResponseEntity.status(200).body(cDTO);
+    }
+    
     @PostMapping("/new")
     public ResponseEntity<ProductDTO> crearProducto(@RequestBody Product product) {
         Product existingProduct = productService.findProductByName(product.getName());
