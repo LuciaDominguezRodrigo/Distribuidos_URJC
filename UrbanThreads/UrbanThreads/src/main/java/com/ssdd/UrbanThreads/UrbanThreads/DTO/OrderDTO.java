@@ -10,26 +10,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDTO {
-
+    @Getter
+    @Setter
     private int orderId;
     @Getter
     @Setter
     private OrderStatus orderStatus;
     @Getter
     @Setter
-    private List<OrderedProductDTO> orderProducts = new ArrayList<>();
+    private List<OrderedProductDTO> orderedProductsDTO = new ArrayList<>();
 
-    public OrderDTO(int orderId, OrderStatus orderStatus, List<OrderedProductDTO> orderProducts) {
+    public OrderDTO(int orderId, OrderStatus orderStatus, List<OrderedProductDTO> orderedProductsDTO) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
-        this.orderProducts = orderProducts;
+        this.orderedProductsDTO = orderedProductsDTO;
     }
 
     public  OrderDTO (Order order) {
         this.orderId = order.getOrderId();
         this.orderStatus = order.getOrderStatus();
         for (Product p : order.getOrderProducts()) {
-            this.orderProducts.add(new OrderedProductDTO(p));
+            this.orderedProductsDTO.add(new OrderedProductDTO(p));
         }
     }
 }

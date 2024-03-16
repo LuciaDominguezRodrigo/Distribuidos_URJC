@@ -43,6 +43,19 @@ public class OrderRepository {
         orders.put(selectedOrder,order);
     }
 
+    public Order saveOrder(int id, @NotNull Order order) {
+        if(!orders.containsKey(id)){
+            this.addNewOrder(order);
+        } else {
+            orders.put(id,order);
+        }
+        return order;
+    }
+
+    public Order deleteOrderById(int id){
+        return orders.remove(id);
+    }
+
     public void deleteCurrentOrder() { orders.remove(selectedOrder); }
 
 

@@ -1,6 +1,7 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.services.OrderService;
@@ -72,6 +73,7 @@ public class OrderWebController {
         Order currentOrder = orderService.getCurrentOrder();
         if (currentOrder != null) {
             model.addAttribute("productList", currentOrder.getProducts());
+            currentOrder.setOrderStatus(OrderStatus.COMPLETED);
             orderService.deleteCurrentOrder();
 
             //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
@@ -125,9 +127,9 @@ public class OrderWebController {
 
     @PostMapping("/deleteProductOrder")
     public String  eliminarProductoDePedido(@RequestParam("orderId") int pedidoId, @RequestParam("productId") int productoId) {
-        orderService.deleteProductOrder(pedidoId, productoId);
+        orderService.deleteOrderedProduct(pedidoId, productoId);
 
-        Product productoEliminado = orderService.obtenerProductoEliminado(productoId);
+        Product productoEliminado = orderService.getDeletedProduct(productoId);
         productService.saveProduct(productoEliminado);
 
         return "redirect:/orderPage";

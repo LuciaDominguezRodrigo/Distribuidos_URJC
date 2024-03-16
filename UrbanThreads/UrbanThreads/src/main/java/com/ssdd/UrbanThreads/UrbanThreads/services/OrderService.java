@@ -4,6 +4,7 @@ import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderRepository;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.ProductRepository;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,11 +68,15 @@ public class OrderService {
         orderRepository.saveCurrentOrder(currentOrder);
     }
 
+    public Order saveOrder(int id, @NotNull Order order) {
+        return orderRepository.saveOrder(id, order);
+    }
+
     public void deleteCurrentOrder(){
         orderRepository.deleteCurrentOrder();
     }
 
-    public void deleteProductOrder(int orderId, int productId) {
+    public void deleteOrderedProduct(int orderId, int productId) {
         Order currentOrder = orderRepository.findOrder(orderId);
 
         if (currentOrder != null) {
@@ -91,8 +96,12 @@ public class OrderService {
         }
     }
 
-    public Product obtenerProductoEliminado(int productoId) {
-        Product optionalProduct = productRepository.findProduct(productoId);
+    public Order deleteOrderById(int id){
+        return orderRepository.deleteOrderById(id);
+    }
+
+    public Product getDeletedProduct(int productId) {
+        Product optionalProduct = productRepository.findProduct(productId);
         return optionalProduct;
     }
 
@@ -105,17 +114,10 @@ public class OrderService {
         return orderRepository.findAllOrders();
     }
 
-    public Order saveOrder(@NotNull Order order) {
-        return orderRepository.saveOrder(order, this.getSelectedOrder());
-    }
-
     public Order updateOrder(int id, Order order) {
         return orderRepository.updateOrder(id, order);
     }
 
-    public void deleteOrder(int id) {
-        orderRepository.deleteOrder(id);
-    }
     public void deleteOrderT( ) {
         Order order = orderRepository.findOrder(orderRepository.getSelectedOrder());
         orderRepository.deleteOrder(order.getOrderId());

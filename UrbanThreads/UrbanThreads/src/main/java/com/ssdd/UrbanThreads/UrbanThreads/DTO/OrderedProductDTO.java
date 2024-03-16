@@ -1,14 +1,13 @@
 package com.ssdd.UrbanThreads.UrbanThreads.DTO;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Map;
-
 public class OrderedProductDTO {
-    private int id;
+    @Getter
+    @Setter
+    private int orderId; //This product belongs to this id number order
     @Getter
     @Setter
     private String name;
@@ -26,7 +25,7 @@ public class OrderedProductDTO {
     private int quantity;
 
     public OrderedProductDTO(int id,String name, double price, String size, String color, int quantity) {
-        this.id = id;
+        this.orderId = id;
         this.name = name;
         this.price = price;
         this.size = size;
@@ -35,7 +34,7 @@ public class OrderedProductDTO {
     }
 
     public  OrderedProductDTO (Product product) { //Product object, only filled with specific order information
-        this.id = product.getId();
+        this.orderId = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
         this.size = product.getSize();
