@@ -27,7 +27,7 @@ public class CategoryWebController{
     private CategoryService categoryService;
 
     @GetMapping("/filter")
-    public String filterProductsByCategory(Model model, @RequestParam("selectedFilter") String categoria) {
+    public String filterProductsByCategory(@RequestParam("selectedFilter") String categoria) {
         categoryService.setCurrentCategoryFilter(categoria);
         return "redirect:/";
     }

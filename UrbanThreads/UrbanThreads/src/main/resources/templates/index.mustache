@@ -37,10 +37,11 @@
                     <div class="form-group">
                         <label for="filterSelect">Filtrar por:</label>
                         <select class="form-control" name="selectedFilter" onchange="filtrarProductos()" required>
-                            <option value="" disabled selected>Selecciona un filtro: </option> <!-- Opción inicial deshabilitada -->
+                            <option disabled selected>Selecciona un filtro: </option> <!-- Opción inicial deshabilitada -->
                             {{#allCategories}}
                                 <option value="{{name}}">{{name}}</option>
                             {{/allCategories}}
+                            <option value="" class="text-danger font-weight-bold"><strong>Desactivar filtros</strong></option>
                         </select>
                     </div>
                 </form>
