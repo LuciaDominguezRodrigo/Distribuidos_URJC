@@ -41,7 +41,7 @@
                             {{#allCategories}}
                                 <option value="{{name}}">{{name}}</option>
                             {{/allCategories}}
-                            <option value="" class="text-danger font-weight-bold"><strong>Desactivar filtros</strong></option>
+                            <option value="" class="text-danger font-weight-bold">Desactivar filtros</option>
                         </select>
                     </div>
                 </form>
@@ -67,6 +67,12 @@
                 {{/products}}
             </div>
 
+            {{^products}}
+                <div class="text-center">
+                    <h5 class="no-events-message">No hay productos.</h5>
+                </div>
+            {{/products}}
+
             <div class="container text-center mt-4" id="home-load-more-btn-div">
                 <div class="row justify-content-center">
                     <div class="col-auto">
@@ -75,11 +81,6 @@
                 </div>
             </div>
 
-            {{^products}}
-                <div class="text-center">
-                    <h5 class="no-events-message">No hay productos.</h5>
-                </div>
-            {{/products}}
         </div>
     </div>
 </div>
@@ -88,39 +89,6 @@
 <footer class="bg-dark text-white text-center py-3 mt-4">
     <p>&copy; 2024 Urban Threads</p>
 </footer>
-
-<!-- Carrito de Compras Modal -->
-<div class="modal fade" id="carritoModal" tabindex="-1" role="dialog" aria-labelledby="carritoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content rounded shadow">
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="carritoModalLabel">Carrito de Compras</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Contenido del carrito de compras -->
-                <div class="list-group">
-                    {{#items}}
-                        <a href="#" class="list-group-item list-group-item-action">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{name}}</h5>
-                                <small>Cantidad: {{cantidad}}</small>
-                            </div>
-                            <p class="mb-1">{{descripcion}}</p>
-                            <small class="text-muted">{{precio}}</small>
-                        </a>
-                    {{/items}}
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary">Pagar</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Bootstrap JS y dependencias -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -31,11 +31,8 @@ public class OrderService {
         orderRepository.setSelectedOrderId(orderId);
     }
 
-    public List<Integer> getAllOrdersId() {
-        Set<Integer> aux = orderRepository.getAllOrdersId();
-        List<Integer> allOrdersId = new ArrayList<>();
-        allOrdersId.addAll(aux);
-        return allOrdersId;
+    public List<Integer> getAllPendingOrdersId() {
+        return orderRepository.getAllPendingOrdersId();
     }
 
     public int addNewOrder (Order o){

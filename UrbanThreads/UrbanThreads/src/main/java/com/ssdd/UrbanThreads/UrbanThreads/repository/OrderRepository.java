@@ -1,6 +1,7 @@
 package com.ssdd.UrbanThreads.UrbanThreads.repository;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,15 @@ public class OrderRepository {
 
     public void setSelectedOrderId(int id){ this.selectedOrder = id; }
 
-    public Set<Integer> getAllOrdersId (){
-        return orders.keySet();
+    public List<Integer> getAllPendingOrdersId(){
+        List<Integer> pendingOrders = new ArrayList<>();
+        for (int id : orders.keySet()) {
+            Order order = getOrderById(id);
+            if(order.getOrderStatus().equals(OrderStatus.PENDING)){
+                pendingOrders.add(id);
+            }
+        }
+        return pendingOrders;
     }
 
     public int addNewOrder(Order o){

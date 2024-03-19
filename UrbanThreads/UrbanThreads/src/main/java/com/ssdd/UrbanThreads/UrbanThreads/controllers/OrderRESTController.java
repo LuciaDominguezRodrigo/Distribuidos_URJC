@@ -28,7 +28,7 @@ public class OrderRESTController {
     private OrderService orderService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> obtenerPedido(@PathVariable int id) {
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable int id) {
         Order selectedOrder = orderService.getOrderById(id);
         if (selectedOrder == null) {
             return ResponseEntity.status(404).build();
@@ -83,13 +83,10 @@ public class OrderRESTController {
             return ResponseEntity.notFound().build();
         }
 
-        Order removedOrder = orderService.deleteOrderById(id);
-        if(removedOrder == null){
-            return ResponseEntity.status(404).build();
-        }
-        removedOrder.setOrderStatus(OrderStatus.COMPLETED);
+        existingOrder.setOrderStatus(OrderStatus.COMPLETED);
+        orderService.saveOrder(id, existingOrder);
 
-        return ResponseEntity.status(200).body(new OrderDTO(removedOrder));
+        return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
     }
 
     @PutMapping("/edit/{id}")
