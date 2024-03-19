@@ -75,6 +75,23 @@ public class OrderRESTController {
         return ResponseEntity.status(201).body(orderDTO);
     }
 
+    @PostMapping("/complete/{id}")
+    public ResponseEntity<OrderDTO> completeOrder(@PathVariable int id) {
+        Order existingOrder = orderService.getOrderById(id);
+
+        if (existingOrder == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Order removedOrder = orderService.deleteOrderById(id);
+        if(removedOrder == null){
+            return ResponseEntity.status(404).build();
+        }
+        removedOrder.setOrderStatus(OrderStatus.COMPLETED);
+
+        return ResponseEntity.status(200).body(new OrderDTO(removedOrder));
+    }
+
     @PutMapping("/edit/{id}")
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable int id, @RequestBody OrderDTO orderDTO) {
         Order existingOrder = orderService.getOrderById(id);
@@ -106,7 +123,7 @@ public class OrderRESTController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteOrder(@PathVariable int id) {
+    public ResponseEntity<Void> cancelOrder(@PathVariable int id) {
         Order existingOrder = orderService.getOrderById(id);
         if (existingOrder == null) {
             return ResponseEntity.status(404).build();

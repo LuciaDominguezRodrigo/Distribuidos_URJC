@@ -76,6 +76,7 @@
     </ul>
     <br>
     <div class ="buttons">
+        {{#productList}}
         <div class="row justify-content-between mb-4">
             <div class="col-sm-6">
                 <form action = "/orderReady" method ="POST">
@@ -88,6 +89,7 @@
                 </form>
             </div>
         </div>
+        {{/productList}}
     </div>
 
 </div>
