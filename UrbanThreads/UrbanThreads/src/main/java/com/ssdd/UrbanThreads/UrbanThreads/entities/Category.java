@@ -10,6 +10,7 @@ public class Category {
     private long id;
     private String name;
     private String color;
+    private String description;
 
     public Category(){};
 
@@ -24,5 +25,10 @@ public class Category {
         this.color = color;
     }
 
+    public Category(String name, String color,String descripcion) {
+        this.name = name;
+        this.color = color;
+        this.description = descripcion;
+    }
 
 }

@@ -36,6 +36,7 @@ public class CategoryWebController{
     public String showEditCategoriesPage(Model model) {
         Collection<Category> categories = categoryService.getAllCategories();
         List<Category> showC = new ArrayList<>();
+        List<String> showD = new ArrayList<>();
         for (Category c: categories){
             if (!Objects.equals(c.getName(), "Sin Categoria")){
                     showC.add(c);
@@ -67,22 +68,29 @@ public class CategoryWebController{
             }
     }
     @PostMapping("/createNewCategory")
-    public String createCategory(@RequestParam ("newCategoryName") String categoryName, @RequestParam("categoryColor") String color){
+    public String createCategory(@RequestParam ("newCategoryName") String categoryName,@RequestParam("categoryD") String des, @RequestParam("categoryColor") String color,Model model){
 
     Category newCategory = new Category();
 
+    if (categoryService.findCategoryByName(categoryName)!=null){
+        model.addAttribute("errorMessage", "¡Ya existe una categoría con ese nombre!");
+        return "redirect:/editCategory";
+    }
+
     newCategory.setName(categoryName);
     newCategory.setColor(color);
+    newCategory.setDescription(des);
     categoryService.addNewCategory(newCategory);
     return "redirect:/editCategory";
     }
 
     @PostMapping("/editOneCategory/{id}")
-    public String editCategory(@PathVariable Long id, @RequestParam("editCategoryName") String nombre, @RequestParam("editCategoryColor") String color) {
+    public String editCategory(@PathVariable Long id, @RequestParam("editCategoryName") String nombre, @RequestParam("editCategoryD") String d, @RequestParam("editCategoryColor") String color) {
         Category category = categoryService.findCategory(id);
         if (category != null) {
             category.setName(nombre);
             category.setColor(color);
+            category.setDescription(d);
             categoryService.updateCategory(id, category);
             return "redirect:/editCategory";
         } else {

@@ -19,6 +19,8 @@
         <div class="card mt-4" style="border-radius: 10px; border-width: medium; border-color: {{color}};">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <h5 class="card-title">{{name}}</h5>
+                <h6 class = "category-description">{{description}}</h6>
+
                 <div>
                     <button class="btn btn-primary editCategory">Editar</button>
                     <form action="/deleteCategory" method="POST" class="d-inline">
@@ -44,6 +46,10 @@
                             <div class="form-group">
                                 <label for="editCategoryName">Nombre de la Categoría</label>
                                 <input type="text" class="form-control" id="editCategoryName" name="editCategoryName" value="{{name}}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="editCategoryD">Descripcion de la Categoría</label>
+                                <input type="text" class="form-control" id="editCategoryD" name="editCategoryD" value="{{description}}" required>
                             </div>
                             <div class="form-group">
                                 <label for="editCategoryColor">Color de la categoría</label>
@@ -80,6 +86,10 @@
                             <input type="text" class="form-control" id="categoryName" name="newCategoryName" required>
                         </div>
                         <div class="form-group">
+                            <label for="categoryD">Descripcion de la Categoría</label>
+                            <input type="text" class="form-control" id="categoryD" name="categoryD" required>
+                        </div>
+                        <div class="form-group">
                             <label for="categoryColor">Color de la categoría</label>
                             <input type="color" class="form-control" id="categoryColor" name="categoryColor" placeholder="Color del tag">
                         </div>
@@ -104,6 +114,18 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function  warnCreate() {
+        var confirmation = confirm("Si se crea una una categoria con un nombre ya existente," +
+                " no se creará");
+
+        if (confirmation) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+</script>
 <script src = "/js/editCategory.js" ></script>
 </body>
 </html>

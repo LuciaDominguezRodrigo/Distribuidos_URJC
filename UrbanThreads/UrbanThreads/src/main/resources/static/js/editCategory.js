@@ -8,6 +8,17 @@ function  warnDelete() {
         return false;
     }
 }
+function  warnCreate() {
+    var confirmation = confirm("Si se crea una una categoria con un nombre ya existente," +
+        " no se creará");
+
+    if (confirmation) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 $(document).ready(function() {
     $('.createButton').click(function() {
         $('#createCategoryModal').modal('show');
@@ -20,7 +31,3 @@ $(document).ready(function() {
     });
 });
 
-
-document.getElementById('categoryColor').addEventListener('input', function() {
-    let rgbColor = this.value.match(/\d+/g);
-})
