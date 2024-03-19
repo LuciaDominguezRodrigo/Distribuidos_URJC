@@ -71,6 +71,9 @@ public class CategoryRESTController {
         if (categoryDTO.getColor() != null) {
             existingCategory.setColor(categoryDTO.getColor());
         }
+        if (categoryDTO.getDescription() != null) {
+            existingCategory.setDescription(categoryDTO.getDescription());
+        }
 
         categoryService.saveCategory(existingCategory);
 
