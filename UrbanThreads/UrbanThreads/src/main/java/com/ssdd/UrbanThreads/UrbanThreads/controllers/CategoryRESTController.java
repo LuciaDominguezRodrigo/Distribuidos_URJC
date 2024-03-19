@@ -2,7 +2,9 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.CategoryDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,9 @@ public class CategoryRESTController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    ProductService productService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable long id) {
@@ -83,8 +88,17 @@ public class CategoryRESTController {
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
         Category existingCategory = categoryService.findCategory(id);
+        Category sinCategoria = categoryService.findCategoryByName("Sin Categoria");
+
         if (existingCategory == null) {
             return ResponseEntity.status(404).build();
+        }
+
+        List<Product> productsToDelete = productService.findProductsByCategory(existingCategory.getName());
+
+        for (Product product : productsToDelete) {
+            product.setCategory(sinCategoria);
+            productService.updateProduct(product.getId(), product);
         }
 
         categoryService.deleteCategory(id);
