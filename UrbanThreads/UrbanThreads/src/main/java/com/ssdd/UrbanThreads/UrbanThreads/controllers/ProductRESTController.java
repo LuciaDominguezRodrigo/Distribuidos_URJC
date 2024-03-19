@@ -14,6 +14,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping ("/api/products")
@@ -53,20 +55,39 @@ public class ProductRESTController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<ProductDTO> crearProducto(@RequestBody Product product) {
+    public ResponseEntity<ProductDTO> createProducto(@RequestBody Product product) {
         Product existingProduct = productService.findProductByName(product.getName());
         if (existingProduct != null) {
             return ResponseEntity.status(409).build();
         }
-        Product nuevoProducto = productService.saveProduct(product);
+
+
+        Category category = product.getCategory();
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
+
+        boolean categoryExists = false;
+        for (Category c : categoriesAvailable) {
+            if (c.getName().equals(category.getName()) & (c.getColor().equals(category.getColor())))  {
+                categoryExists = true;
+            }
+        }
+
+        if (!categoryExists) {
+            return ResponseEntity.status(404).build(); // Category not found among available categories
+        }
+        Product newProduct = productService.saveProduct(product);
+        if (newProduct.getCategory() == null) {
+            return ResponseEntity.status(410).build();
+        }
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(nuevoProducto.getId())
+                .buildAndExpand(newProduct.getId())
                 .toUri();
 
-        ProductDTO productDTO = new ProductDTO(nuevoProducto);
+        ProductDTO productDTO = new ProductDTO(newProduct);
+
         return ResponseEntity.status(201).location(location).body(productDTO);
     }
 
@@ -86,8 +107,26 @@ public class ProductRESTController {
         if (existingProduct == null) {
             return ResponseEntity.notFound().build();
         }
+        Category category = product.getCategory();
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
+
+        boolean categoryExists = false;
+        for (Category c : categoriesAvailable) {
+            if (c.getName().equals(category.getName()) & (c.getColor().equals(category.getColor())))  {
+                categoryExists = true;
+            }
+        }
+
+        if (!categoryExists) {
+            return ResponseEntity.status(404).build(); // Category not found among available categories
+        }
+        Product newProduct = productService.saveProduct(product);
+        if (newProduct.getCategory() == null) {
+            return ResponseEntity.status(410).build();
+        }
 
         existingProduct.setName(product.getName());
+        existingProduct.setCategory(product.getCategory());
         existingProduct.setPrice(product.getPrice());
         existingProduct.setDescription(product.getDescription());
 
