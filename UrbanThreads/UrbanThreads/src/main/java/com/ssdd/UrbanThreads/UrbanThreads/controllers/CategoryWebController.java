@@ -94,7 +94,6 @@ public class CategoryWebController{
             categoryService.updateCategory(id, category);
             return "redirect:/editCategory";
         } else {
-            // Manejo de error si la categoría no se encuentra
             return "redirect:/editCategory";
         }
     }

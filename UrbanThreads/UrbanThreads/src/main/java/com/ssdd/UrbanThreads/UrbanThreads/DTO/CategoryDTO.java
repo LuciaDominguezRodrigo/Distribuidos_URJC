@@ -10,6 +10,7 @@ public class CategoryDTO {
 
     public String name;
     public String color;
+    public String description;
 
     public CategoryDTO(){}
 
@@ -21,5 +22,6 @@ public class CategoryDTO {
     public CategoryDTO(Category category) {
         this.name = category.getName();
         this.color = category.getColor();
+        this.description = category.getDescription();
     }
 }
