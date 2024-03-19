@@ -25,6 +25,7 @@ public class Product {
     private int selectedSizeAvailableUnits;
     private String color;
     private int quantity;
+    private boolean deleted;
 
     public Product() {
     }
@@ -36,5 +37,9 @@ public class Product {
         this.description = description;
         this.photo = photo;
         this.availableSizes = sizeUnits;
+    }
+
+    public void setDeleted(boolean b) {
+        b = true;
     }
 }

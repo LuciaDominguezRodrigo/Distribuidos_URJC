@@ -128,10 +128,8 @@ public class OrderWebController {
     @PostMapping("/deleteProductOrder")
     public String  eliminarProductoDePedido(@RequestParam("orderId") int pedidoId, @RequestParam("productId") int productoId) {
         orderService.deleteOrderedProduct(pedidoId, productoId);
-
         Product productoEliminado = orderService.getDeletedProduct(productoId);
-        productService.saveProduct(productoEliminado);
-
+        productService.updateProduct(productoId,productoEliminado);
         return "redirect:/orderPage";
     }
 }
