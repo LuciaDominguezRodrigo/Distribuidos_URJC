@@ -152,6 +152,28 @@ public class ProductRESTController {
             existingProduct.setDescription(partialProduct.getDescription());
         }
 
+        if (partialProduct.getCategory() != null) {
+            existingProduct.setCategory(partialProduct.getCategory());
+        }
+
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
+
+        Category category = partialProduct.getCategory();
+        boolean categoryExists = false;
+        for (Category c : categoriesAvailable) {
+            if (c.getName().equals(category.getName()) & (c.getColor().equals(category.getColor())))  {
+                categoryExists = true;
+            }
+        }
+
+        if (!categoryExists) {
+            return ResponseEntity.status(404).build(); // Category not found among available categories
+        }
+        Product newProduct = productService.saveProduct(partialProduct);
+        if (newProduct.getCategory() == null) {
+            return ResponseEntity.status(410).build();
+        }
+
         Product updatedProduct = productService.saveProduct(existingProduct);
         ProductDTO productDTO = new ProductDTO(updatedProduct);
         return ResponseEntity.status(200).body(productDTO);

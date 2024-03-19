@@ -54,6 +54,21 @@ public class CategoryRESTController {
         Category category = new Category();
         category.setName(categoryDTO.getName());
         category.setColor(categoryDTO.getColor());
+        category.setDescription(categoryDTO.getDescription());
+
+
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
+
+        boolean categoryName = false;
+        for (Category c : categoriesAvailable) {
+            if (c.getName().equals(category.getName()))  {
+                categoryName = true;
+            }
+        }
+
+        if (categoryName) {
+            return ResponseEntity.status(409).build(); // Category name is taken
+        }
 
         categoryService.saveCategory(category);
 
@@ -120,7 +135,7 @@ public class CategoryRESTController {
             existingCategory.setColor(partialCategoryDTO.getColor());
         }
 
-        categoryService.saveCategory(existingCategory);
+        categoryService.updateCategory(existingCategory.getId(),existingCategory);
 
         return ResponseEntity.status(200).body(new CategoryDTO(existingCategory));
     }
