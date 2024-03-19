@@ -41,6 +41,10 @@ public class ProductService {
         }
     }
 
+    public List<Product> updateProductsQuantity(List<Product> soldProducts){
+        return productRepository.updateProductsQuantity(soldProducts);
+    }
+
     public Product saveProduct(@NotNull Product product){
         return productRepository.saveProduct(product);
     }

@@ -2,6 +2,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.repository;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,16 @@ public class ProductRepository {
             }
         }
         return foundProducts;
+    }
+
+    public List<Product> updateProductsQuantity(List<Product> soldProducts){
+        List<Product> updatedProducts = new ArrayList<>();
+        for (Product p : soldProducts) {
+            Map<Size, Integer> availableSizes = products.get(p.getId()).getAvailableSizes();
+            availableSizes.put(Size.valueOf(p.getSize()), availableSizes.get(Size.valueOf(p.getSize()))-p.getQuantity());
+            updatedProducts.add(products.get(p.getId()));
+        }
+        return updatedProducts;
     }
 
     public Product saveProduct(@NotNull Product product){
