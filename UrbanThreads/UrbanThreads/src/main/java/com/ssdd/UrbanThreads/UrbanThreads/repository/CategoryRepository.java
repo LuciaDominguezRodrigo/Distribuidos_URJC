@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service
-public class CategoryRepository {
+public class CategoryRepository /*extends JpaRepository<Category,Long>*/{
     private final Map<Long, Category> categories = new HashMap<>();
     private final AtomicLong nextId = new AtomicLong(-1);
 
