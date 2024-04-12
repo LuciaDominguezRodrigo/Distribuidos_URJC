@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class ProductRepository /*extends JpaRepository<Product,Long>*/{
+public class ProductRepository {
 
     private final Map<Integer, Product> products = new HashMap<>();
     private final AtomicInteger nextId = new AtomicInteger();

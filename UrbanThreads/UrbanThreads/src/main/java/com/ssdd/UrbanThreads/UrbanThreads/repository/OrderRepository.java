@@ -1,18 +1,15 @@
 package com.ssdd.UrbanThreads.UrbanThreads.repository;
 
-
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
-public class OrderRepository /*extends JpaRepository<Order,Long>*/{
+public class OrderRepository {
     private final Map<Integer, Order> orders = new HashMap<>();
     private final AtomicInteger nextId = new AtomicInteger();
     private int selectedOrder = 0;
