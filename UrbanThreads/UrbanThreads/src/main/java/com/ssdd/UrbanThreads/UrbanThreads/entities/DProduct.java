@@ -20,13 +20,20 @@ public class DProduct {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Setter
+    @Getter
     @Column(name = "name")
     private String name;
+
     @Setter
+    @Getter
     @ManyToOne
     @JoinColumn(name = "category_id")
     private DCategory category;
 
+    @Setter
+    @Getter
     @Column (name = "price")
     private double price;
 
@@ -34,6 +41,8 @@ public class DProduct {
     @Column (name = "photo")
     private Blob photo;
 
+    @Setter
+    @Getter
     @Column (name = "description")
     private String description;
 
