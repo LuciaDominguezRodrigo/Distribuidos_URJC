@@ -19,17 +19,22 @@ public class DCategory {
     @Column(name = "name")
     private String name;
 
+    @Column (name ="color")
+    private String color;
+
+    @Column (name = "description")
+    private String description;
+
     // Relación uno a muchos con Product
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<DProduct> products;
 
-    // Constructor vacío (necesario para JPA)
     public DCategory() {
     }
 
-    // Constructor con parámetros
-    public DCategory(String name) {
+    public DCategory (String name, String color, String description) {
         this.name = name;
+        this.color = color;
+        this.description = description;
     }
-
 }
