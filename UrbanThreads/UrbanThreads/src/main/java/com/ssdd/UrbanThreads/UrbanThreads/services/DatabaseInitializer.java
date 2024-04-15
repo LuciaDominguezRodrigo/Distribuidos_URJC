@@ -47,24 +47,24 @@ public class DatabaseInitializer {
         Blob photoBlob1 = new SerialBlob(photoBytes);
 
         ClassPathResource imgFile2 = new ClassPathResource("static/img/pantalon.jpg");
-        byte[] photoBytes2 = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        Blob photoBlob2 = new SerialBlob(photoBytes);
+        byte[] photoBytes2 = StreamUtils.copyToByteArray(imgFile2.getInputStream());
+        Blob photoBlob2 = new SerialBlob(photoBytes2);
 
         ClassPathResource imgFile3 = new ClassPathResource("static/img/calcetines.jpg");
-        byte[] photoBytes3 = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        Blob photoBlob3 = new SerialBlob(photoBytes);
+        byte[] photoBytes3 = StreamUtils.copyToByteArray(imgFile3.getInputStream());
+        Blob photoBlob3 = new SerialBlob(photoBytes3);
 
         ClassPathResource imgFile4 = new ClassPathResource("static/img/abrigo.jpg");
-        byte[] photoBytes4 = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        Blob photoBlob4 = new SerialBlob(photoBytes);
+        byte[] photoBytes4 = StreamUtils.copyToByteArray(imgFile4.getInputStream());
+        Blob photoBlob4 = new SerialBlob(photoBytes4);
 
         ClassPathResource imgFile5 = new ClassPathResource("static/img/chaqueta.jpg");
-        byte[] photoBytes5 = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        Blob photoBlob5 = new SerialBlob(photoBytes);
+        byte[] photoBytes5 = StreamUtils.copyToByteArray(imgFile5.getInputStream());
+        Blob photoBlob5 = new SerialBlob(photoBytes5);
 
         ClassPathResource imgFile6 = new ClassPathResource("static/img/sudadera.jpg");
-        byte[] photoBytes6 = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        Blob photoBlob6 = new SerialBlob(photoBytes);
+        byte[] photoBytes6 = StreamUtils.copyToByteArray(imgFile6.getInputStream());
+        Blob photoBlob6 = new SerialBlob(photoBytes6);
 
         // Inicializar algunos productos asociados a las categorías
         DProduct product1 = new DProduct("Camiseta", category1, 10.0, photoBlob1,"Descripción 1");
