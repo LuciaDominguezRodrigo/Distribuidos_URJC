@@ -4,6 +4,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.DOrder;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class DatabaseInitializer {
@@ -41,6 +40,14 @@ public class DatabaseInitializer {
         categoryRepository.save(category1);
         categoryRepository.save(category2);
         categoryRepository.save(category3);
+
+        Map<Size, Integer> as = new HashMap<>();
+        as.put(Size.XS, 50);
+        as.put(Size.S, 40);
+        as.put(Size.M, 30);
+        as.put(Size.L, 20);
+        as.put(Size.XL, 10);
+        as.put(Size.XXL, 0);
 
         ClassPathResource imgFile = new ClassPathResource("static/img/camiseta.jpg");
         byte[] photoBytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
@@ -67,12 +74,12 @@ public class DatabaseInitializer {
         Blob photoBlob6 = new SerialBlob(photoBytes6);
 
         // Inicializar algunos productos asociados a las categorías
-        DProduct product1 = new DProduct("Camiseta", category1, 10.0, photoBlob1,"Descripción 1");
-        DProduct product2 = new DProduct("Pantalón ancho", category1, 20.0, photoBlob2,"Descripción 2");
-        DProduct product3 = new DProduct("Calcetines", category2, 15.0, photoBlob3,"Descripción 3");
-        DProduct product4 = new DProduct("Abrigo", category1, 25.0, photoBlob4,"Descripción 4");
-        DProduct product5 = new DProduct("Chaqueta", category2, 12.0, photoBlob5,"Descripción 5");
-        DProduct product6 = new DProduct("Sudadera", category2, 18.0, photoBlob6,"Descripción 6");
+        DProduct product1 = new DProduct("Camiseta", category1, 10.0, photoBlob1,"Descripción 1",as);
+        DProduct product2 = new DProduct("Pantalón ancho", category1, 20.0, photoBlob2,"Descripción 2",as);
+        DProduct product3 = new DProduct("Calcetines", category2, 15.0, photoBlob3,"Descripción 3",as);
+        DProduct product4 = new DProduct("Abrigo", category1, 25.0, photoBlob4,"Descripción 4",as);
+        DProduct product5 = new DProduct("Chaqueta", category2, 12.0, photoBlob5,"Descripción 5",as);
+        DProduct product6 = new DProduct("Sudadera", category2, 18.0, photoBlob6,"Descripción 6",as);
 
         productRepository.save(product1);
         productRepository.save(product2);

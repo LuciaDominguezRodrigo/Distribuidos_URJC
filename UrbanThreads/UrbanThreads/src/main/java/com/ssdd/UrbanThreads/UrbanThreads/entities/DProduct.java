@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.sql.Blob;
+import java.util.Map;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -34,6 +36,8 @@ public class DProduct {
     private String description;
 
 
+    /*@Column (name ="availableSizes")
+    private Map<Size,Integer> availableSizes;*/
     public DProduct() {
     }
 
@@ -43,12 +47,19 @@ public class DProduct {
         this.category = category;
     }
 
-    public DProduct (String name, DCategory category, double price,Blob photo,String description) {
+    @ElementCollection
+    @CollectionTable(name = "product_sizes", joinColumns = @JoinColumn(name = "product_id"))
+    @MapKeyEnumerated(EnumType.STRING)
+    @Column(name = "quantity")
+    private Map<Size, Integer> availableSizes;
+
+    public DProduct (String name, DCategory category, double price,Blob photo,String description, Map<Size, Integer>as) {
         this.name = name;
         this.category = category;
         this.price = price;
         this.photo = photo;
         this.description = description;
+        this.availableSizes = as;
     }
 
 
