@@ -16,12 +16,15 @@ public class DCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column(name = "name")
     private String name;
 
+    @Setter
     @Column (name ="color")
     private String color;
 
+    @Setter
     @Column (name = "description")
     private String description;
 
@@ -37,4 +40,5 @@ public class DCategory {
         this.color = color;
         this.description = description;
     }
+
 }

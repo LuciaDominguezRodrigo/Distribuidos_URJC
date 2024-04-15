@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.sql.Blob;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class DProduct {
     private Long id;
     @Column(name = "name")
     private String name;
+    @Setter
     @ManyToOne
     @JoinColumn(name = "category_id")
     private DCategory category;

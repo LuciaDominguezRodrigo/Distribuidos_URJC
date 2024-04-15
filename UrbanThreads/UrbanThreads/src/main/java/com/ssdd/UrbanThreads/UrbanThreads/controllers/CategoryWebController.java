@@ -1,8 +1,12 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.DCategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.DProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,32 +16,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 public class CategoryWebController{
 
     @Autowired
-    private ProductService productService;
+    private DProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private DCategoryService categoryService;
 
-    @GetMapping("/filter")
+    /*@GetMapping("/filter")
     public String filterProductsByCategory(@RequestParam("selectedFilter") String categoria) {
         categoryService.setCurrentCategoryFilter(categoria);
         return "redirect:/";
-    }
+    }*/
 
     @GetMapping("/editCategory")
     public String showEditCategoriesPage(Model model) {
-        Collection<Category> categories = categoryService.getAllCategories();
-        List<Category> showC = new ArrayList<>();
+        Collection<DCategory> categories = categoryService.getAllCategories();
+        List<DCategory> showC = new ArrayList<>();
         List<String> showD = new ArrayList<>();
-        for (Category c: categories){
+        for (DCategory c: categories){
             if (!Objects.equals(c.getName(), "Sin Categoria")){
                     showC.add(c);
             }
@@ -48,14 +49,13 @@ public class CategoryWebController{
 
     @PostMapping("/deleteCategory")
     public String deleteCategoryAndReplace(@RequestParam("name") String categoryName) {
-
-            Category deleteCategory = categoryService.findCategoryByName(categoryName);
+            DCategory deleteCategory = categoryService.findCategoryByName(categoryName);
             if (deleteCategory != null) {
-                Category changeCategory = categoryService.findCategoryByName("Sin Categoria");
+                DCategory changeCategory = categoryService.findCategoryByName("Sin Categoria");
 
-                List<Product> productsInCategory = productService.findProductsByCategory(categoryName);
+                List<DProduct> productsInCategory = productService.findProductsByCategory(categoryName);
 
-                for (Product product : productsInCategory) {
+                for (DProduct product : productsInCategory) {
                     product.setCategory(changeCategory);
                     productService.updateProduct(product.getId(), product);
                 }
@@ -70,7 +70,7 @@ public class CategoryWebController{
     @PostMapping("/createNewCategory")
     public String createCategory(@RequestParam ("newCategoryName") String categoryName,@RequestParam("categoryD") String des, @RequestParam("categoryColor") String color,Model model){
 
-    Category newCategory = new Category();
+    DCategory newCategory = new DCategory();
 
     if (categoryService.findCategoryByName(categoryName)!=null){
         model.addAttribute("errorMessage", "¡Ya existe una categoría con ese nombre!");
@@ -86,8 +86,9 @@ public class CategoryWebController{
 
     @PostMapping("/editOneCategory/{id}")
     public String editCategory(@PathVariable Long id, @RequestParam("editCategoryName") String nombre, @RequestParam("editCategoryD") String d, @RequestParam("editCategoryColor") String color) {
-        Category category = categoryService.findCategory(id);
-        if (category != null) {
+        Optional<DCategory> categoryOptional = categoryService.findCategory(id);
+        if (categoryOptional.isPresent()) {
+            DCategory category = categoryOptional.get();
             category.setName(nombre);
             category.setColor(color);
             category.setDescription(d);
@@ -97,4 +98,5 @@ public class CategoryWebController{
             return "redirect:/editCategory";
         }
     }
+
 }
