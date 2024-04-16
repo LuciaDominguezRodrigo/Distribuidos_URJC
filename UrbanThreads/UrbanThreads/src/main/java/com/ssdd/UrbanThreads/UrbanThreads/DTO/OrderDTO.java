@@ -9,15 +9,14 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class OrderDTO {
-    @Getter
-    @Setter
+
     private int orderId;
-    @Getter
-    @Setter
+
     private OrderStatus orderStatus;
-    @Getter
-    @Setter
+
     private List<OrderedProductDTO> orderedProductsDTO = new ArrayList<>();
 
     public OrderDTO(int orderId, OrderStatus orderStatus, List<OrderedProductDTO> orderedProductsDTO) {

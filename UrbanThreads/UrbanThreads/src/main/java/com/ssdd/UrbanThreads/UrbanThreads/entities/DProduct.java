@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,40 +21,45 @@ import java.util.Set;
 
 @Entity
 @Table(name = "products")
+@Getter
+@Setter
 public class DProduct {
-    @Getter
+    @Setter(AccessLevel.NONE)
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Setter
-    @Getter
-    @Column(name = "name")
+
+    @Column(nullable = false)
     private String name;
 
-    @Setter
-    @Getter
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private DCategory category;
 
-    @Setter
-    @Getter
-    @Column (name = "price")
+
+    @Column (nullable = false)
     private double price;
 
-    @Lob
-    @Column (name = "photo")
-    private Blob photo;
 
-    @Setter
-    @Getter
     @Column (name = "description")
     private String description;
 
 
-    /*@Column (name ="availableSizes")
-    private Map<Size,Integer> availableSizes;*/
+    @Lob
+    @Column (name = "photo")
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Blob photo;
+
+
+    @ElementCollection
+    @CollectionTable(name = "product_sizes", joinColumns = @JoinColumn(name = "product_id"))
+    @MapKeyEnumerated(EnumType.STRING)
+    @Column(name = "quantity")
+    private Map<Size, Integer> availableSizes;
+
     public DProduct() {
     }
 
@@ -62,14 +68,6 @@ public class DProduct {
         this.name = name;
         this.category = category;
     }
-
-    @Setter
-    @Getter
-    @ElementCollection
-    @CollectionTable(name = "product_sizes", joinColumns = @JoinColumn(name = "product_id"))
-    @MapKeyEnumerated(EnumType.STRING)
-    @Column(name = "quantity")
-    private Map<Size, Integer> availableSizes;
 
     public DProduct (String name, DCategory category, double price,Blob photo,String description, Map<Size, Integer>as) {
         this.name = name;

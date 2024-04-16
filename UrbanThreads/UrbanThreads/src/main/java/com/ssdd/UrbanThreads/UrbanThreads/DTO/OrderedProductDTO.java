@@ -4,24 +4,20 @@ import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import lombok.Getter;
 import lombok.Setter;
 
+@Getter
+@Setter
 public class OrderedProductDTO {
-    @Getter
-    @Setter
+
     private int orderId; //This product belongs to this id number order
-    @Getter
-    @Setter
+
     private String name;
-    @Setter
-    @Getter
+
     private double price;
-    @Getter
-    @Setter
+
     private String size;
-    @Getter
-    @Setter
+
     private String color;
-    @Setter
-    @Getter
+
     private int quantity;
 
     public OrderedProductDTO(int id,String name, double price, String size, String color, int quantity) {

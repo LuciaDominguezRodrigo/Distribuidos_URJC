@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Order {
-    @Getter
+
     private int orderId;
     private OrderStatus orderStatus;
     private List<Product> orderProducts = new ArrayList<>();

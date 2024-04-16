@@ -14,7 +14,7 @@ public class DOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private Long orderId;
 
     @Column(name = "order_status")
     private OrderStatus orderStatus;
@@ -26,7 +26,7 @@ public class DOrder {
         this.orderStatus = OrderStatus.PENDING;
     };
 
-    public DOrder(int orderId, OrderStatus orderStatus, List<Product> orderProducts) {
+    public DOrder(Long orderId, OrderStatus orderStatus, List<Product> orderProducts) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
         //this.orderProducts = orderProducts;

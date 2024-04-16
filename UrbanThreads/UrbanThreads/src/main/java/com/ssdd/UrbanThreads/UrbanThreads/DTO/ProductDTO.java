@@ -7,25 +7,21 @@ import lombok.Setter;
 
 import java.util.Map;
 
+@Getter
+@Setter
 public class ProductDTO {
     private int id;
-    @Getter
-    @Setter
+
     private String name;
-    @Getter
-    @Setter
+
     private String category;
-    @Getter
-    @Setter
+
     private String description;
-    @Setter
-    @Getter
+
     private double price;
-    @Getter
-    @Setter
+
     private String photo;
-    @Setter
-    @Getter
+
     private Map<Size, Integer> availableSizes;
 
     public ProductDTO(int id,String name, String category, String description, double price, String photo, Map<Size, Integer> availableSizes) {

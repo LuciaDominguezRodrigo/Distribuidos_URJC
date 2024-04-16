@@ -18,6 +18,7 @@ public interface DProductRepository extends JpaRepository<DProduct,Long> {
     @Transactional
     @Query("UPDATE DProduct p SET p.name = :#{#product.name}, p.description = :#{#product.description}, p.price = :#{#product.price}, p.category = :#{#product.category} WHERE p.id = :id")
     void updateProduct(@Param("id") long id, @Param("product") DProduct product);
+
     List<DProduct> findByCategoryName(String categoryName);
 
     List<DProduct> findByIdBetween(int startId, int endId);
