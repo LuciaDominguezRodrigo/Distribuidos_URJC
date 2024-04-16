@@ -38,8 +38,8 @@ public class DProductService {
         return productRepository.findById(id);
     }
 
-    public void saveProduct(DProduct newProduct) {
-        productRepository.save(newProduct);
+    public DProduct saveProduct(DProduct newProduct) {
+        return productRepository.save(newProduct);
     }
 
     public void deleteProduct(long id) {

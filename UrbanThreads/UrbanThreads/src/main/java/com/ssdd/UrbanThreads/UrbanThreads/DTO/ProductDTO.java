@@ -1,5 +1,6 @@
 package com.ssdd.UrbanThreads.UrbanThreads.DTO;
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import lombok.Getter;
@@ -42,6 +43,17 @@ public class ProductDTO {
         this.description = product.getDescription();
         this.price = product.getPrice();
         this.photo = product.getPhoto();
+        this.availableSizes  = product.getAvailableSizes();
+
+    }
+
+    public  ProductDTO (DProduct product) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.category = product.getCategory().getName();
+        this.description = product.getDescription();
+        this.price = product.getPrice();
+        this.photo = product.getPhoto().toString();
         this.availableSizes  = product.getAvailableSizes();
 
     }
