@@ -107,7 +107,15 @@ public class ProductWebController {
         if (productOptional.isPresent()) {
             DProduct product = productOptional.get();
             model.addAttribute("product", product);
+            List<DCategory> otherCategories = (List<DCategory>) categoryService.getAllCategories();
+            List<DCategory> visibleC = new ArrayList<>();
+            for (DCategory c: otherCategories){
+                if (!Objects.equals(c.getName(), "Sin Categoria")){
+                    visibleC.add(c);
+                }
+            }
 
+            model.addAttribute("otherCategories", visibleC);
             // Verificar si el producto tiene tallas disponibles
             if (product.getAvailableSizes() != null) {
                 model.addAttribute("sizeXS", product.getAvailableSizes().getOrDefault(Size.XS, 0));
