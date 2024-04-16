@@ -16,6 +16,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,22 +45,22 @@ public class DProduct {
     private double price;
 
 
-    @Column (name = "description")
-    private String description;
-
-
-    @Lob
-    @Column (name = "photo")
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private Blob photo;
-
-
     @ElementCollection
     @CollectionTable(name = "product_sizes", joinColumns = @JoinColumn(name = "product_id"))
     @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "quantity")
     private Map<Size, Integer> availableSizes;
+
+
+    private String description;
+
+    @Lob
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Blob photo;
+
+    private boolean deleted;
+
 
     public DProduct() {
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,8 +20,6 @@ public class DOrder {
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    /*@OneToMany(mappedBy = "id")
-    private List<Product> orderProducts = new ArrayList<>();*/
 
     public DOrder(){
         this.orderStatus = OrderStatus.PENDING;
