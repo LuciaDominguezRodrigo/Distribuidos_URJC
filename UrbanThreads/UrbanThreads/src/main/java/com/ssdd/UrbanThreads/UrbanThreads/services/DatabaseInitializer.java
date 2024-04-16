@@ -49,27 +49,28 @@ public class DatabaseInitializer {
         as.put(Size.XL, 10);
         as.put(Size.XXL, 0);
 
-        ClassPathResource imgFile = new ClassPathResource("static/img/camiseta.jpg");
+        ClassPathResource imgFile = new ClassPathResource("./static/img/camiseta.jpg");
         byte[] photoBytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
         Blob photoBlob1 = new SerialBlob(photoBytes);
 
-        ClassPathResource imgFile2 = new ClassPathResource("static/img/pantalon.jpg");
+        ClassPathResource imgFile2 = new ClassPathResource("./static/img/pantalon.jpg");
         byte[] photoBytes2 = StreamUtils.copyToByteArray(imgFile2.getInputStream());
         Blob photoBlob2 = new SerialBlob(photoBytes2);
 
-        ClassPathResource imgFile3 = new ClassPathResource("static/img/calcetines.jpg");
+        ClassPathResource imgFile3 = new ClassPathResource("./static/img/calcetines.jpg");
         byte[] photoBytes3 = StreamUtils.copyToByteArray(imgFile3.getInputStream());
         Blob photoBlob3 = new SerialBlob(photoBytes3);
 
-        ClassPathResource imgFile4 = new ClassPathResource("static/img/abrigo.jpg");
+
+        ClassPathResource imgFile4 = new ClassPathResource("./static/img/abrigo.jpg");
         byte[] photoBytes4 = StreamUtils.copyToByteArray(imgFile4.getInputStream());
         Blob photoBlob4 = new SerialBlob(photoBytes4);
 
-        ClassPathResource imgFile5 = new ClassPathResource("static/img/chaqueta.jpg");
+        ClassPathResource imgFile5 = new ClassPathResource("./static/img/chaqueta.jpg");
         byte[] photoBytes5 = StreamUtils.copyToByteArray(imgFile5.getInputStream());
         Blob photoBlob5 = new SerialBlob(photoBytes5);
 
-        ClassPathResource imgFile6 = new ClassPathResource("static/img/sudadera.jpg");
+        ClassPathResource imgFile6 = new ClassPathResource("./static/img/sudadera.jpg");
         byte[] photoBytes6 = StreamUtils.copyToByteArray(imgFile6.getInputStream());
         Blob photoBlob6 = new SerialBlob(photoBytes6);
 

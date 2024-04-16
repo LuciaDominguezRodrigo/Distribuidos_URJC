@@ -11,11 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -42,7 +42,6 @@ public class ProductWebController {
             model.addAttribute("products", new ArrayList<DProduct>());
         } else {
             model.addAttribute("products", products);
-
         }
         nextProductIndex = products.size();
         model.addAttribute("allCategories", categoryService.findAllCategories());
@@ -51,6 +50,21 @@ public class ProductWebController {
 
         }
         return "index";
+    }
+
+    @GetMapping("/event/image/{id}")
+    @ResponseBody
+    public byte[] showEventImage(@PathVariable long id) throws SQLException, IOException {
+        Optional<DProduct> eventOptional = productService.findProduct(id);
+        if (eventOptional.isPresent()) {
+            Blob photoBlob = eventOptional.get().getPhoto();
+            int blobLength = (int) photoBlob.length();
+            byte[] blobAsBytes = photoBlob.getBytes(1, blobLength);
+            photoBlob.free();
+            return blobAsBytes;
+        } else {
+            return new byte[0];
+        }
     }
 
 

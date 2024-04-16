@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -90,18 +91,51 @@ public class DProduct {
 
     public void setPhoto(String photo) {
         try {
-            // Convertir el String a un arreglo de bytes
             byte[] bytes = photo.getBytes();
 
-            // Crear un objeto InputStream desde el arreglo de bytes
             InputStream inputStream = new ByteArrayInputStream(bytes);
 
-            // Crear un objeto Blob a partir del InputStream
             this.photo = new SerialBlob(bytes);
         } catch (SQLException ex) {
-            // Manejar la excepción
             ex.printStackTrace();
         }
     }
+
+    public String getPhotoPath() {
+       Blob blob = this.photo;
+        try {
+            InputStream inputStream = blob.getBinaryStream();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int bytesRead = -1;
+
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            return new String(outputStream.toByteArray(), "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public byte[] getBlobData() {
+            try {
+                if (photo != null && photo.length() > 0) {
+                    return photo.getBytes(1, (int) photo.length());
+                } else {
+                    return null;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    public Blob getPhoto() {
+        return this.photo;
+    }
 }
+
 
