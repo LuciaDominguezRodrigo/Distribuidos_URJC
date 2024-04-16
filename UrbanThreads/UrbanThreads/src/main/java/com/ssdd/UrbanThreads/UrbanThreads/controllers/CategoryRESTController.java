@@ -2,8 +2,12 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.CategoryDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.DCategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.DProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,35 +16,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryRESTController {
 
     @Autowired
-    CategoryService categoryService;
+    DCategoryService categoryService;
 
     @Autowired
-    ProductService productService;
+    DProductService productService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable long id) {
-        Category category = categoryService.findCategory(id);
-        if (category == null) {
+        Optional<DCategory> category = categoryService.findCategory(id);
+        if (!category.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        CategoryDTO categoryDTO = new CategoryDTO(category);
-        return ResponseEntity.status(200).body(categoryDTO);
+        CategoryDTO categoryDTO = new CategoryDTO(category.get());
+        return ResponseEntity.ok(categoryDTO);
     }
 
     @GetMapping("/all")
     public ResponseEntity<Collection<CategoryDTO>> getCategoryAll() {
-       Collection<Category> categories = categoryService.getAllCategories();
+       Collection<DCategory> categories = categoryService.getAllCategories();
        Collection<CategoryDTO> cDTO = new ArrayList<>();
         if (categories== null) {
             return ResponseEntity.notFound().build();
         }
-        for (Category c: categories){
+        for (DCategory c: categories){
             CategoryDTO categoryDTO = new CategoryDTO(c);
             assert false;
             cDTO.add(categoryDTO);
@@ -51,16 +56,16 @@ public class CategoryRESTController {
 
     @PostMapping("new")
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        Category category = new Category();
+        DCategory category = new DCategory();
         category.setName(categoryDTO.getName());
         category.setColor(categoryDTO.getColor());
         category.setDescription(categoryDTO.getDescription());
 
 
-        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
+        Collection<DCategory> categoriesAvailable = categoryService.getAllCategories();
 
         boolean categoryName = false;
-        for (Category c : categoriesAvailable) {
+        for (DCategory c : categoriesAvailable) {
             if (c.getName().equals(category.getName()))  {
                 categoryName = true;
             }
@@ -79,15 +84,16 @@ public class CategoryRESTController {
 
     @PutMapping("edit/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable long id, @RequestBody CategoryDTO categoryDTO) {
-        Category existingCategory = categoryService.findCategory(id);
-        if (existingCategory == null) {
+        Optional<DCategory> existingCategoryOptional = categoryService.findCategory(id);
+        if (existingCategoryOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        DCategory existingCategory = existingCategoryOptional.get();
 
         if (categoryDTO.getName() != null) {
             existingCategory.setName(categoryDTO.getName());
         }
-
         if (categoryDTO.getColor() != null) {
             existingCategory.setColor(categoryDTO.getColor());
         }
@@ -102,16 +108,21 @@ public class CategoryRESTController {
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
-        Category existingCategory = categoryService.findCategory(id);
-        Category sinCategoria = categoryService.findCategoryByName("Sin Categoria");
-
-        if (existingCategory == null) {
+        Optional<DCategory> existingCategoryOptional = categoryService.findCategory(id);
+        if (existingCategoryOptional.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
 
-        List<Product> productsToDelete = productService.findProductsByCategory(existingCategory.getName());
+        DCategory existingCategory = existingCategoryOptional.get();
+        DCategory sinCategoria = categoryService.findCategoryByName("Sin Categoria");
 
-        for (Product product : productsToDelete) {
+        if (existingCategory.equals(sinCategoria)) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        List<DProduct> productsToDelete = productService.findProductsByCategory(existingCategory.getName());
+
+        for (DProduct product : productsToDelete) {
             product.setCategory(sinCategoria);
             productService.updateProduct(product.getId(), product);
         }
@@ -123,10 +134,12 @@ public class CategoryRESTController {
 
     @PatchMapping("edit/{id}")
     public ResponseEntity<CategoryDTO> editCategoryP(@PathVariable long id, @RequestBody CategoryDTO partialCategoryDTO) {
-        Category existingCategory = categoryService.findCategory(id);
-        if (existingCategory == null) {
+        Optional<DCategory> existingCategoryOptional = categoryService.findCategory(id);
+        if (existingCategoryOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        DCategory existingCategory = existingCategoryOptional.get();
 
         if (partialCategoryDTO.getName() != null) {
             existingCategory.setName(partialCategoryDTO.getName());
@@ -135,10 +148,11 @@ public class CategoryRESTController {
             existingCategory.setColor(partialCategoryDTO.getColor());
         }
 
-        categoryService.updateCategory(existingCategory.getId(),existingCategory);
+        categoryService.updateCategory(existingCategory.getId(), existingCategory);
 
         return ResponseEntity.status(200).body(new CategoryDTO(existingCategory));
     }
+
 
 }
 

@@ -90,10 +90,7 @@ public class ProductWebController {
 
             // Fetch category details for the product
             Optional<DCategory> category = categoryService.findCategory(product.getCategoryId());
-            if (category.isPresent()) {
-                model.addAttribute("categoryName", category.get().getName());
-
-            }
+            category.ifPresent(dCategory -> model.addAttribute("categoryName", dCategory.getName()));
             model.addAttribute("product", product);
             return "productDetails";
         } else {

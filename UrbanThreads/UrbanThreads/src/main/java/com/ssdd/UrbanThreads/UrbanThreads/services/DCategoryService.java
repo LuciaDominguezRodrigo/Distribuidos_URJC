@@ -46,4 +46,8 @@ public class DCategoryService {
     public Collection<DCategory> findAllC() {
             return categoryRepository.findAll();
     }
+
+    public void saveCategory(DCategory category) {
+        categoryRepository.save(category);
+    }
 }
