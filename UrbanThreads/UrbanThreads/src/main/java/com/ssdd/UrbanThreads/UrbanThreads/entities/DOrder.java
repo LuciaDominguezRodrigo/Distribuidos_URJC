@@ -20,6 +20,9 @@ public class DOrder {
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
+    @OneToMany(mappedBy = "order")
+    private List<DOrderedProduct> orderedProducts;
+
 
     public DOrder(){
         this.orderStatus = OrderStatus.PENDING;

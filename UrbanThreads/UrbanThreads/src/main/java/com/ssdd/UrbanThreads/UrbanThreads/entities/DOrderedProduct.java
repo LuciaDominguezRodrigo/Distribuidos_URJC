@@ -12,17 +12,21 @@ import lombok.Setter;
 public class DOrderedProduct {
 
     @Id
-    private int orderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Id
-    private int productId;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private DOrder order;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private DProduct product;
 
     @Column(nullable = false)
     private String name;
 
     private String size;
-
-    private int selectedSizeAvailableUnits;
 
     private String color;
 

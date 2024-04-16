@@ -61,6 +61,9 @@ public class DProduct {
 
     private boolean deleted;
 
+    @OneToMany(mappedBy = "product")
+    private List<DOrderedProduct> orderedProducts;
+
 
     public DProduct() {
     }
