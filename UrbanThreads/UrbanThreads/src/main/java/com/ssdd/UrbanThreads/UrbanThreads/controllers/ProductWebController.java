@@ -36,7 +36,7 @@ public class ProductWebController {
     @GetMapping("/")
     public String index(Model model) {
         nextProductIndex = productsRefreshSize;
-        List<DProduct> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex - 1);
+        List<DProduct> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex);
 
         if (products.isEmpty()) {
             model.addAttribute("products", new ArrayList<DProduct>());

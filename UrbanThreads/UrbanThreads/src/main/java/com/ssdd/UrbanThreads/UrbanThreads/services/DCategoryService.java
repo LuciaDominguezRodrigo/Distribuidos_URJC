@@ -42,7 +42,7 @@ public class DCategoryService {
     public Collection<DCategory> getAllCategories() {
        return categoryRepository.findAll();
     }
-    
+
     public Collection<DCategory> findAllC() {
             return categoryRepository.findAll();
     }
