@@ -1,10 +1,10 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.*;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.DCategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.DProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +23,10 @@ import java.util.*;
 public class ProductWebController {
 
     @Autowired
-    private ProductService productService;
+    private DProductService productService;
 
     @Autowired
-    private CategoryService categoryService;
+    private DCategoryService categoryService;
 
     private int nextProductIndex = 3;
     private int productsRefreshSize = 4; //this number controls how many elements are charged
@@ -36,23 +36,27 @@ public class ProductWebController {
     @GetMapping("/")
     public String index(Model model) {
         nextProductIndex = productsRefreshSize;
-        List<Product> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex - 1);
+        List<DProduct> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex - 1);
 
         if (products.isEmpty()) {
-            model.addAttribute("products", new ArrayList<Product>());
+            model.addAttribute("products", new ArrayList<DProduct>());
         } else {
             model.addAttribute("products", products);
 
         }
         nextProductIndex = products.size();
         model.addAttribute("allCategories", categoryService.findAllCategories());
+        for (DCategory category: categoryService.findAll()){
+            model.addAttribute("name", category.getName());
+
+        }
         return "index";
     }
 
 
     @GetMapping("/newProducts")
     public String newEvents(Model model) {
-        List<Product> products = productService.findByCurrentCategoryAndIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
+        List<DProduct> products = productService.findByCurrentCategoryAndIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
         nextProductIndex += products.size();
         model.addAttribute("additionalProducts", products);
         if (nextProductIndex > productService.findAllProducts().size()) { //To show / hide Load more products button
@@ -65,43 +69,44 @@ public class ProductWebController {
     }
 
     @GetMapping("/product/{id}")
-    public String showProduct(Model model, @PathVariable int id) {
-        Product product = productService.findProduct(id);
-        model.addAttribute("product", product);
-        model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
-        model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
-        model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
-        model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L));
-        model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
-        model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
+    public String showProduct(Model model, @PathVariable long id) {
 
-        model.addAttribute("categoryName", product.getCategory().getName());
 
         return "productDetails";
     }
 
     @GetMapping("/editProduct/{id}")
     public String editEvent(@PathVariable int id, Model model) {
-        Product product = productService.findProduct(id);
-        model.addAttribute("product", product);
-        Category currentCategory = product.getCategory();
-        model.addAttribute("currentCategory", currentCategory);
+        Optional<DProduct> productOptional = productService.findProduct(id);
+        if (productOptional.isPresent()) {
+            DProduct product = productOptional.get();
+            model.addAttribute("product", product);
 
-        List<Category> otherCategories = new ArrayList<>();
-        for (Category c : categoryService.findAllCategories()) {
-            if(!c.equals(currentCategory) && !Objects.equals(c.getName(), "Sin Categoria")){
-                otherCategories.add(c);
+            // Verificar si el producto tiene tallas disponibles
+            if (product.getAvailableSizes() != null) {
+                model.addAttribute("sizeXS", product.getAvailableSizes().getOrDefault(Size.XS, 0));
+                model.addAttribute("sizeS", product.getAvailableSizes().getOrDefault(Size.S, 0));
+                model.addAttribute("sizeM", product.getAvailableSizes().getOrDefault(Size.M, 0));
+                model.addAttribute("sizeL", product.getAvailableSizes().getOrDefault(Size.L, 0));
+                model.addAttribute("sizeXL", product.getAvailableSizes().getOrDefault(Size.XL, 0));
+                model.addAttribute("sizeXXL", product.getAvailableSizes().getOrDefault(Size.XXL, 0));
+            } else {
+                // Si no hay tallas disponibles, establecer todas las tallas en 0
+                model.addAttribute("sizeXS", 0);
+                model.addAttribute("sizeS", 0);
+                model.addAttribute("sizeM", 0);
+                model.addAttribute("sizeL", 0);
+                model.addAttribute("sizeXL", 0);
+                model.addAttribute("sizeXXL", 0);
+            }
+
+            // Verificar si el producto tiene una categoría
+            if (product.getCategory() != null) {
+                model.addAttribute("categoryName", product.getCategory().getName());
+            } else {
+                model.addAttribute("categoryName", "N/A");
             }
         }
-        model.addAttribute("otherCategories",otherCategories);
-
-        model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
-        model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
-        model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
-        model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L));
-        model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
-        model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
-
         return "createForm";
     }
 
@@ -119,27 +124,29 @@ public class ProductWebController {
                             @RequestParam("sizeXXL") int xxlUnits,
                             @RequestParam("photo") String photo) {
 
-        Product product = productService.findProduct(id);
+        Optional<DProduct> oproduct = productService.findProduct(id);
+        if (oproduct.isPresent()) {
+            DProduct product = oproduct.get();
 
-        product.setName(name);
-        //product.setCategory(categoryService.findCategory(categoryId));
-        product.setPrice(price);
-        product.setDescription(description);
+            product.setName(name);
+            //product.setCategory(categoryService.findCategory(categoryId));
+            product.setPrice(price);
+            product.setDescription(description);
 
-        Map<Size, Integer> availableSizes = new HashMap<>();
-        availableSizes.put(Size.XS, xsUnits);
-        availableSizes.put(Size.S, sUnits);
-        availableSizes.put(Size.M, mUnits);
-        availableSizes.put(Size.L, lUnits);
-        availableSizes.put(Size.XL, xlUnits);
-        availableSizes.put(Size.XXL, xxlUnits);
+            Map<Size, Integer> availableSizes = new HashMap<>();
+            availableSizes.put(Size.XS, xsUnits);
+            availableSizes.put(Size.S, sUnits);
+            availableSizes.put(Size.M, mUnits);
+            availableSizes.put(Size.L, lUnits);
+            availableSizes.put(Size.XL, xlUnits);
+            availableSizes.put(Size.XXL, xxlUnits);
 
-        product.setAvailableSizes(availableSizes);
-        product.setPhoto(photo);
+            product.setAvailableSizes(availableSizes);
+            product.setPhoto(photo);
 
-        product.setCategory(categoryService.findCategoryByName(category));
-        productService.updateProduct(id, product);
-
+            product.setCategory(categoryService.findCategoryByName(category));
+            productService.updateProduct(id, product);
+        }
         return "redirect:/";
     }
 
@@ -164,9 +171,9 @@ public class ProductWebController {
         availableSizes.put(Size.XL, xlUnits);
         availableSizes.put(Size.XXL, xxlUnits);
 
-        Category c = categoryService.findCategoryByName(category);
+        DCategory c = categoryService.findCategoryByName(category);
 
-        Product newProduct = new Product(name, c , price, photo, description, availableSizes);
+        DProduct newProduct = new DProduct(name, c , price, photo, description, availableSizes);
         productService.saveProduct(newProduct);
 
         return "redirect:/";
@@ -174,9 +181,9 @@ public class ProductWebController {
 
     @GetMapping("/createProduct")
     public String newProductCharge(Model model) {
-        Collection<Category> categories = categoryService.findAllCategories();
-        List<Category> shownC  = new ArrayList<>();
-        for (Category c:categories) {
+        Collection<DCategory> categories = categoryService.findAllC();
+        List<DCategory> shownC  = new ArrayList<>();
+        for (DCategory c:categories) {
             if (!Objects.equals(c.getName(), "Sin Categoria")){
                 shownC.add(c);
             }

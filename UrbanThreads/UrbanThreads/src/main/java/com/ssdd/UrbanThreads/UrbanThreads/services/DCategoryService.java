@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DCategoryService {
@@ -39,5 +41,23 @@ public class DCategoryService {
 
     public Collection<DCategory> getAllCategories() {
        return categoryRepository.findAll();
+    }
+
+    public List<String> findAllCategories() {
+        List<String> allCategories = categoryRepository.findAll()
+                .stream()
+                .map(DCategory::getName) // Asumiendo que el nombre de la categoría es un campo llamado "name"
+                .distinct()
+                .collect(Collectors.toList());
+
+        return allCategories;
+    }
+
+    public List<DCategory> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    public Collection<DCategory> findAllC() {
+            return categoryRepository.findAll();
     }
 }

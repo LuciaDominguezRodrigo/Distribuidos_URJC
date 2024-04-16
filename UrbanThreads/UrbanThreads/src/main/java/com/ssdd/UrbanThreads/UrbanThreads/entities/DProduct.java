@@ -9,7 +9,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.sql.rowset.serial.SerialBlob;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Set;
 
@@ -58,6 +62,8 @@ public class DProduct {
         this.category = category;
     }
 
+    @Setter
+    @Getter
     @ElementCollection
     @CollectionTable(name = "product_sizes", joinColumns = @JoinColumn(name = "product_id"))
     @MapKeyEnumerated(EnumType.STRING)
@@ -73,5 +79,29 @@ public class DProduct {
         this.availableSizes = as;
     }
 
+    public DProduct (String name, DCategory category, double price,String photo,String description, Map<Size, Integer>as) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.setPhoto(photo);
+        this.description = description;
+        this.availableSizes = as;
+    }
 
+    public void setPhoto(String photo) {
+        try {
+            // Convertir el String a un arreglo de bytes
+            byte[] bytes = photo.getBytes();
+
+            // Crear un objeto InputStream desde el arreglo de bytes
+            InputStream inputStream = new ByteArrayInputStream(bytes);
+
+            // Crear un objeto Blob a partir del InputStream
+            this.photo = new SerialBlob(bytes);
+        } catch (SQLException ex) {
+            // Manejar la excepción
+            ex.printStackTrace();
+        }
+    }
 }
+
