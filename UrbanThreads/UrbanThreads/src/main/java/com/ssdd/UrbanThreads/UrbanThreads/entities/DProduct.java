@@ -136,6 +136,10 @@ public class DProduct {
     public Blob getPhoto() {
         return this.photo;
     }
+
+    public Long getCategoryId() {
+        return this.category.getId();
+    }
 }
 
 

@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col-lg-6" >
             <!-- Imagen del Producto -->
-            <img src="{{product.photo}}" class="img-fluid mx-auto d-block mb-3" alt="Imagen del Producto">
+            <img src="/event/image/{{product.id}}" class="img-fluid mx-auto d-block mb-3" alt="Imagen del Producto">
             
             <!-- Contenedor de la Descripción y Sugerencias de Combinación -->
             <div class="row">
@@ -59,8 +59,8 @@
             <form action="/newProductInOrder" method = "POST">
                 <div class="form-group">
                     <label for="sizeSelect">Talla:</label>
-                    <select class="form-control" id="sizeSelect" name="selectedSize" onchange="checkStock({{sizeXS}},{{sizeS}},{{sizeM}},{{sizeL}},{{sizeXL}},{{sizeXXL}})" required>
-                        <option value="" disabled selected>Selecciona una talla</option> <!-- Opción inicial deshabilitada -->
+                   <select class="form-control" id="sizeSelect" name="selectedSize" onchange="" required>
+                        <option value="" disabled selected>Selecciona una talla</option>  Opción inicial deshabilitada
                         <option value="XS">XS</option>
                         <option value="S">S</option>
                         <option value="M">M</option>

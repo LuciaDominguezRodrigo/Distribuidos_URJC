@@ -83,9 +83,22 @@ public class ProductWebController {
 
     @GetMapping("/product/{id}")
     public String showProduct(Model model, @PathVariable long id) {
+        Optional<DProduct> productOptional = productService.findProduct(id);
 
+        if (productOptional.isPresent()) {
+            DProduct product = productOptional.get();
 
-        return "productDetails";
+            // Fetch category details for the product
+            Optional<DCategory> category = categoryService.findCategory(product.getCategoryId());
+            if (category.isPresent()) {
+                model.addAttribute("categoryName", category.get().getName());
+
+            }
+            model.addAttribute("product", product);
+            return "productDetails";
+        } else {
+            return "error";
+        }
     }
 
     @GetMapping("/editProduct/{id}")
