@@ -4,41 +4,37 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@Getter
+@Setter
 public class DOrder {
-    // Getters y setters
-    @Setter
-    @Getter
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int orderId;
 
-    @Setter
-    @Getter
-    @Column(name = "order_date")
-    private Date orderDate;
+    @Column(name = "order_status")
+    private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "id")
-    private Set<DOrder> orderItems;
+    /*@OneToMany(mappedBy = "id")
+    private List<Product> orderProducts = new ArrayList<>();*/
 
-    // Constructor vacío (necesario para JPA)
-    public DOrder() {
+    public DOrder(){
+        this.orderStatus = OrderStatus.PENDING;
+    };
+
+    public DOrder(int orderId, OrderStatus orderStatus, List<Product> orderProducts) {
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
+        //this.orderProducts = orderProducts;
     }
 
-    // Constructor con parámetros
-    public DOrder(Date orderDate) {
-        this.orderDate = orderDate;
-    }
+    /*
+    public List<Product> getProducts() {
+        return orderProducts;
+    }*/
 
-    public Set<DOrder> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(Set<DOrder> orderItems) {
-        this.orderItems = orderItems;
-    }
 }

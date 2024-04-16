@@ -90,9 +90,8 @@ public class DatabaseInitializer {
         productRepository.save(product6);
 
         // Inicializar una orden con algunos elementos de pedido
-        DOrder order = new DOrder(new Date());
+        DOrder order = new DOrder();
         Set<DOrder> orderItems = new HashSet<>();
-        order.setOrderItems(orderItems);
         orderRepository.save(order);
     }
 
