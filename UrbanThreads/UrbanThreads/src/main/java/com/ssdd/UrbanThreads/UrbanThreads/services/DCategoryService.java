@@ -42,21 +42,7 @@ public class DCategoryService {
     public Collection<DCategory> getAllCategories() {
        return categoryRepository.findAll();
     }
-
-    public List<String> findAllCategories() {
-        List<String> allCategories = categoryRepository.findAll()
-                .stream()
-                .map(DCategory::getName) // Asumiendo que el nombre de la categoría es un campo llamado "name"
-                .distinct()
-                .collect(Collectors.toList());
-
-        return allCategories;
-    }
-
-    public List<DCategory> findAll() {
-        return categoryRepository.findAll();
-    }
-
+    
     public Collection<DCategory> findAllC() {
             return categoryRepository.findAll();
     }

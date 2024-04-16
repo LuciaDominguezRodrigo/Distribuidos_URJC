@@ -44,10 +44,9 @@ public class ProductWebController {
             model.addAttribute("products", products);
         }
         nextProductIndex = products.size();
-        model.addAttribute("allCategories", categoryService.findAllCategories());
-        for (DCategory category: categoryService.findAll()){
+        model.addAttribute("allCategories", categoryService.findAllC());
+        for (DCategory category: categoryService.findAllC()){
             model.addAttribute("name", category.getName());
-
         }
         return "index";
     }
