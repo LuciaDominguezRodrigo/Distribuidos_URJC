@@ -23,6 +23,9 @@ public class DOrderedProductService {
     @Autowired
     private DOrderedProductRepository orderedProductRepository;
 
+    public void saveOrderedProduct(DOrderedProduct orderedProduct) {
+        orderedProductRepository.save(orderedProduct);
+    }
 
     //Currently implemented in OrderService
     public void addProductToCurrentOrder(int id, DProduct product, String size, String color, int quantity) {
