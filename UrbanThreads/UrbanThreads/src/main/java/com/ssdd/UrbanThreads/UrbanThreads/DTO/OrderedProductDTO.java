@@ -1,5 +1,6 @@
 package com.ssdd.UrbanThreads.UrbanThreads.DTO;
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderedProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,10 +30,10 @@ public class OrderedProductDTO {
         this.quantity = quantity;
     }
 
-    public  OrderedProductDTO (Product product) { //Product object, only filled with specific order information
+    public  OrderedProductDTO (OrderedProduct product) { //Product object, only filled with specific order information
         this.orderId = product.getId();
         this.name = product.getName();
-        this.price = product.getPrice();
+        this.price = product.getTotalPrice();
         this.size = product.getSize();
         this.color = product.getColor();
         this.quantity = product.getQuantity();

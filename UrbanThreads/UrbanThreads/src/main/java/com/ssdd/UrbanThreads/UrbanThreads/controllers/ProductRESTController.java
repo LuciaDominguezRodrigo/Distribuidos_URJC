@@ -1,14 +1,9 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
-import com.ssdd.UrbanThreads.UrbanThreads.DTO.CategoryDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.ProductDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DCategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,32 +17,32 @@ import java.util.*;
 @RequestMapping ("/api/products")
 public class ProductRESTController {
     @Autowired
-    private DProductService productService;
+    private ProductService productService;
 
     @Autowired
-    private DCategoryService categoryService;
+    private CategoryService categoryService;
 
 
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> obtenerProducto(@PathVariable int id) {
-        Optional<DProduct> productOptional = productService.findProduct(id);
+        Optional<Product> productOptional = productService.findProduct(id);
         if (productOptional.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
 
-        DProduct product = productOptional.get();
+        Product product = productOptional.get();
         ProductDTO productDTO = new ProductDTO(product);
         return ResponseEntity.status(200).body(productDTO);
     }
     @GetMapping("/all")
     public ResponseEntity<Collection<ProductDTO>> getAll(){
-        Collection<DProduct> products = productService.findAllProducts();
+        Collection<Product> products = productService.findAllProducts();
         Collection<ProductDTO> cDTO = new ArrayList<>();
         if (products== null) {
             return ResponseEntity.notFound().build();
         }
-        for (DProduct c: products){
+        for (Product c: products){
             ProductDTO pDTO = new ProductDTO(c);
             assert false;
             cDTO.add(pDTO);
@@ -57,17 +52,17 @@ public class ProductRESTController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<ProductDTO> createProducto(@RequestBody DProduct product) {
-        Optional<DProduct> existingProductOptional = productService.findProduct(product.getId());
+    public ResponseEntity<ProductDTO> createProducto(@RequestBody Product product) {
+        Optional<Product> existingProductOptional = productService.findProduct(product.getId());
         if (existingProductOptional.isPresent()) {
             return ResponseEntity.status(409).build(); // Conflict
         }
 
-        DCategory category = product.getCategory();
-        Collection<DCategory> categoriesAvailable = categoryService.getAllCategories();
+        Category category = product.getCategory();
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
 
         boolean categoryExists = false;
-        for (DCategory c : categoriesAvailable) {
+        for (Category c : categoriesAvailable) {
             if (c.getName().equals(category.getName()) && c.getColor().equals(category.getColor())) {
                 categoryExists = true;
             }
@@ -77,7 +72,7 @@ public class ProductRESTController {
             return ResponseEntity.status(404).build(); // Category not found among available categories
         }
 
-        DProduct newProduct = productService.saveProduct(product);
+        Product newProduct = productService.saveProduct(product);
         if (newProduct == null || newProduct.getCategory() == null) {
             return ResponseEntity.status(410).build(); // Gone
         }
@@ -95,7 +90,7 @@ public class ProductRESTController {
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable int id) {
-        Optional<DProduct> productOptional = productService.findProduct(id);
+        Optional<Product> productOptional = productService.findProduct(id);
         if (productOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -104,18 +99,18 @@ public class ProductRESTController {
     }
 
     @PutMapping("edit/{id}")
-    public ResponseEntity<ProductDTO> editP(@PathVariable int id, @RequestBody DProduct product) {
-        Optional<DProduct> existingProductOptional = productService.findProduct(id);
+    public ResponseEntity<ProductDTO> editP(@PathVariable int id, @RequestBody Product product) {
+        Optional<Product> existingProductOptional = productService.findProduct(id);
         if (existingProductOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        DProduct existingProduct = existingProductOptional.get();
+        Product existingProduct = existingProductOptional.get();
 
-        DCategory category = product.getCategory();
-        Collection<DCategory> categoriesAvailable = categoryService.getAllCategories();
+        Category category = product.getCategory();
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
 
         boolean categoryExists = false;
-        for (DCategory c : categoriesAvailable) {
+        for (Category c : categoriesAvailable) {
             if (c.getName().equals(category.getName()) && c.getColor().equals(category.getColor())) {
                 categoryExists = true;
 
@@ -131,17 +126,17 @@ public class ProductRESTController {
         existingProduct.setPrice(product.getPrice());
         existingProduct.setDescription(product.getDescription());
 
-        DProduct updatedProduct = productService.saveProduct(existingProduct);
+        Product updatedProduct = productService.saveProduct(existingProduct);
         ProductDTO productDTO = new ProductDTO(updatedProduct);
         return ResponseEntity.status(200).body(productDTO);
     }
     @PatchMapping("editP/{id}")
-    public ResponseEntity<ProductDTO> editP2(@PathVariable int id, @RequestBody DProduct partialProduct) {
-        Optional<DProduct> existingProductOptional = productService.findProduct(id);
+    public ResponseEntity<ProductDTO> editP2(@PathVariable int id, @RequestBody Product partialProduct) {
+        Optional<Product> existingProductOptional = productService.findProduct(id);
         if (existingProductOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        DProduct existingProduct = existingProductOptional.get();
+        Product existingProduct = existingProductOptional.get();
 
         if (partialProduct.getName() != null) {
             existingProduct.setName(partialProduct.getName());
@@ -157,11 +152,11 @@ public class ProductRESTController {
             existingProduct.setCategory(partialProduct.getCategory());
         }
 
-        Collection<DCategory> categoriesAvailable = categoryService.getAllCategories();
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
 
-        DCategory category = partialProduct.getCategory();
+        Category category = partialProduct.getCategory();
         boolean categoryExists = false;
-        for (DCategory c : categoriesAvailable) {
+        for (Category c : categoriesAvailable) {
             if (c.getName().equals(category.getName()) && c.getColor().equals(category.getColor()))  {
                 categoryExists = true;
             }
@@ -171,7 +166,7 @@ public class ProductRESTController {
             return ResponseEntity.status(404).build(); // Category not found among available categories
         }
 
-        DProduct updatedProduct = productService.saveProduct(existingProduct);
+        Product updatedProduct = productService.saveProduct(existingProduct);
         ProductDTO productDTO = new ProductDTO(updatedProduct);
         return ResponseEntity.status(200).body(productDTO);
     }

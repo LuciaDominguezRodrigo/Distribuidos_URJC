@@ -2,6 +2,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.DTO;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderedProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,7 +29,7 @@ public class OrderDTO {
     public  OrderDTO (Order order) {
         this.orderId = order.getOrderId();
         this.orderStatus = order.getOrderStatus();
-        for (Product p : order.getOrderProducts()) {
+        for (OrderedProduct p : order.getOrderedProducts()) {
             this.orderedProductsDTO.add(new OrderedProductDTO(p));
         }
     }

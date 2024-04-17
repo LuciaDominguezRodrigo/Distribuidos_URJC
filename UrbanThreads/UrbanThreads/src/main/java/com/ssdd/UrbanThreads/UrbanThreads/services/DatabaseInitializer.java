@@ -1,9 +1,9 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DOrder;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.*;
 import jakarta.annotation.PostConstruct;
@@ -21,21 +21,21 @@ import java.util.*;
 @Service
 public class DatabaseInitializer {
     @Autowired
-    private DCategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    private DOrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
-    private DProductRepository productRepository;
+    private ProductRepository productRepository;
 
 
     @PostConstruct
     public void init() throws IOException, SQLException {
         // Inicializar algunas categorías
-        DCategory category1 = new DCategory("Hombre", "#D1F2EB","Ropa urbana de confianza, para todas las edades");
-        DCategory category2 = new DCategory("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades");
-        DCategory category3 = new DCategory("Sin Categoria",  "#D2B4DE","Ropa urbana de confianza, para todas las edades");
+        Category category1 = new Category("Hombre", "#D1F2EB","Ropa urbana de confianza, para todas las edades");
+        Category category2 = new Category("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades");
+        Category category3 = new Category("Sin Categoria",  "#D2B4DE","Ropa urbana de confianza, para todas las edades");
 
         categoryRepository.save(category1);
         categoryRepository.save(category2);
@@ -75,12 +75,12 @@ public class DatabaseInitializer {
         Blob photoBlob6 = new SerialBlob(photoBytes6);
 
         // Inicializar algunos productos asociados a las categorías
-        DProduct product1 = new DProduct("Camiseta", category1, 10.0, photoBlob1,"Descripción 1",as);
-        DProduct product2 = new DProduct("Pantalón ancho", category1, 20.0, photoBlob2,"Descripción 2",as);
-        DProduct product3 = new DProduct("Calcetines", category2, 15.0, photoBlob3,"Descripción 3",as);
-        DProduct product4 = new DProduct("Abrigo", category1, 25.0, photoBlob4,"Descripción 4",as);
-        DProduct product5 = new DProduct("Chaqueta", category2, 12.0, photoBlob5,"Descripción 5",as);
-        DProduct product6 = new DProduct("Sudadera", category2, 18.0, photoBlob6,"Descripción 6",as);
+        Product product1 = new Product("Camiseta", category1, 10.0, photoBlob1,"Descripción 1",as);
+        Product product2 = new Product("Pantalón ancho", category1, 20.0, photoBlob2,"Descripción 2",as);
+        Product product3 = new Product("Calcetines", category2, 15.0, photoBlob3,"Descripción 3",as);
+        Product product4 = new Product("Abrigo", category1, 25.0, photoBlob4,"Descripción 4",as);
+        Product product5 = new Product("Chaqueta", category2, 12.0, photoBlob5,"Descripción 5",as);
+        Product product6 = new Product("Sudadera", category2, 18.0, photoBlob6,"Descripción 6",as);
 
         productRepository.save(product1);
         productRepository.save(product2);
@@ -90,8 +90,8 @@ public class DatabaseInitializer {
         productRepository.save(product6);
 
         // Inicializar una orden con algunos elementos de pedido
-        DOrder order = new DOrder();
-        Set<DOrder> orderItems = new HashSet<>();
+        Order order = new Order();
+        Set<Order> orderItems = new HashSet<>();
         orderRepository.save(order);
     }
 

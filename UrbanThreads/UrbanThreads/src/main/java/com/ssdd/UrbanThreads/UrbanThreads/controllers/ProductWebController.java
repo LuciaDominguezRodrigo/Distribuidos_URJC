@@ -3,8 +3,6 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.*;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DCategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
-import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -26,10 +23,10 @@ import java.util.*;
 public class ProductWebController {
 
     @Autowired
-    private DProductService productService;
+    private ProductService productService;
 
     @Autowired
-    private DCategoryService categoryService;
+    private CategoryService categoryService;
 
     private int nextProductIndex = 3;
     private int productsRefreshSize = 4; //this number controls how many elements are charged
@@ -39,16 +36,16 @@ public class ProductWebController {
     @GetMapping("/")
     public String index(Model model) {
         nextProductIndex = productsRefreshSize;
-        List<DProduct> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex);
+        List<Product> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex);
 
         if (products.isEmpty()) {
-            model.addAttribute("products", new ArrayList<DProduct>());
+            model.addAttribute("products", new ArrayList<Product>());
         } else {
             model.addAttribute("products", products);
         }
         nextProductIndex = products.size();
         model.addAttribute("allCategories", categoryService.findAllC());
-        for (DCategory category: categoryService.findAllC()){
+        for (Category category: categoryService.findAllC()){
             model.addAttribute("name", category.getName());
         }
         return "index";
@@ -57,7 +54,7 @@ public class ProductWebController {
     @GetMapping("/event/image/{id}")
     @ResponseBody
     public byte[] showEventImage(@PathVariable long id) throws SQLException, IOException {
-        Optional<DProduct> eventOptional = productService.findProduct(id);
+        Optional<Product> eventOptional = productService.findProduct(id);
         if (eventOptional.isPresent()) {
             Blob photoBlob = eventOptional.get().getPhoto();
             int blobLength = (int) photoBlob.length();
@@ -72,7 +69,7 @@ public class ProductWebController {
 
     @GetMapping("/newProducts")
     public String newEvents(Model model) {
-        List<DProduct> products = productService.findByCurrentCategoryAndIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
+        List<Product> products = productService.findByCurrentCategoryAndIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
         nextProductIndex += products.size();
         model.addAttribute("additionalProducts", products);
         if (nextProductIndex > productService.findAllProducts().size()) { //To show / hide Load more products button
@@ -86,13 +83,13 @@ public class ProductWebController {
 
     @GetMapping("/product/{id}")
     public String showProduct(Model model, @PathVariable long id) {
-        Optional<DProduct> productOptional = productService.findProduct(id);
+        Optional<Product> productOptional = productService.findProduct(id);
 
         if (productOptional.isPresent()) {
-            DProduct product = productOptional.get();
+            Product product = productOptional.get();
 
             // Fetch category details for the product
-            Optional<DCategory> category = categoryService.findCategory(product.getCategoryId());
+            Optional<Category> category = categoryService.findCategory(product.getCategoryId());
             category.ifPresent(dCategory -> model.addAttribute("categoryName", dCategory.getName()));
             model.addAttribute("product", product);
 
@@ -112,13 +109,13 @@ public class ProductWebController {
 
     @GetMapping("/editProduct/{id}")
     public String editEvent(@PathVariable int id, Model model) {
-        Optional<DProduct> productOptional = productService.findProduct(id);
+        Optional<Product> productOptional = productService.findProduct(id);
         if (productOptional.isPresent()) {
-            DProduct product = productOptional.get();
+            Product product = productOptional.get();
             model.addAttribute("product", product);
-            List<DCategory> otherCategories = (List<DCategory>) categoryService.getAllCategories();
-            List<DCategory> visibleC = new ArrayList<>();
-            for (DCategory c: otherCategories){
+            List<Category> otherCategories = (List<Category>) categoryService.getAllCategories();
+            List<Category> visibleC = new ArrayList<>();
+            for (Category c: otherCategories){
                 if (!Objects.equals(c.getName(), "Sin Categoria")){
                     visibleC.add(c);
                 }
@@ -167,9 +164,9 @@ public class ProductWebController {
                             @RequestParam("sizeXXL") int xxlUnits,
                             @RequestParam("photo") String photo) {
 
-        Optional<DProduct> oproduct = productService.findProduct(id);
+        Optional<Product> oproduct = productService.findProduct(id);
         if (oproduct.isPresent()) {
-            DProduct product = oproduct.get();
+            Product product = oproduct.get();
 
             product.setName(name);
             //product.setCategory(categoryService.findCategory(categoryId));
@@ -214,7 +211,7 @@ public class ProductWebController {
         availableSizes.put(Size.XL, xlUnits);
         availableSizes.put(Size.XXL, xxlUnits);
 
-        DCategory c = categoryService.findCategoryByName(category);
+        Category c = categoryService.findCategoryByName(category);
 
         try {
             // Convertir el contenido del archivo a un arreglo de bytes
@@ -224,7 +221,7 @@ public class ProductWebController {
             Blob blob = new SerialBlob(bytes);
 
 
-            DProduct newProduct = new DProduct(name, c, price, blob, description, availableSizes);
+            Product newProduct = new Product(name, c, price, blob, description, availableSizes);
             productService.saveProduct(newProduct);
 
             return "redirect:/";
@@ -234,9 +231,9 @@ public class ProductWebController {
     }
     @GetMapping("/createProduct")
     public String newProductCharge(Model model) {
-        Collection<DCategory> categories = categoryService.findAllC();
-        List<DCategory> shownC  = new ArrayList<>();
-        for (DCategory c:categories) {
+        Collection<Category> categories = categoryService.findAllC();
+        List<Category> shownC  = new ArrayList<>();
+        for (Category c:categories) {
             if (!Objects.equals(c.getName(), "Sin Categoria")){
                 shownC.add(c);
             }

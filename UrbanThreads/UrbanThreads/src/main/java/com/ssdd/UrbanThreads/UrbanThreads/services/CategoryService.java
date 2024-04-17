@@ -2,58 +2,49 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.CategoryRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
-
+import java.util.Optional;
 
 @Service
 public class CategoryService {
-
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public Category findCategory(Long id){
-        return categoryRepository.findCategory(id);
+    public Optional<Category> findCategory(Long id){
+        return categoryRepository.findById(id);
     }
 
-    public List<Category> findAllCategories () {
-        return categoryRepository.findAllCategories();
+    public Category findCategoryByName (String name){
+        return categoryRepository.findCategoryByName(name);
     }
 
-    public String getCurrentCategoryFilter() {
-        return categoryRepository.getCurrentCategoryFilter();
+
+
+    public void addNewCategory (Category newC){
+        categoryRepository.save(newC);
     }
 
-    public void setCurrentCategoryFilter(String currentCategoryFilter) {
-        categoryRepository.setCurrentCategoryFilter(currentCategoryFilter);
+    public void deleteCategory(Long id) {
+        categoryRepository.deleteById(id);
     }
 
-    public Category saveCategory (@NotNull Category category){
-        return categoryRepository.saveCategory(category);
+    public void updateCategory(Long id, Category category) {
+        category.setId(id);
+        categoryRepository.save(category);
     }
-
-    public Category updateCategory (Long id, Category category){
-        return categoryRepository.updateCategory(id,category);
-    }
-
-    public void deleteCategory (Long id) { categoryRepository.deleteCategory(id);}
-
 
     public Collection<Category> getAllCategories() {
-            return categoryRepository.findAllCategories();
+       return categoryRepository.findAll();
     }
 
-    public Category findCategoryByName(String name) {
-        return categoryRepository.findCategoryByName(name);
-
+    public Collection<Category> findAllC() {
+            return categoryRepository.findAll();
     }
 
-
-    public void addNewCategory(Category newCategory) {
-        categoryRepository.addCategory(newCategory);
+    public void saveCategory(Category category) {
+        categoryRepository.save(category);
     }
 }

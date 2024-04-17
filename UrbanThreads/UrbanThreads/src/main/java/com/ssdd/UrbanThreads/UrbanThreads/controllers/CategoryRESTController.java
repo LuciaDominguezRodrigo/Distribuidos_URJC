@@ -2,12 +2,8 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.CategoryDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DCategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +19,14 @@ import java.util.Optional;
 public class CategoryRESTController {
 
     @Autowired
-    DCategoryService categoryService;
+    CategoryService categoryService;
 
     @Autowired
-    DProductService productService;
+    ProductService productService;
 
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable long id) {
-        Optional<DCategory> category = categoryService.findCategory(id);
+        Optional<Category> category = categoryService.findCategory(id);
         if (!category.isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -40,12 +36,12 @@ public class CategoryRESTController {
 
     @GetMapping("/all")
     public ResponseEntity<Collection<CategoryDTO>> getCategoryAll() {
-       Collection<DCategory> categories = categoryService.getAllCategories();
+       Collection<Category> categories = categoryService.getAllCategories();
        Collection<CategoryDTO> cDTO = new ArrayList<>();
         if (categories== null) {
             return ResponseEntity.notFound().build();
         }
-        for (DCategory c: categories){
+        for (Category c: categories){
             CategoryDTO categoryDTO = new CategoryDTO(c);
             assert false;
             cDTO.add(categoryDTO);
@@ -56,16 +52,16 @@ public class CategoryRESTController {
 
     @PostMapping("new")
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        DCategory category = new DCategory();
+        Category category = new Category();
         category.setName(categoryDTO.getName());
         category.setColor(categoryDTO.getColor());
         category.setDescription(categoryDTO.getDescription());
 
 
-        Collection<DCategory> categoriesAvailable = categoryService.getAllCategories();
+        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
 
         boolean categoryName = false;
-        for (DCategory c : categoriesAvailable) {
+        for (Category c : categoriesAvailable) {
             if (c.getName().equals(category.getName()))  {
                 categoryName = true;
             }
@@ -84,12 +80,12 @@ public class CategoryRESTController {
 
     @PutMapping("edit/{id}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable long id, @RequestBody CategoryDTO categoryDTO) {
-        Optional<DCategory> existingCategoryOptional = categoryService.findCategory(id);
+        Optional<Category> existingCategoryOptional = categoryService.findCategory(id);
         if (existingCategoryOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        DCategory existingCategory = existingCategoryOptional.get();
+        Category existingCategory = existingCategoryOptional.get();
 
         if (categoryDTO.getName() != null) {
             existingCategory.setName(categoryDTO.getName());
@@ -108,21 +104,21 @@ public class CategoryRESTController {
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable long id) {
-        Optional<DCategory> existingCategoryOptional = categoryService.findCategory(id);
+        Optional<Category> existingCategoryOptional = categoryService.findCategory(id);
         if (existingCategoryOptional.isEmpty()) {
             return ResponseEntity.status(404).build();
         }
 
-        DCategory existingCategory = existingCategoryOptional.get();
-        DCategory sinCategoria = categoryService.findCategoryByName("Sin Categoria");
+        Category existingCategory = existingCategoryOptional.get();
+        Category sinCategoria = categoryService.findCategoryByName("Sin Categoria");
 
         if (existingCategory.equals(sinCategoria)) {
             return ResponseEntity.status(403).build(); // Forbidden
         }
 
-        List<DProduct> productsToDelete = productService.findProductsByCategory(existingCategory.getName());
+        List<Product> productsToDelete = productService.findProductsByCategory(existingCategory.getName());
 
-        for (DProduct product : productsToDelete) {
+        for (Product product : productsToDelete) {
             product.setCategory(sinCategoria);
             productService.updateProduct(product.getId(), product);
         }
@@ -134,12 +130,12 @@ public class CategoryRESTController {
 
     @PatchMapping("edit/{id}")
     public ResponseEntity<CategoryDTO> editCategoryP(@PathVariable long id, @RequestBody CategoryDTO partialCategoryDTO) {
-        Optional<DCategory> existingCategoryOptional = categoryService.findCategory(id);
+        Optional<Category> existingCategoryOptional = categoryService.findCategory(id);
         if (existingCategoryOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        DCategory existingCategory = existingCategoryOptional.get();
+        Category existingCategory = existingCategoryOptional.get();
 
         if (partialCategoryDTO.getName() != null) {
             existingCategory.setName(partialCategoryDTO.getName());

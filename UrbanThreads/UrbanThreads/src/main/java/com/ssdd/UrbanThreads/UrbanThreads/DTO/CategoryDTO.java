@@ -1,7 +1,6 @@
 package com.ssdd.UrbanThreads.UrbanThreads.DTO;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +19,7 @@ public class CategoryDTO {
         this.color = color;
     }
 
-    public CategoryDTO(DCategory category) {
+    public CategoryDTO(Category category) {
         this.name = category.getName();
         this.color = category.getColor();
         this.description = category.getDescription();

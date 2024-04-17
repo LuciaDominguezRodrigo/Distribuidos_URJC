@@ -1,12 +1,8 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DCategory;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DCategoryService;
-import com.ssdd.UrbanThreads.UrbanThreads.services.DProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,10 +18,10 @@ import java.util.*;
 public class CategoryWebController{
 
     @Autowired
-    private DProductService productService;
+    private ProductService productService;
 
     @Autowired
-    private DCategoryService categoryService;
+    private CategoryService categoryService;
 
     /*@GetMapping("/filter")
     public String filterProductsByCategory(@RequestParam("selectedFilter") String categoria) {
@@ -35,10 +31,10 @@ public class CategoryWebController{
 
     @GetMapping("/editCategory")
     public String showEditCategoriesPage(Model model) {
-        Collection<DCategory> categories = categoryService.getAllCategories();
-        List<DCategory> showC = new ArrayList<>();
+        Collection<Category> categories = categoryService.getAllCategories();
+        List<Category> showC = new ArrayList<>();
         List<String> showD = new ArrayList<>();
-        for (DCategory c: categories){
+        for (Category c: categories){
             if (!Objects.equals(c.getName(), "Sin Categoria")){
                     showC.add(c);
             }
@@ -49,13 +45,13 @@ public class CategoryWebController{
 
     @PostMapping("/deleteCategory")
     public String deleteCategoryAndReplace(@RequestParam("name") String categoryName) {
-            DCategory deleteCategory = categoryService.findCategoryByName(categoryName);
+            Category deleteCategory = categoryService.findCategoryByName(categoryName);
             if (deleteCategory != null) {
-                DCategory changeCategory = categoryService.findCategoryByName("Sin Categoria");
+                Category changeCategory = categoryService.findCategoryByName("Sin Categoria");
 
-                List<DProduct> productsInCategory = productService.findProductsByCategory(categoryName);
+                List<Product> productsInCategory = productService.findProductsByCategory(categoryName);
 
-                for (DProduct product : productsInCategory) {
+                for (Product product : productsInCategory) {
                     product.setCategory(changeCategory);
                     productService.updateProduct(product.getId(), product);
                 }
@@ -70,7 +66,7 @@ public class CategoryWebController{
     @PostMapping("/createNewCategory")
     public String createCategory(@RequestParam ("newCategoryName") String categoryName,@RequestParam("categoryD") String des, @RequestParam("categoryColor") String color,Model model){
 
-    DCategory newCategory = new DCategory();
+    Category newCategory = new Category();
 
     if (categoryService.findCategoryByName(categoryName)!=null){
         model.addAttribute("errorMessage", "¡Ya existe una categoría con ese nombre!");
@@ -86,9 +82,9 @@ public class CategoryWebController{
 
     @PostMapping("/editOneCategory/{id}")
     public String editCategory(@PathVariable Long id, @RequestParam("editCategoryName") String nombre, @RequestParam("editCategoryD") String d, @RequestParam("editCategoryColor") String color) {
-        Optional<DCategory> categoryOptional = categoryService.findCategory(id);
+        Optional<Category> categoryOptional = categoryService.findCategory(id);
         if (categoryOptional.isPresent()) {
-            DCategory category = categoryOptional.get();
+            Category category = categoryOptional.get();
             category.setName(nombre);
             category.setColor(color);
             category.setDescription(d);
