@@ -21,10 +21,10 @@ public class OrderService {
     private int selectedOrder = 0;
 
     public Order getCurrentOrder() {
-        return orderRepository.findByOrderId(selectedOrder);
+        return orderRepository.findById(selectedOrder);
     }
 
-    public Order getOrderById(int id) { return orderRepository.findByOrderId(id); }
+    public Order getOrderById(int id) { return orderRepository.findById(id); }
 
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
@@ -38,7 +38,7 @@ public class OrderService {
     }
 
     public int addNewOrder (Order o){
-        return orderRepository.save(o).getOrderId();
+        return orderRepository.save(o).getId();
     }
 
     public void saveOrder(Order currentOrder){
@@ -46,12 +46,12 @@ public class OrderService {
     }
 
     public void deleteCurrentOrder(){
-        orderRepository.deleteOrderByOrderId(selectedOrder);
+        orderRepository.deleteOrderById(selectedOrder);
     }
 
 
     public Order deleteOrderById(int id){
-        return orderRepository.deleteOrderByOrderId(id);
+        return orderRepository.deleteOrderById(id);
     }
 
     public void addProductToCurrentOrder(int productId, Product product, String size, String color, int quantity) {

@@ -41,13 +41,13 @@ public class OrderWebController {
         if(currentOrder == null){
             currentOrder = new Order();
             orderService.addNewOrder(currentOrder);
-            orderService.changeCurrentOrder(currentOrder.getOrderId());
+            orderService.changeCurrentOrder(currentOrder.getId());
         }
         List<Product> orderProducts = currentOrder.getProducts();
         for (Product p : orderProducts) {
             p.setSelectedSizeAvailableUnits(productService.findProduct(p.getId()).getAvailableSizes().get(Size.valueOf(p.getSize())));
         }
-        model.addAttribute("orderId", currentOrder.getOrderId());
+        model.addAttribute("orderId", currentOrder.getId());
         model.addAttribute("allOrdersId", orderService.getAllPendingOrdersId());
         model.addAttribute("productList", orderProducts);
         return "orderPage";
@@ -119,7 +119,7 @@ public class OrderWebController {
     public String newOrder() {
         Order newOrder = new Order();
         orderService.addNewOrder(newOrder);
-        orderService.changeCurrentOrder(newOrder.getOrderId());
+        orderService.changeCurrentOrder(newOrder.getId());
         return "redirect:/orderPage";
     }
 

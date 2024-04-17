@@ -14,7 +14,7 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private int id;
 
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
@@ -28,8 +28,8 @@ public class Order {
         this.orderStatus = OrderStatus.PENDING;
     };
 
-    public Order(int orderId, OrderStatus orderStatus, List<OrderedProduct> orderProducts) {
-        this.orderId = orderId;
+    public Order(int id, OrderStatus orderStatus, List<OrderedProduct> orderProducts) {
+        this.id = id;
         this.orderStatus = orderStatus;
         this.orderedProducts = orderProducts;
     }

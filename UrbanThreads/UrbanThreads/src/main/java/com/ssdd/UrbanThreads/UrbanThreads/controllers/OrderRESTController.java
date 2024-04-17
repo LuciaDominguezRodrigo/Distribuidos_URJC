@@ -63,7 +63,7 @@ public class OrderRESTController {
         newOrder.setOrderProducts(orderProducts);
 
         int orderId = orderService.addNewOrder(newOrder);
-        orderService.changeCurrentOrder(newOrder.getOrderId());
+        orderService.changeCurrentOrder(newOrder.getId());
 
         orderDTO.setOrderId(orderId);
         return ResponseEntity.status(201).body(orderDTO);

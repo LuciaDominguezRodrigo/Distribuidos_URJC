@@ -26,7 +26,7 @@ public class OrderDTO {
     }
 
     public  OrderDTO (Order order) {
-        this.orderId = order.getOrderId();
+        this.orderId = order.getId();
         this.orderStatus = order.getOrderStatus();
         for (OrderedProduct p : order.getOrderedProducts()) {
             this.orderedProductsDTO.add(new OrderedProductDTO(p));

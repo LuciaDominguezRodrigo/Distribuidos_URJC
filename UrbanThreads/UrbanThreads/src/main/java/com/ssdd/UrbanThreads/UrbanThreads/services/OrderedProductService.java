@@ -27,7 +27,7 @@ public class OrderedProductService {
 
     //Currently implemented in OrderService
     public void addProductToCurrentOrder(int id, Product product, String size, String color, int quantity) {
-        Order currentOrder = orderRepository.findByOrderId(orderService.getSelectedOrder());
+        Order currentOrder = orderRepository.findById(orderService.getSelectedOrder());
 
         OrderedProduct newProduct = new OrderedProduct();
         newProduct.setId(id);
@@ -42,7 +42,7 @@ public class OrderedProductService {
 
     //Currently implemented in OrderService
     public void deleteOrderedProduct(int orderId, int productId) {
-        Order currentOrder = orderRepository.findByOrderId(orderId);
+        Order currentOrder = orderRepository.findById(orderId);
 
         if (currentOrder != null) {
             currentOrder.getOrderedProducts().removeIf(product -> product.getId() == productId);
