@@ -4,10 +4,13 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderedProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderRepository;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderedProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OrderedProductService {
@@ -25,27 +28,29 @@ public class OrderedProductService {
         orderedProductRepository.save(orderedProduct);
     }
 
-    //Currently implemented in OrderService
-    public void addProductToCurrentOrder(int id, Product product, String size, String color, int quantity) {
-        Order currentOrder = orderRepository.findById(orderService.getSelectedOrder());
-
+    public void addProductToCurrentOrder(Product product, Size size, String color, int quantity) {
         OrderedProduct newProduct = new OrderedProduct();
-        newProduct.setId(id);
+
+        newProduct.setOrder(orderService.getCurrentOrder());
+        newProduct.setProduct(product);
         newProduct.setName(product.getName());
-        newProduct.setTotalPrice(product.getPrice() * quantity);
         newProduct.setSize(size);
         newProduct.setColor(color);
         newProduct.setQuantity(quantity);
+        newProduct.setTotalPrice(product.getPrice() * quantity);
 
         orderedProductRepository.save(newProduct);
     }
 
-    //Currently implemented in OrderService
-    public void deleteOrderedProduct(int orderId, int productId) {
-        Order currentOrder = orderRepository.findById(orderId);
+    public void deleteOrderedProduct(int productId, String productSize, String productColor, int productQuantity) {
+        List<OrderedProduct> productsInOrder = orderedProductRepository.findByOrder(orderService.getCurrentOrder());
+        if (productsInOrder != null) {
+            for (OrderedProduct p : productsInOrder) { //If product is ordered, must be found
+                if(p.getId() == productId && p.getSize().equals(Size.valueOf(productSize)) && p.getColor().equals(productColor) && p.getQuantity() == productQuantity){
+                    orderedProductRepository.delete(p);
+                }
+            }
 
-        if (currentOrder != null) {
-            currentOrder.getOrderedProducts().removeIf(product -> product.getId() == productId);
         }
     }
 }

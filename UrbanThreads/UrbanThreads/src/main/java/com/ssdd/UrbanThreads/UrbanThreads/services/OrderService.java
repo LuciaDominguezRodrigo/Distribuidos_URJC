@@ -29,6 +29,7 @@ public class OrderService {
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
+
     public void changeCurrentOrder(int orderId){
         this.selectedOrder = orderId;
     }
@@ -52,9 +53,6 @@ public class OrderService {
 
     public Order deleteOrderById(int id){
         return orderRepository.deleteOrderById(id);
-    }
-
-    public void addProductToCurrentOrder(int productId, Product product, String size, String color, int quantity) {
     }
 }
 

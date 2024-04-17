@@ -49,7 +49,9 @@
                         <button class="btn btn-warning mr-2" onclick="editarProducto({{id}});">Editar cantidad</button>
                         <form action="/deleteProductOrder" method="POST">
                             <input type="hidden" name="productId" value="{{id}}">
-                            <input type="hidden" name="orderId" value="{{orderId}}">
+                            <input type="hidden" name="productSize" value="{{size}}">
+                            <input type="hidden" name="productColor" value="{{color}}">
+                            <input type="hidden" name="productQuantity" value="{{quantity}}">
                             <button type="submit" class="btn btn-danger mr-2" onclick ="return deleteW()" style ="margin-top: 10px">Eliminar producto</button>
                         </form>
                     </div>

@@ -1,10 +1,8 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.*;
 import com.ssdd.UrbanThreads.UrbanThreads.services.OrderService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.OrderedProductService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,19 +20,26 @@ public class OrderWebController {
     private OrderService orderService;
 
     @Autowired
+    private OrderedProductService orderedProductService;
+
+    @Autowired
     private ProductService productService;
 
-   /* @PostMapping("/newProductInOrder")
+    //OK
+    @PostMapping("/newProductInOrder")
     public String addToOrder(@RequestParam("id") int productId,
                              @RequestParam("selectedSize") String size,
                              @RequestParam("selectedColor") String color,
                              @RequestParam("quantity") int quantity) {
         Optional<Product> product = productService.findProduct(productId);
-        orderService.addProductToCurrentOrder(productId, product.get(), size, color, quantity);
+        if (product.isPresent()) {
+            orderedProductService.addProductToCurrentOrder(product.get(), Size.valueOf(size), color, quantity);
+        }
 
         return "redirect:/orderPage";
     }
 
+    //OK
     @GetMapping("/orderPage")
     public String showOrderPage(Model model) {
         Order currentOrder = orderService.getCurrentOrder();
@@ -43,13 +48,12 @@ public class OrderWebController {
             orderService.addNewOrder(currentOrder);
             orderService.changeCurrentOrder(currentOrder.getId());
         }
-        List<Product> orderProducts = currentOrder.getProducts();
-        for (Product p : orderProducts) {
-            p.setSelectedSizeAvailableUnits(productService.findProduct(p.getId()).getAvailableSizes().get(Size.valueOf(p.getSize())));
-        }
+        List<OrderedProduct> orderProducts = currentOrder.getOrderedProducts();
+        //Remaining selected size units updating for each product in order (now not neccessary because of size table query)
         model.addAttribute("orderId", currentOrder.getId());
         model.addAttribute("allOrdersId", orderService.getAllPendingOrdersId());
         model.addAttribute("productList", orderProducts);
+
         return "orderPage";
     }
 
@@ -72,9 +76,9 @@ public class OrderWebController {
     public String makeOrder(Model model) {
         Order currentOrder = orderService.getCurrentOrder();
         if (currentOrder != null) {
-            model.addAttribute("productList", currentOrder.getProducts());
+            model.addAttribute("productList", currentOrder.getOrderedProducts());
             currentOrder.setOrderStatus(OrderStatus.COMPLETED);
-            productService.updateProductsQuantity(currentOrder.getProducts());
+            productService.updateProductsQuantity(currentOrder.getOrderedProducts());
 
             //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
             List<Integer> allOrdersId = orderService.getAllPendingOrdersId();
@@ -92,19 +96,21 @@ public class OrderWebController {
     }
 
     @PostMapping("/editOrder")
-    public String newProduct(@RequestParam int productId,
+    public String editOrderProductQuantity(@RequestParam int productId,
                              @RequestParam String productSize,
                              @RequestParam String productColor,
                              @RequestParam("quantity") int quantity) {
-
         Order currentOrder = orderService.getCurrentOrder();
-        Product changedProduct = new Product();
-        for (Product orderProduct : currentOrder.getOrderProducts()) { //If product is ordered, must be found
-            if(orderProduct.getId() == productId && orderProduct.getSize().equals(productSize) && orderProduct.getColor().equals(productColor)){
+        OrderedProduct changedProduct = new OrderedProduct();
+
+        //Locates edited product and updates its quantity as desired
+        for (OrderedProduct orderProduct : currentOrder.getOrderedProducts()) { //If product is ordered, must be found
+            if(orderProduct.getId() == productId && orderProduct.getSize().equals(Size.valueOf(productSize)) && orderProduct.getColor().equals(productColor)){
                 changedProduct = orderProduct;
             }
         }
         changedProduct.setQuantity(quantity);
+        orderedProductService.saveOrderedProduct(changedProduct);
 
         return "redirect:/orderPage";
     }
@@ -124,13 +130,13 @@ public class OrderWebController {
     }
 
 
-
     @PostMapping("/deleteProductOrder")
-    public String  eliminarProductoDePedido(@RequestParam("orderId") int pedidoId, @RequestParam("productId") int productoId) {
-        orderService.deleteOrderedProduct(pedidoId, productoId);
-        Product productoEliminado = orderService.getDeletedProduct(productoId);
-        productService.updateProduct(productoId,productoEliminado);
+    public String eliminarProductoDePedido(@RequestParam("productId") int productId,
+                                           @RequestParam("productSize") String productSize,
+                                           @RequestParam("productColor") String productColor,
+                                           @RequestParam("productQuantity") int productQuantity) {
+        orderedProductService.deleteOrderedProduct(productId, productSize, productColor, productQuantity);
         return "redirect:/orderPage";
-    }*/
+    }
 }
 

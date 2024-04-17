@@ -25,7 +25,7 @@ public class OrderedProduct {
     @Column(nullable = false)
     private String name;
 
-    private String size;
+    private Size size;
 
     private String color;
 
