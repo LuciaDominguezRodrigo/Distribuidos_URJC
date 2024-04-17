@@ -3,7 +3,6 @@ package com.ssdd.UrbanThreads.UrbanThreads.DTO;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderedProduct;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import lombok.Getter;
 import lombok.Setter;
 

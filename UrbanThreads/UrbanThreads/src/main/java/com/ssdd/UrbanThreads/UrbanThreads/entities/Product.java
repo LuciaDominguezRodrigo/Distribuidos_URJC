@@ -109,9 +109,12 @@ public class Product {
         }
     }
 
+    public void st (Blob b) {
+        this.photo = b;
+    }
+
     public void setPhoto2(String photoUrl) {
         try {
-            // Crear una URL a partir de la URL de la foto
             URL url = new URL(photoUrl);
 
             // Abrir una conexión URL

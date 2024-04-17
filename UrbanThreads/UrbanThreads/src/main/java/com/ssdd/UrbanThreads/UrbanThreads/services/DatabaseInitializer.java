@@ -2,8 +2,8 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.*;
 import jakarta.annotation.PostConstruct;

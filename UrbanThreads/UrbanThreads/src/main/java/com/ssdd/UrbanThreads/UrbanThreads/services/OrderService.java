@@ -3,6 +3,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,7 @@ public class OrderService {
         return orderRepository.deleteOrderByOrderId(id);
     }
 
+    public void addProductToCurrentOrder(int productId, Product product, String size, String color, int quantity) {
+    }
 }
 

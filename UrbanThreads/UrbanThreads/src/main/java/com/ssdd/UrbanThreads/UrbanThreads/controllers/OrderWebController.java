@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -23,13 +24,13 @@ public class OrderWebController {
     @Autowired
     private ProductService productService;
 
-    @PostMapping("/newProductInOrder")
+   /* @PostMapping("/newProductInOrder")
     public String addToOrder(@RequestParam("id") int productId,
                              @RequestParam("selectedSize") String size,
                              @RequestParam("selectedColor") String color,
                              @RequestParam("quantity") int quantity) {
-        Product product = productService.findProduct(productId);
-        orderService.addProductToCurrentOrder(productId, product, size, color, quantity);
+        Optional<Product> product = productService.findProduct(productId);
+        orderService.addProductToCurrentOrder(productId, product.get(), size, color, quantity);
 
         return "redirect:/orderPage";
     }
@@ -130,6 +131,6 @@ public class OrderWebController {
         Product productoEliminado = orderService.getDeletedProduct(productoId);
         productService.updateProduct(productoId,productoEliminado);
         return "redirect:/orderPage";
-    }
+    }*/
 }
 

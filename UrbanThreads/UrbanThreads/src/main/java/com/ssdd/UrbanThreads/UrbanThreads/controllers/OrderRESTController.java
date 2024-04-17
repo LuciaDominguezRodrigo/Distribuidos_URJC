@@ -1,10 +1,7 @@
 package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
-import com.ssdd.UrbanThreads.UrbanThreads.DTO.CategoryDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.OrderDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.OrderedProductDTO;
-import com.ssdd.UrbanThreads.UrbanThreads.DTO.ProductDTO;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
@@ -12,12 +9,9 @@ import com.ssdd.UrbanThreads.UrbanThreads.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,7 +21,7 @@ public class OrderRESTController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/{id}")
+   /* @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable int id) {
         Order selectedOrder = orderService.getOrderById(id);
         if (selectedOrder == null) {
@@ -162,5 +156,5 @@ public class OrderRESTController {
 
         orderService.saveOrder(id, existingOrder);
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
-    }
+    }*/
 }

@@ -3,6 +3,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.*;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -51,7 +53,7 @@ public class ProductWebController {
         return "index";
     }
 
-    @GetMapping("/event/image/{id}")
+    @GetMapping("/product/image/{id}")
     @ResponseBody
     public byte[] showEventImage(@PathVariable long id) throws SQLException, IOException {
         Optional<Product> eventOptional = productService.findProduct(id);
@@ -162,7 +164,7 @@ public class ProductWebController {
                             @RequestParam("sizeL") int lUnits,
                             @RequestParam("sizeXL") int xlUnits,
                             @RequestParam("sizeXXL") int xxlUnits,
-                            @RequestParam("photo") String photo) {
+                            @RequestParam("photo") MultipartFile file) {
 
         Optional<Product> oproduct = productService.findProduct(id);
         if (oproduct.isPresent()) {
@@ -182,10 +184,21 @@ public class ProductWebController {
             availableSizes.put(Size.XXL, xxlUnits);
 
             product.setAvailableSizes(availableSizes);
-            product.setPhoto2(photo);
 
-            product.setCategory(categoryService.findCategoryByName(category));
-            productService.updateProduct(id, product);
+            try {
+                if (!file.isEmpty()) {
+                    byte[] bytes = file.getBytes();
+                    Blob blob = new SerialBlob(bytes);
+                    product.st(blob);
+                }
+
+                productService.updateProduct(id, product);
+
+                product.setCategory(categoryService.findCategoryByName(category));
+                productService.updateProduct(id, product);
+                } catch (SQLException | IOException e) {
+                    throw new RuntimeException(e);
+                }
         }
         return "redirect:/";
     }
