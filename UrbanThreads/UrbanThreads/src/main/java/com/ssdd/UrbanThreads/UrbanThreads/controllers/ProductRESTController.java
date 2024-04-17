@@ -6,11 +6,17 @@ import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.services.CategoryService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.*;
 
 @RestController
@@ -98,6 +104,29 @@ public class ProductRESTController {
         return ResponseEntity.status(200).build();
     }
 
+    @GetMapping("/img/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> showProductImage(@PathVariable long id) {
+        Optional<Product> userOptional = productService.findProduct(id);
+        if (userOptional.isPresent()) {
+            Product user = userOptional.get();
+
+            try {
+                Blob photoBlob = user.getPhoto();
+                byte[] photoBytes = photoBlob.getBytes(1, (int) photoBlob.length());
+
+                return ResponseEntity
+                        .ok()
+                        .contentType(MediaType.IMAGE_JPEG)
+                        .body(photoBytes);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @PutMapping("edit/{id}")
     public ResponseEntity<ProductDTO> editP(@PathVariable int id, @RequestBody Product product) {
         Optional<Product> existingProductOptional = productService.findProduct(id);

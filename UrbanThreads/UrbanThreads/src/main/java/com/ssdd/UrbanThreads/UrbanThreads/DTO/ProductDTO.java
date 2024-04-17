@@ -41,7 +41,7 @@ public class ProductDTO {
         this.category = product.getCategory().getName();
         this.description = product.getDescription();
         this.price = product.getPrice();
-        this.photo = product.getPhoto().toString();
+        this.photo = "./api/products/img/" + product.getId();
         this.availableSizes  = product.getAvailableSizes();
 
     }
