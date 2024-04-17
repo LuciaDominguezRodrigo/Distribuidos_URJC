@@ -12,7 +12,10 @@ import org.springframework.ui.Model;
 
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.sql.rowset.serial.SerialBlob;
+import javax.sql.rowset.serial.SerialException;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -182,7 +185,7 @@ public class ProductWebController {
             availableSizes.put(Size.XXL, xxlUnits);
 
             product.setAvailableSizes(availableSizes);
-            product.setPhoto(photo);
+            product.setPhoto2(photo);
 
             product.setCategory(categoryService.findCategoryByName(category));
             productService.updateProduct(id, product);
@@ -201,7 +204,7 @@ public class ProductWebController {
                              @RequestParam("sizeL") int lUnits,
                              @RequestParam("sizeXL") int xlUnits,
                              @RequestParam("sizeXXL") int xxlUnits,
-                             @RequestParam("photo") String photo) {
+                             @RequestParam("photo") MultipartFile file) throws IOException {
 
         Map<Size, Integer> availableSizes = new HashMap<>();
         availableSizes.put(Size.XS, xsUnits);
@@ -213,12 +216,22 @@ public class ProductWebController {
 
         DCategory c = categoryService.findCategoryByName(category);
 
-        DProduct newProduct = new DProduct(name, c , price, photo, description, availableSizes);
-        productService.saveProduct(newProduct);
+        try {
+            // Convertir el contenido del archivo a un arreglo de bytes
+            byte[] bytes = file.getBytes();
 
-        return "redirect:/";
+            // Crear un objeto Blob a partir del arreglo de bytes
+            Blob blob = new SerialBlob(bytes);
+
+
+            DProduct newProduct = new DProduct(name, c, price, blob, description, availableSizes);
+            productService.saveProduct(newProduct);
+
+            return "redirect:/";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-
     @GetMapping("/createProduct")
     public String newProductCharge(Model model) {
         Collection<DCategory> categories = categoryService.findAllC();

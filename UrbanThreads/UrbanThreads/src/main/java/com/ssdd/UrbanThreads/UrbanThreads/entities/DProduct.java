@@ -13,7 +13,12 @@ import lombok.Setter;
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -87,10 +92,12 @@ public class DProduct {
         this.name = name;
         this.category = category;
         this.price = price;
-        this.setPhoto(photo);
+        this.setPhoto2(photo);
         this.description = description;
         this.availableSizes = as;
     }
+
+
 
     public void setPhoto(String photo) {
         try {
@@ -103,6 +110,63 @@ public class DProduct {
             ex.printStackTrace();
         }
     }
+
+    public void setPhoto2(String photoUrl) {
+        try {
+            // Crear una URL a partir de la URL de la foto
+            URL url = new URL(photoUrl);
+
+            // Abrir una conexión URL
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // Verificar el código de estado de la conexión
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException("Error al obtener la imagen. Código de estado: " + responseCode);
+            }
+
+            // Obtener la entrada de la conexión URL
+            InputStream inputStream = connection.getInputStream();
+
+            // Leer los datos de la imagen en un ByteArrayOutputStream
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            // Verificar si se ha leído algún dato
+            if (outputStream.size() == 0) {
+                throw new IOException("No se han leído datos de la imagen.");
+            }
+
+            // Convertir la imagen a un array de bytes
+            byte[] photoBytes = outputStream.toByteArray();
+
+            // Crear un objeto Blob a partir de los bytes de la foto
+            this.photo = new SerialBlob(photoBytes);
+
+            // Cerrar los streams y la conexión
+            outputStream.close();
+            inputStream.close();
+            connection.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            System.err.println("URL de la imagen incorrecta: " + photoUrl);
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+            System.err.println("Error al establecer el método de solicitud HTTP.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Error de E/S al obtener la imagen.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("Error SQL al crear el Blob.");
+        }
+    }
+
 
     public String getPhotoPath() {
        Blob blob = this.photo;

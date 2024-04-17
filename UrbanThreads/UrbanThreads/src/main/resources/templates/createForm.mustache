@@ -22,7 +22,7 @@
                     <h3 class = "titulo"><strong>{{^product}}Crear nuevo producto{{/product}}{{#product}}Editar producto{{/product}}</strong></h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{#product}}/editProduct/{{id}}{{/product}} {{^product}}/createProduct{{/product}}" method = "POST">
+                    <form action="{{#product}}/editProduct/{{id}}{{/product}} {{^product}}/createProduct{{/product}}" method = "POST" enctype="multipart/form-data">
                         <div class="form-group">
                             <p>Nombre del producto:</p>
                             <input type="text" class="form-control" id="name" name ="name" placeholder="Nombre" {{#product}}value="{{product.name}}"{{/product}} required>
@@ -116,8 +116,8 @@
                             <br>
                         </div>
                         <div class="form-group">
-                            <p>URL de la foto:</p>
-                            <input type="text" class="form-control" id="photo" name="photo" placeholder="URL foto" {{#product}}value="{{product.photo}}"{{/product}} required>
+                            <p>Foto del producto:</p>
+                            <input type="file" class="form-control-file" id="photo" name="photo" accept="image/*" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-block">{{#product}}Confirmar{{/product}}{{^product}}Crear{{/product}}</button>
