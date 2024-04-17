@@ -59,7 +59,7 @@
             <form action="/newProductInOrder" method = "POST">
                 <div class="form-group">
                     <label for="sizeSelect">Talla:</label>
-                   <select class="form-control" id="sizeSelect" name="selectedSize" onchange="" required>
+                   <select class="form-control" id="sizeSelect" name="selectedSize" onchange="checkStock({{sizeXS}},{{sizeS}},{{sizeM}},{{sizeL}},{{sizeXL}},{{sizeXXL}})" required>
                         <option value="" disabled selected>Selecciona una talla</option>  Opción inicial deshabilitada
                         <option value="XS">XS</option>
                         <option value="S">S</option>

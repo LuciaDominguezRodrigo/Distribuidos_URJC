@@ -92,6 +92,15 @@ public class ProductWebController {
             Optional<DCategory> category = categoryService.findCategory(product.getCategoryId());
             category.ifPresent(dCategory -> model.addAttribute("categoryName", dCategory.getName()));
             model.addAttribute("product", product);
+
+            //Available sizes for dynamic JS stock checking
+            model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
+            model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
+            model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
+            model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L));
+            model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
+            model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
+
             return "productDetails";
         } else {
             return "error";
