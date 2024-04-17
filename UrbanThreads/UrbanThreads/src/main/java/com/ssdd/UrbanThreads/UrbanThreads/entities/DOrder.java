@@ -18,17 +18,18 @@ public class DOrder {
     private int orderId;
 
     @Column(name = "order_status")
-    private String orderStatus;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order")
     private List<DOrderedProduct> orderedProducts;
 
 
     public DOrder(){
-        this.orderStatus = "PENDING";
+        this.orderStatus = OrderStatus.PENDING;
     };
 
-    public DOrder(int orderId, String orderStatus, List<DOrderedProduct> orderProducts) {
+    public DOrder(int orderId, OrderStatus orderStatus, List<DOrderedProduct> orderProducts) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
         this.orderedProducts = orderProducts;

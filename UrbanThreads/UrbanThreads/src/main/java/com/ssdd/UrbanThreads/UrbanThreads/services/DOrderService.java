@@ -2,6 +2,7 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.DOrder;
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.DOrderRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class DOrderService {
     }
 
     public List<Integer> getAllPendingOrdersId() {
-        return orderRepository.findOrderIdsByOrderStatus("PENDING");
+        return orderRepository.findOrderIdsByOrderStatus(OrderStatus.PENDING);
     }
 
     public int addNewOrder (DOrder o){
