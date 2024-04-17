@@ -1,5 +1,12 @@
 package com.ssdd.UrbanThreads.UrbanThreads.repository;
 
-public interface DOrderedProductRepository {
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DOrderedProduct;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface DOrderedProductRepository extends JpaRepository<DOrderedProduct, Long> {
 
 }

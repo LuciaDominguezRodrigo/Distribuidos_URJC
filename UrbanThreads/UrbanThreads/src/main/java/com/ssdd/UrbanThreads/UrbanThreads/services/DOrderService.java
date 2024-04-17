@@ -1,12 +1,9 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.DOrder;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.DOrderRepository;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

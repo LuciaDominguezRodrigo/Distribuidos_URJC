@@ -1,9 +1,15 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DOrder;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DOrderedProduct;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.DProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.DOrderRepository;
+import com.ssdd.UrbanThreads.UrbanThreads.repository.DOrderedProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Iterator;
 
 @Service
 public class DOrderedProductService {
@@ -14,45 +20,31 @@ public class DOrderedProductService {
     @Autowired
     private DOrderRepository orderRepository;
 
+    @Autowired
+    private DOrderedProductRepository orderedProductRepository;
+
 
     //Currently implemented in OrderService
-    /*public void addProductToCurrentOrder(int id, Product product, String size, String color, int quantity) {
-        Order currentOrder = orderRepository.findByOrderId(orderService.getSelectedOrder());
+    public void addProductToCurrentOrder(int id, DProduct product, String size, String color, int quantity) {
+        DOrder currentOrder = orderRepository.findByOrderId(orderService.getSelectedOrder());
 
-        if (currentOrder == null) {
-            currentOrder = new Order();
-        }
-
-        Product newProduct = new Product();
+        DOrderedProduct newProduct = new DOrderedProduct();
         newProduct.setId(id);
         newProduct.setName(product.getName());
-        newProduct.setPrice(product.getPrice());
+        newProduct.setTotalPrice(product.getPrice() * quantity);
         newProduct.setSize(size);
         newProduct.setColor(color);
         newProduct.setQuantity(quantity);
 
-        currentOrder.getOrderProducts().add(newProduct);
-
+        orderedProductRepository.save(newProduct);
     }
 
     //Currently implemented in OrderService
     public void deleteOrderedProduct(int orderId, int productId) {
-        Order currentOrder = orderRepository.findOrder(orderId);
+        DOrder currentOrder = orderRepository.findByOrderId(orderId);
 
         if (currentOrder != null) {
-            boolean productoEncontrado = false;
-            Iterator<Product> iterator = currentOrder.getOrderProducts().iterator();
-            while (iterator.hasNext()) {
-                Product product = iterator.next();
-                if (product.getId() == productId) {
-                    iterator.remove();
-                    productoEncontrado = true;
-                }
-            }
-
-            if (productoEncontrado) {
-                orderRepository.saveCurrentOrder(currentOrder);
-            }
+            currentOrder.getOrderedProducts().removeIf(product -> product.getId() == productId);
         }
-    }*/
+    }
 }
