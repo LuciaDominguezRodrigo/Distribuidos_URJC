@@ -18,27 +18,39 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Getter
-    private int selectedOrder = 1;
+    private long selectedOrder = 1;
 
     public Order getCurrentOrder() {
-        return orderRepository.findById(selectedOrder);
+        Optional<Order> orderOptional = orderRepository.findById(selectedOrder);
+        if(orderOptional.isPresent()){
+            return orderOptional.get();
+        }else{
+            return null;
+        }
     }
 
-    public Order getOrderById(int id) { return orderRepository.findById(id); }
+    public Order getOrderById(Long id) {
+        Optional<Order> orderOptional = orderRepository.findById(id);
+        if(orderOptional.isPresent()){
+            return orderOptional.get();
+        }else{
+            return null;
+        }
+    }
 
     public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
 
-    public void changeCurrentOrder(int orderId){
+    public void changeCurrentOrder(Long orderId){
         this.selectedOrder = orderId;
     }
 
-    public List<Integer> getAllPendingOrdersId() {
+    public List<Long> getAllPendingOrdersId() {
         return orderRepository.findIdsByOrderStatus(OrderStatus.PENDING);
     }
 
-    public int addNewOrder (Order o){
+    public Long addNewOrder (Order o){
         return orderRepository.save(o).getId();
     }
 
@@ -51,7 +63,7 @@ public class OrderService {
     }
 
 
-    public Order deleteOrderById(int id){
+    public Order deleteOrderById(Long id){
         return orderRepository.deleteOrderById(id);
     }
 }

@@ -24,7 +24,7 @@ public class OrderRESTController {
     private OrderedProductService orderedProductService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getOrder(@PathVariable int id) {
+    public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
         Order selectedOrder = orderService.getOrderById(id);
         if (selectedOrder == null) {
             return ResponseEntity.status(404).build();
@@ -62,14 +62,14 @@ public class OrderRESTController {
             orderedProductService.saveOrderedProduct(p);
         }
 
-        int orderId = orderService.addNewOrder(newOrder);
+        long orderId = orderService.addNewOrder(newOrder);
         orderService.changeCurrentOrder(newOrder.getId());
         orderDTO.setOrderId(orderId);
         return ResponseEntity.status(201).body(orderDTO);
     }
 
     @PostMapping("/complete/{id}")
-    public ResponseEntity<OrderDTO> completeOrder(@PathVariable int id) {
+    public ResponseEntity<OrderDTO> completeOrder(@PathVariable Long id) {
         Order existingOrder = orderService.getOrderById(id);
 
         if (existingOrder == null) {
@@ -83,7 +83,7 @@ public class OrderRESTController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<OrderDTO> updateOrder(@PathVariable int id, @RequestBody OrderDTO orderDTO) {
+    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
         Order existingOrder = orderService.getOrderById(id);
 
         if (existingOrder == null) {
@@ -110,7 +110,7 @@ public class OrderRESTController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> cancelOrder(@PathVariable int id) {
+    public ResponseEntity<Void> cancelOrder(@PathVariable Long id) {
         Order existingOrder = orderService.getOrderById(id);
         if (existingOrder == null) {
             return ResponseEntity.status(404).build();
@@ -125,7 +125,7 @@ public class OrderRESTController {
     }
 
     @PatchMapping("/edit/{id}")
-    public ResponseEntity<OrderDTO> editOrderByPatching(@PathVariable int id, @RequestBody OrderDTO partialOrderDTO) {
+    public ResponseEntity<OrderDTO> editOrderByPatching(@PathVariable Long id, @RequestBody OrderDTO partialOrderDTO) {
         Order existingOrder = orderService.getOrderById(id);
 
         if (existingOrder == null) {

@@ -10,7 +10,7 @@ import java.util.Map;
 @Getter
 @Setter
 public class ProductDTO {
-    private int id;
+    private Long id;
 
     private String name;
 
@@ -24,7 +24,7 @@ public class ProductDTO {
 
     private Map<Size, Integer> availableSizes;
 
-    public ProductDTO(int id,String name, String category, String description, double price, String photo, Map<Size, Integer> availableSizes) {
+    public ProductDTO(Long id,String name, String category, String description, double price, String photo, Map<Size, Integer> availableSizes) {
         this.id = id;
         this.name = name;
         this.category = category;

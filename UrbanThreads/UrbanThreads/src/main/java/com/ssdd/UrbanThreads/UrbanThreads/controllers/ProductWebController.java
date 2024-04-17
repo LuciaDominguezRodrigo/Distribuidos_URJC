@@ -110,7 +110,7 @@ public class ProductWebController {
     }
 
     @GetMapping("/editProduct/{id}")
-    public String editEvent(@PathVariable int id, Model model) {
+    public String editEvent(@PathVariable Long id, Model model) {
         Optional<Product> productOptional = productService.findProduct(id);
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
@@ -153,7 +153,7 @@ public class ProductWebController {
     }
 
     @PostMapping("/editProduct/{id}")
-    public String editEvent(@PathVariable int id,
+    public String editEvent(@PathVariable Long id,
                             @RequestParam("name") String name,
                             @RequestParam("description") String description,
                             @RequestParam ("category") String category,
@@ -256,7 +256,7 @@ public class ProductWebController {
     }
 
     @PostMapping("/deleteProduct/{id}")
-    public String deleteProduct(@PathVariable int id) {
+    public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/";
     }

@@ -42,11 +42,11 @@ public class OrderedProductService {
         orderedProductRepository.save(newProduct);
     }
 
-    public void deleteOrderedProduct(int productId, String productSize, String productColor, int productQuantity) {
+    public void deleteOrderedProduct(Long productId, String productSize, String productColor, int productQuantity) {
         List<OrderedProduct> productsInOrder = orderedProductRepository.findByOrder(orderService.getCurrentOrder());
         if (productsInOrder != null) {
             for (OrderedProduct p : productsInOrder) { //If product is ordered, must be found
-                if(p.getId() == productId && p.getSize().equals(Size.valueOf(productSize)) && p.getColor().equals(productColor) && p.getQuantity() == productQuantity){
+                if(p.getId().equals(productId) && p.getSize().equals(Size.valueOf(productSize)) && p.getColor().equals(productColor) && p.getQuantity() == productQuantity){
                     orderedProductRepository.delete(p);
                 }
             }

@@ -31,7 +31,7 @@ public class ProductRESTController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> obtenerProducto(@PathVariable int id) {
+    public ResponseEntity<ProductDTO> obtenerProducto(@PathVariable Long id) {
         Optional<Product> productOptional = productService.findProduct(id);
         if (productOptional.isEmpty()) {
             return ResponseEntity.status(404).build();
@@ -95,7 +95,7 @@ public class ProductRESTController {
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable int id) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         Optional<Product> productOptional = productService.findProduct(id);
         if (productOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -106,7 +106,7 @@ public class ProductRESTController {
 
     @GetMapping("/img/{id}")
     @ResponseBody
-    public ResponseEntity<byte[]> showProductImage(@PathVariable long id) {
+    public ResponseEntity<byte[]> showProductImage(@PathVariable Long id) {
         Optional<Product> userOptional = productService.findProduct(id);
         if (userOptional.isPresent()) {
             Product user = userOptional.get();
@@ -128,7 +128,7 @@ public class ProductRESTController {
         }
     }
     @PutMapping("edit/{id}")
-    public ResponseEntity<ProductDTO> editP(@PathVariable int id, @RequestBody Product product) {
+    public ResponseEntity<ProductDTO> editP(@PathVariable Long id, @RequestBody Product product) {
         Optional<Product> existingProductOptional = productService.findProduct(id);
         if (existingProductOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -160,7 +160,7 @@ public class ProductRESTController {
         return ResponseEntity.status(200).body(productDTO);
     }
     @PatchMapping("editP/{id}")
-    public ResponseEntity<ProductDTO> editP2(@PathVariable int id, @RequestBody Product partialProduct) {
+    public ResponseEntity<ProductDTO> editP2(@PathVariable Long id, @RequestBody Product partialProduct) {
         Optional<Product> existingProductOptional = productService.findProduct(id);
         if (existingProductOptional.isEmpty()) {
             return ResponseEntity.notFound().build();

@@ -13,13 +13,13 @@ import java.util.List;
 @Setter
 public class OrderDTO {
 
-    private int orderId;
+    private Long orderId;
 
     private OrderStatus orderStatus;
 
     private List<OrderedProductDTO> orderedProductsDTO = new ArrayList<>();
 
-    public OrderDTO(int orderId, OrderStatus orderStatus, List<OrderedProductDTO> orderedProductsDTO) {
+    public OrderDTO(Long orderId, OrderStatus orderStatus, List<OrderedProductDTO> orderedProductsDTO) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
         this.orderedProductsDTO = orderedProductsDTO;

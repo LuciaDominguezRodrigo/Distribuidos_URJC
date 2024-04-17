@@ -27,7 +27,7 @@ public class OrderWebController {
 
 
     @PostMapping("/newProductInOrder")
-    public String addToOrder(@RequestParam("id") int productId,
+    public String addToOrder(@RequestParam("id") Long productId,
                              @RequestParam("selectedSize") String size,
                              @RequestParam("selectedColor") String color,
                              @RequestParam("quantity") int quantity) {
@@ -62,11 +62,11 @@ public class OrderWebController {
     public String cancelOrder() {
         orderService.deleteCurrentOrder();
         //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
-        List<Integer> allOrdersId = orderService.getAllPendingOrdersId();
+        List<Long> allOrdersId = orderService.getAllPendingOrdersId();
         if(!allOrdersId.isEmpty()){
             orderService.changeCurrentOrder(allOrdersId.get(0));
         } else{
-            int newOrderId = orderService.addNewOrder(new Order());
+            Long newOrderId = orderService.addNewOrder(new Order());
             orderService.changeCurrentOrder(newOrderId);
         }
 
@@ -83,11 +83,11 @@ public class OrderWebController {
             orderService.saveOrder(currentOrder);
 
             //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
-            List<Integer> allOrdersId = orderService.getAllPendingOrdersId();
+            List<Long> allOrdersId = orderService.getAllPendingOrdersId();
             if(!allOrdersId.isEmpty()){
                 orderService.changeCurrentOrder(allOrdersId.get(0));
             } else{
-                int newOrderId = orderService.addNewOrder(new Order());
+                Long newOrderId = orderService.addNewOrder(new Order());
                 orderService.changeCurrentOrder(newOrderId);
             }
 
@@ -98,7 +98,7 @@ public class OrderWebController {
     }
 
     @PostMapping("/editOrder")
-    public String editOrderProductQuantity(@RequestParam int productId,
+    public String editOrderProductQuantity(@RequestParam Long productId,
                              @RequestParam String productSize,
                              @RequestParam String productColor,
                              @RequestParam("quantity") int quantity) {
@@ -118,7 +118,7 @@ public class OrderWebController {
     }
 
     @PostMapping("/changeOrder")
-    public String changeOrder(@RequestParam int selectedOrder) {
+    public String changeOrder(@RequestParam Long selectedOrder) {
         orderService.changeCurrentOrder(selectedOrder);
         return "redirect:/orderPage";
     }
@@ -133,7 +133,7 @@ public class OrderWebController {
 
 
     @PostMapping("/deleteProductOrder")
-    public String eliminarProductoDePedido(@RequestParam("productId") int productId,
+    public String eliminarProductoDePedido(@RequestParam("productId") Long productId,
                                            @RequestParam("productSize") String productSize,
                                            @RequestParam("productColor") String productColor,
                                            @RequestParam("productQuantity") int productQuantity) {

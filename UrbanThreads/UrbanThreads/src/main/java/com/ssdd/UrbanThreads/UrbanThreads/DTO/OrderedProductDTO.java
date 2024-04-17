@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class OrderedProductDTO {
 
-    private int orderId; //This product belongs to this id number order
+    private Long orderId; //This product belongs to this id number order
 
     private String name;
 
@@ -20,7 +20,7 @@ public class OrderedProductDTO {
 
     private int quantity;
 
-    public OrderedProductDTO(int id,String name, double price, String size, String color, int quantity) {
+    public OrderedProductDTO(Long id,String name, double price, String size, String color, int quantity) {
         this.orderId = id;
         this.name = name;
         this.price = price;
