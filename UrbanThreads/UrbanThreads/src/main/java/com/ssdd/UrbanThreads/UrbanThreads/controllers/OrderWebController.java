@@ -25,7 +25,7 @@ public class OrderWebController {
     @Autowired
     private ProductService productService;
 
-    //OK
+
     @PostMapping("/newProductInOrder")
     public String addToOrder(@RequestParam("id") int productId,
                              @RequestParam("selectedSize") String size,
@@ -39,7 +39,7 @@ public class OrderWebController {
         return "redirect:/orderPage";
     }
 
-    //OK
+
     @GetMapping("/orderPage")
     public String showOrderPage(Model model) {
         Order currentOrder = orderService.getCurrentOrder();
@@ -53,6 +53,7 @@ public class OrderWebController {
         model.addAttribute("orderId", currentOrder.getId());
         model.addAttribute("allOrdersId", orderService.getAllPendingOrdersId());
         model.addAttribute("productList", orderProducts);
+
 
         return "orderPage";
     }
@@ -78,7 +79,8 @@ public class OrderWebController {
         if (currentOrder != null) {
             model.addAttribute("productList", currentOrder.getOrderedProducts());
             currentOrder.setOrderStatus(OrderStatus.COMPLETED);
-            productService.updateProductsQuantity(currentOrder.getOrderedProducts());
+            productService.reduceProductsQuantity(currentOrder.getOrderedProducts());
+            orderService.saveOrder(currentOrder);
 
             //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
             List<Integer> allOrdersId = orderService.getAllPendingOrdersId();

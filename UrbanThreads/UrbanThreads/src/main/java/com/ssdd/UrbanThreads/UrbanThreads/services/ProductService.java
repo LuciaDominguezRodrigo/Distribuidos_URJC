@@ -2,7 +2,6 @@ package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderedProduct;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,11 +29,12 @@ public class ProductService {
 
     }
 
-    public List<Product> updateProductsQuantity(List<OrderedProduct> soldProducts){
+    public List<Product> reduceProductsQuantity(List<OrderedProduct> soldProducts){
         for (OrderedProduct p : soldProducts) {
             int currentQuantity = p.getProduct().getAvailableSizes().get(p.getSize())-p.getQuantity();
             //Acualiza las tallas del Product asociado al OrderedProduct
             p.getProduct().getAvailableSizes().put(p.getSize(), currentQuantity);
+            productRepository.save(p.getProduct());
         }
         return productRepository.findAll();
     }

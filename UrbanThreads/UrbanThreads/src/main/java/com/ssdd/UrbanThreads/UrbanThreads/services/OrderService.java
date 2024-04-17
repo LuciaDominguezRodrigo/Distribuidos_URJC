@@ -18,7 +18,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Getter
-    private int selectedOrder = 0;
+    private int selectedOrder = 1;
 
     public Order getCurrentOrder() {
         return orderRepository.findById(selectedOrder);
@@ -35,7 +35,7 @@ public class OrderService {
     }
 
     public List<Integer> getAllPendingOrdersId() {
-        return orderRepository.findOrderIdsByOrderStatus(OrderStatus.PENDING);
+        return orderRepository.findIdsByOrderStatus(OrderStatus.PENDING);
     }
 
     public int addNewOrder (Order o){

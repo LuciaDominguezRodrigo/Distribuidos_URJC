@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <h4 class="mb-1">{{name}}</h4>
-                        <p class="mb-1">Precio por unidad: {{price}}</p>
+                        <p class="mb-1">Precio total: {{totalPrice}}</p>
                         <p class="mb-1" id="currentQuantity-{{id}}">Cantidad: {{quantity}}</p>
                         <p class="mb-1">Talla: {{size}}</p>
                         <p class="mb-1">Color: {{color}}</p>
@@ -62,7 +62,7 @@
                                 <input type="hidden" name="productId" value="{{id}}">
                                 <input type="hidden" name="productSize" value="{{size}}">
                                 <input type="hidden" name="productColor" value="{{color}}">
-                                <input type="number" class="form-control" id="quantity" name="quantity" max="{{selectedSizeAvailableUnits}}" value="{{quantity}}" required>
+                                <input type="number" class="form-control" id="quantity" name="quantity" value="{{quantity}}" required>
                                 <button type="submit" class="btn btn-primary" id="addToCart">Confirmar edición</button>
                             </div>
                         </form>
@@ -78,7 +78,6 @@
     </ul>
     <br>
     <div class ="buttons">
-        {{#productList}}
         <div class="row justify-content-between mb-4">
             <div class="col-sm-6">
                 <form action = "/orderReady" method ="POST">
@@ -91,7 +90,6 @@
                 </form>
             </div>
         </div>
-        {{/productList}}
     </div>
 
 </div>
