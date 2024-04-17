@@ -1,24 +1,21 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
-import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderRepository;
+
+import com.ssdd.UrbanThreads.UrbanThreads.repository.DOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 @Service
-public class OrderedProductService {
+public class DOrderedProductService {
 
     @Autowired
-    private OrderService orderService;
+    private DOrderService orderService;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private DOrderRepository orderRepository;
 
 
+    //Currently implemented in OrderService
     /*public void addProductToCurrentOrder(int id, Product product, String size, String color, int quantity) {
         Order currentOrder = orderRepository.findByOrderId(orderService.getSelectedOrder());
 
@@ -38,6 +35,7 @@ public class OrderedProductService {
 
     }
 
+    //Currently implemented in OrderService
     public void deleteOrderedProduct(int orderId, int productId) {
         Order currentOrder = orderRepository.findOrder(orderId);
 

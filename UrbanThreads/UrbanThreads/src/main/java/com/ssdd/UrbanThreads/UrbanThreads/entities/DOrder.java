@@ -15,28 +15,23 @@ public class DOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private int orderId;
 
     @Column(name = "order_status")
-    private OrderStatus orderStatus;
+    private String orderStatus;
 
     @OneToMany(mappedBy = "order")
     private List<DOrderedProduct> orderedProducts;
 
 
     public DOrder(){
-        this.orderStatus = OrderStatus.PENDING;
+        this.orderStatus = "PENDING";
     };
 
-    public DOrder(Long orderId, OrderStatus orderStatus, List<Product> orderProducts) {
+    public DOrder(int orderId, String orderStatus, List<DOrderedProduct> orderProducts) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
-        //this.orderProducts = orderProducts;
+        this.orderedProducts = orderProducts;
     }
-
-    /*
-    public List<Product> getProducts() {
-        return orderProducts;
-    }*/
 
 }
