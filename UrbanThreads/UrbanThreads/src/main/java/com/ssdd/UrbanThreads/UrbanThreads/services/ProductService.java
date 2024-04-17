@@ -32,9 +32,9 @@ public class ProductService {
 
     public List<Product> updateProductsQuantity(List<OrderedProduct> soldProducts){
         for (OrderedProduct p : soldProducts) {
-            int currentQuantity = p.getProduct().getAvailableSizes().get(Size.valueOf(p.getSize()))-p.getQuantity();
+            int currentQuantity = p.getProduct().getAvailableSizes().get(p.getSize())-p.getQuantity();
             //Acualiza las tallas del Product asociado al OrderedProduct
-            p.getProduct().getAvailableSizes().put(Size.valueOf(p.getSize()), currentQuantity);
+            p.getProduct().getAvailableSizes().put(p.getSize(), currentQuantity);
         }
         return productRepository.findAll();
     }

@@ -2,10 +2,9 @@ package com.ssdd.UrbanThreads.UrbanThreads.controllers;
 
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.OrderDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.DTO.OrderedProductDTO;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.OrderStatus;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.*;
 import com.ssdd.UrbanThreads.UrbanThreads.services.OrderService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.OrderedProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,10 @@ public class OrderRESTController {
     @Autowired
     private OrderService orderService;
 
-   /* @GetMapping("/{id}")
+    @Autowired
+    private OrderedProductService orderedProductService;
+
+    @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable int id) {
         Order selectedOrder = orderService.getOrderById(id);
         if (selectedOrder == null) {
@@ -50,21 +52,18 @@ public class OrderRESTController {
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
         Order newOrder = new Order();
         newOrder.setOrderStatus(OrderStatus.PENDING);
-        List<Product> orderProducts = new ArrayList<>();
         for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
-            Product p = new Product();
+            OrderedProduct p = new OrderedProduct();
             p.setName(o.getName());
-            p.setPrice(o.getPrice());
-            p.setSize(o.getSize());
+            p.setTotalPrice(o.getPrice());
+            p.setSize(Size.valueOf(o.getSize()));
             p.setColor(o.getColor());
             p.setQuantity(o.getQuantity());
-            orderProducts.add(p);
+            orderedProductService.saveOrderedProduct(p);
         }
-        newOrder.setOrderProducts(orderProducts);
 
         int orderId = orderService.addNewOrder(newOrder);
         orderService.changeCurrentOrder(newOrder.getId());
-
         orderDTO.setOrderId(orderId);
         return ResponseEntity.status(201).body(orderDTO);
     }
@@ -78,7 +77,7 @@ public class OrderRESTController {
         }
 
         existingOrder.setOrderStatus(OrderStatus.COMPLETED);
-        orderService.saveOrder(id, existingOrder);
+        orderService.saveOrder(existingOrder);
 
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
     }
@@ -96,20 +95,17 @@ public class OrderRESTController {
         }
 
         if (orderDTO.getOrderedProductsDTO() != null) {
-            List<Product> orderProducts = new ArrayList<>();
             for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
-                Product p = new Product();
+                OrderedProduct p = new OrderedProduct();
                 p.setName(o.getName());
-                p.setPrice(o.getPrice());
-                p.setSize(o.getSize());
+                p.setTotalPrice(o.getPrice());
+                p.setSize(Size.valueOf(o.getSize()));
                 p.setColor(o.getColor());
                 p.setQuantity(o.getQuantity());
-                orderProducts.add(p);
+                orderedProductService.saveOrderedProduct(p);
             }
-            existingOrder.setOrderProducts(orderProducts);
         }
-
-        orderService.saveOrder(id, existingOrder);
+        orderService.saveOrder(existingOrder);
         return ResponseEntity.status(202).body(new OrderDTO(existingOrder));
     }
 
@@ -141,20 +137,17 @@ public class OrderRESTController {
         }
 
         if (partialOrderDTO.getOrderedProductsDTO() != null) {
-            List<Product> orderProducts = new ArrayList<>();
             for (OrderedProductDTO o : partialOrderDTO.getOrderedProductsDTO()) {
-                Product p = new Product();
+                OrderedProduct p = new OrderedProduct();
                 p.setName(o.getName());
-                p.setPrice(o.getPrice());
-                p.setSize(o.getSize());
+                p.setTotalPrice(o.getPrice());
+                p.setSize(Size.valueOf(o.getSize()));
                 p.setColor(o.getColor());
                 p.setQuantity(o.getQuantity());
-                orderProducts.add(p);
+                orderedProductService.saveOrderedProduct(p);
             }
-            existingOrder.setOrderProducts(orderProducts);
         }
-
-        orderService.saveOrder(id, existingOrder);
+        orderService.saveOrder(existingOrder);
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
-    }*/
+    }
 }

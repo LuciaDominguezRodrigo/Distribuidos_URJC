@@ -33,7 +33,7 @@ public class OrderedProductDTO {
         this.orderId = product.getId();
         this.name = product.getName();
         this.price = product.getTotalPrice();
-        this.size = product.getSize();
+        this.size = product.getSize().toString();
         this.color = product.getColor();
         this.quantity = product.getQuantity();
     }
