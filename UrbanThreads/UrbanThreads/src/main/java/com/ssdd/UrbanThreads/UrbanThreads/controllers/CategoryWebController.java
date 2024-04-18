@@ -24,7 +24,7 @@ public class CategoryWebController{
     private CategoryService categoryService;
 
     @GetMapping("/filter")
-    public String filterProductsByCategory(Model model, @RequestParam("category") String category) {
+    public String filterProductsByCategory(Model model, @RequestParam("selectedFilter") String category) {
         List<Product> productsByCategory = productService.findProductsByCategory(category);
         model.addAttribute("products", productsByCategory);
         model.addAttribute("allCategories", categoryService.findAllC());

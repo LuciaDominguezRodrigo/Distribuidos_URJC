@@ -32,20 +32,20 @@ public class ProductWebController {
 
     private int nextProductIndex = 3;
     private int productsRefreshSize = 4; //this number controls how many elements are charged
-    //with 'cargar más'button
+    //with 'cargar más' button
 
 
     @GetMapping("/")
     public String index(Model model) {
         nextProductIndex = productsRefreshSize;
-        List<Product> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex);
+        List<Product> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex - 1);
 
         if (products.isEmpty()) {
             model.addAttribute("products", new ArrayList<Product>());
         } else {
             model.addAttribute("products", products);
         }
-        nextProductIndex = products.size();
+        nextProductIndex = products.size() + 1;
         model.addAttribute("allCategories", categoryService.findAllC());
         for (Category category: categoryService.findAllC()){
             model.addAttribute("name", category.getName());

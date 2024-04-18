@@ -20,6 +20,9 @@ public class ProductService {
 
 
     public List<Product> findProductsByCategory(String categoryName) {
+        if(categoryName.equals("")){
+            return productRepository.findAll();
+        }
         return productRepository.findByCategoryName(categoryName);
 
     }
