@@ -31,7 +31,7 @@ public class ProductWebController {
     private CategoryService categoryService;
 
     private int nextProductIndex = 3;
-    private int productsRefreshSize = 4; //this number controls how many elements are charged
+    private int productsRefreshSize = 5; //this number controls how many elements are charged.
     //with 'cargar más' button
 
 

@@ -39,6 +39,13 @@ public class OrderedProductService {
         newProduct.setQuantity(quantity);
         newProduct.setTotalPrice(product.getPrice() * quantity);
 
+        for (OrderedProduct op : orderService.getCurrentOrder().getOrderedProducts()) {
+            if(op.getOrder().getId() == op.getOrder().getId() && op.getName().equals(newProduct.getName()) && op.getSize().equals(newProduct.getSize()) && op.getColor().equals(newProduct.getColor())) {
+                op.setQuantity(op.getQuantity() + quantity);
+                orderedProductRepository.save(op);
+                return;
+            }
+        }
         orderedProductRepository.save(newProduct);
     }
 
