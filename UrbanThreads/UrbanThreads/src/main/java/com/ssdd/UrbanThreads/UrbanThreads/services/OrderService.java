@@ -59,12 +59,12 @@ public class OrderService {
     }
 
     public void deleteCurrentOrder(){
-        orderRepository.deleteOrderById(selectedOrder);
+        orderRepository.deleteById(selectedOrder);
     }
 
 
-    public Order deleteOrderById(Long id){
-        return orderRepository.deleteOrderById(id);
+    public void deleteOrderById(Long id){
+        orderRepository.deleteById(selectedOrder);
     }
 }
 

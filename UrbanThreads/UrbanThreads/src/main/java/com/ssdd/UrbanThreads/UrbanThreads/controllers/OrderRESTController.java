@@ -115,11 +115,7 @@ public class OrderRESTController {
         if (existingOrder == null) {
             return ResponseEntity.status(404).build();
         }
-
-        Order removedOrder = orderService.deleteOrderById(id);
-        if(removedOrder == null){
-            return ResponseEntity.status(404).build();
-        }
+        orderService.deleteOrderById(id);
 
         return ResponseEntity.status(200).build();
     }

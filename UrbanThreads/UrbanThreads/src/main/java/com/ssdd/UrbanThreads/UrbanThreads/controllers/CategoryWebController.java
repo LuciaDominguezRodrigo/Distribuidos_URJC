@@ -23,11 +23,16 @@ public class CategoryWebController{
     @Autowired
     private CategoryService categoryService;
 
-    /*@GetMapping("/filter")
-    public String filterProductsByCategory(@RequestParam("selectedFilter") String categoria) {
-        categoryService.setCurrentCategoryFilter(categoria);
-        return "redirect:/";
-    }*/
+    @GetMapping("/filter")
+    public String filterProductsByCategory(Model model, @RequestParam("category") String category) {
+        List<Product> productsByCategory = productService.findProductsByCategory(category);
+        model.addAttribute("products", productsByCategory);
+        model.addAttribute("allCategories", categoryService.findAllC());
+        for (Category c: categoryService.findAllC()){
+            model.addAttribute("name", c.getName());
+        }
+        return "index";
+    }
 
     @GetMapping("/editCategory")
     public String showEditCategoriesPage(Model model) {

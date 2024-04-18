@@ -16,5 +16,4 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("SELECT o.id FROM Order o WHERE o.orderStatus = :status")
     List<Long> findIdsByOrderStatus(OrderStatus status);
 
-    public Order deleteOrderById(Long id);
 }
