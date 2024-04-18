@@ -137,22 +137,14 @@ public class ProductRESTController {
         Product existingProduct = existingProductOptional.get();
 
         Category category = product.getCategory();
-        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
+        Category existingCategory = categoryService.findCategoryByName(category.getName());
 
-        boolean categoryExists = false;
-        for (Category c : categoriesAvailable) {
-            if (c.getName().equals(category.getName()) && c.getColor().equals(category.getColor())) {
-                categoryExists = true;
-
-            }
-        }
-
-        if (!categoryExists) {
+        if (existingCategory == null) {
             return ResponseEntity.status(404).build(); // Category not found among available categories
         }
 
         existingProduct.setName(product.getName());
-        existingProduct.setCategory(product.getCategory());
+        existingProduct.setCategory(existingCategory);
         existingProduct.setPrice(product.getPrice());
         existingProduct.setDescription(product.getDescription());
 
@@ -211,21 +203,12 @@ public class ProductRESTController {
         }
 
         if (partialProduct.getCategory() != null) {
-            existingProduct.setCategory(partialProduct.getCategory());
-        }
+            Category category = categoryService.findCategoryByName(partialProduct.getCategory().getName());
 
-        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
-
-        Category category = partialProduct.getCategory();
-        boolean categoryExists = false;
-        for (Category c : categoriesAvailable) {
-            if (c.getName().equals(category.getName()) && c.getColor().equals(category.getColor()))  {
-                categoryExists = true;
+            if (category == null) {
+                return ResponseEntity.status(404).build(); // Category not found among available categories
             }
-        }
-
-        if (!categoryExists) {
-            return ResponseEntity.status(404).build(); // Category not found among available categories
+            existingProduct.setCategory(category);
         }
 
         Product updatedProduct = productService.saveProduct(existingProduct);
