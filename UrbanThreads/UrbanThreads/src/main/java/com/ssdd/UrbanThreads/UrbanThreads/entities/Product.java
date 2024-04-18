@@ -64,7 +64,7 @@ public class Product {
 
     private boolean deleted;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderedProduct> orderedProducts;
 
 
