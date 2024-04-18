@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
@@ -158,6 +159,38 @@ public class ProductRESTController {
         Product updatedProduct = productService.saveProduct(existingProduct);
         ProductDTO productDTO = new ProductDTO(updatedProduct);
         return ResponseEntity.status(200).body(productDTO);
+    }
+
+
+    @PostMapping("/{productId}/photo")
+    public ResponseEntity<ProductDTO> uploadEventPhoto(@PathVariable Long productId, @RequestPart("photo") MultipartFile photo) {
+        Optional<Product> product = productService.findProduct(productId);
+        if (!product.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Product product1 = product.get();
+
+
+        try {
+            product1.st(new javax.sql.rowset.serial.SerialBlob(photo.getBytes()));
+            productService.saveProduct(product1);
+            ProductDTO eventDTO =new ProductDTO(product1);
+
+            // Build the URL created event
+            URI location = ServletUriComponentsBuilder.fromCurrentContextPath()
+                    .path("/api/products/{id}")
+                    .buildAndExpand(product1.getId())
+                    .toUri();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setLocation(location);
+
+            return new ResponseEntity<>(eventDTO, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     @PatchMapping("editP/{id}")
     public ResponseEntity<ProductDTO> editP2(@PathVariable Long id, @RequestBody Product partialProduct) {
