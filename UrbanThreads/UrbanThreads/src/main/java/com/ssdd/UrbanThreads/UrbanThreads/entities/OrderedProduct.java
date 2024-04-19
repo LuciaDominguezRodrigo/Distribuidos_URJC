@@ -25,6 +25,7 @@ public class OrderedProduct {
     @Column(nullable = false)
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private Size size;
 
     private String color;

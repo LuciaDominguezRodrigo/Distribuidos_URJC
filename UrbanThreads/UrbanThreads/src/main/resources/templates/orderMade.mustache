@@ -30,6 +30,11 @@
         </div>
     </div>
     <br>
+    {{^allProductsOrdered}}
+        <div class="alert alert-warning" role="alert">
+            <i class="fa-sharp fa-solid fa-triangle-exclamation"></i> <strong>Atención: </strong> Debido a falta de stock, alguno de sus productos no se enviaron en la cantidad indicada.
+        </div>
+    {{/allProductsOrdered}}
     <div style="text-align: center;">
         <a href="/" class="btn btn-primary text-center">Volver a inicio</a>
     </div>

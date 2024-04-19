@@ -79,7 +79,8 @@ public class OrderWebController {
         if (currentOrder != null) {
             model.addAttribute("productList", currentOrder.getOrderedProducts());
             currentOrder.setOrderStatus(OrderStatus.COMPLETED);
-            productService.reduceProductsQuantity(currentOrder.getOrderedProducts());
+            boolean allProductsOrdered = productService.reduceProductsQuantity(currentOrder.getOrderedProducts());
+            model.addAttribute("allProductsOrdered", allProductsOrdered);
             orderService.saveOrder(currentOrder);
 
             //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.

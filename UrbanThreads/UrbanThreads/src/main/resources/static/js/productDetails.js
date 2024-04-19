@@ -23,6 +23,7 @@ function checkStock(xs, s, m, l, xl, xxl) {
             break;
     }
 
+    //Limita la cantidad de producto que se puede seleccionar
     let quantityField = document.getElementById("quantity");
     quantityField.max = selectedSizeQuantity;
     if (quantityField.value > selectedSizeQuantity) {

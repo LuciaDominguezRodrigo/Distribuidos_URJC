@@ -95,13 +95,13 @@ public class ProductWebController {
             category.ifPresent(dCategory -> model.addAttribute("categoryName", dCategory.getName()));
             model.addAttribute("product", product);
 
-            //Available sizes for dynamic JS stock checking
-            model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS));
-            model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S));
-            model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M));
-            model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L));
-            model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL));
-            model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL));
+            //Available sizes for dynamic JS stock checking. Already added products into orders is taken into account
+            model.addAttribute("sizeXS", product.getAvailableSizes().get(Size.XS) - productService.getSelectedProducts(product,Size.XS));
+            model.addAttribute("sizeS", product.getAvailableSizes().get(Size.S) - productService.getSelectedProducts(product,Size.S));
+            model.addAttribute("sizeM", product.getAvailableSizes().get(Size.M) - productService.getSelectedProducts(product,Size.M));
+            model.addAttribute("sizeL", product.getAvailableSizes().get(Size.L) - productService.getSelectedProducts(product,Size.L));
+            model.addAttribute("sizeXL", product.getAvailableSizes().get(Size.XL) - productService.getSelectedProducts(product,Size.XL));
+            model.addAttribute("sizeXXL", product.getAvailableSizes().get(Size.XXL) - productService.getSelectedProducts(product,Size.XXL));
 
             return "productDetails";
         } else {
