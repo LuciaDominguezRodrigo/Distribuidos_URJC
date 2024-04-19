@@ -49,11 +49,13 @@ public class OrderWebController {
             orderService.changeCurrentOrder(currentOrder.getId());
         }
         List<OrderedProduct> orderProducts = currentOrder.getOrderedProducts();
-        //Remaining selected size units updating for each product in order (now not neccessary because of size table query)
         model.addAttribute("orderId", currentOrder.getId());
         model.addAttribute("allOrdersId", orderService.getAllPendingOrdersId());
         model.addAttribute("productList", orderProducts);
-
+        for (OrderedProduct op : orderProducts){
+            int maxEligibleProducts = op.getProduct().getAvailableSizes().get(Size.XS) - productService.getSelectedProducts(op.getProduct(),op.getSize()) + op.getQuantity();
+            model.addAttribute("maxEligibleProducts", maxEligibleProducts);
+        }
 
         return "orderPage";
     }
@@ -113,6 +115,7 @@ public class OrderWebController {
             }
         }
         changedProduct.setQuantity(quantity);
+        changedProduct.setTotalPrice(quantity * changedProduct.getProduct().getPrice());
         orderedProductService.saveOrderedProduct(changedProduct);
 
         return "redirect:/orderPage";

@@ -62,7 +62,7 @@
                                 <input type="hidden" name="productId" value="{{id}}">
                                 <input type="hidden" name="productSize" value="{{size}}">
                                 <input type="hidden" name="productColor" value="{{color}}">
-                                <input type="number" class="form-control" id="quantity" name="quantity" value="{{quantity}}" required>
+                                <input type="number" class="form-control" id="quantity" name="quantity" value="{{quantity}}" max="{{maxEligibleProducts}}" required>
                                 <button type="submit" class="btn btn-primary" id="addToCart">Confirmar edición</button>
                             </div>
                         </form>
