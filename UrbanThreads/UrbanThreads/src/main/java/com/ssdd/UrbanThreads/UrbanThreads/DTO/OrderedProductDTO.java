@@ -8,13 +8,7 @@ import lombok.Setter;
 @Setter
 public class OrderedProductDTO {
 
-    private Long id;
-
-    private Long orderId;
-
     private Long productId;
-
-    private String name;
 
     private String size;
 
@@ -25,22 +19,16 @@ public class OrderedProductDTO {
     private double totalPrice;
 
 
-    public OrderedProductDTO(Long id, Long orderId, Long productId, String name, String size, String color, int quantity, double totalPrice) {
-        this.id = id;
-        this.orderId = orderId;
+    public OrderedProductDTO(Long productId, String size, String color, int quantity, double totalPrice) {
         this.productId = productId;
-        this.name = name;
         this.size = size;
         this.color = color;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }
 
-    public  OrderedProductDTO (OrderedProduct product) { //Product object, only filled with specific order information
-        this.id = product.getId();
-        this.orderId = product.getOrder().getId();
+    public OrderedProductDTO (OrderedProduct product) { //Product object, only filled with specific order information
         this.productId = product.getProduct().getId();
-        this.name = product.getName();
         this.size = product.getSize().toString();
         this.color = product.getColor();
         this.quantity = product.getQuantity();

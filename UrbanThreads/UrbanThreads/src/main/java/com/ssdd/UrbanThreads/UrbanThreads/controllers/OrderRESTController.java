@@ -58,24 +58,17 @@ public class OrderRESTController {
         Order newOrder = new Order();
         orderService.saveOrder(newOrder);
         for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
-            OrderedProduct p = new OrderedProduct();
-            p.setOrder(newOrder);
             Optional<Product> productOptional = productService.findProduct(o.getProductId());
             if(!productOptional.isPresent()){
                 return ResponseEntity.status(404).build();
             }
-            p.setProduct(productOptional.get());
-            p.setName(o.getName());
-            p.setSize(Size.valueOf(o.getSize()));
-            p.setColor(o.getColor());
-            p.setQuantity(o.getQuantity());
-            p.setTotalPrice(o.getTotalPrice());
-            orderedProductService.addProductToOrder(p.getOrder(), p.getProduct(), p.getSize(), p.getColor(), p.getQuantity());
-        }
+            Product orderedProduct = productOptional.get();
 
-        long orderId = orderService.addNewOrder(newOrder);
+            orderedProductService.addProductToOrder(newOrder, orderedProduct, Size.valueOf(o.getSize()), o.getColor(), o.getQuantity());
+            o.setTotalPrice(orderedProduct.getPrice() * o.getQuantity());
+        }
         orderService.changeCurrentOrder(newOrder.getId());
-        orderDTO.setOrderId(orderId);
+        orderDTO.setOrderId(newOrder.getId());
         return ResponseEntity.status(201).body(orderDTO);
     }
 
@@ -88,15 +81,6 @@ public class OrderRESTController {
         existingOrder.setOrderStatus(OrderStatus.COMPLETED);
         productService.reduceProductsQuantity(existingOrder.getOrderedProducts());
         orderService.saveOrder(existingOrder);
-
-        //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
-        List<Long> allOrdersId = orderService.getAllPendingOrdersId();
-        if(!allOrdersId.isEmpty()){
-            orderService.changeCurrentOrder(allOrdersId.get(0));
-        } else{
-            Long newOrderId = orderService.addNewOrder(new Order());
-            orderService.changeCurrentOrder(newOrderId);
-        }
 
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
     }
@@ -111,25 +95,24 @@ public class OrderRESTController {
 
         if (orderDTO.getOrderStatus() != null) {
             existingOrder.setOrderStatus(orderDTO.getOrderStatus());
-        } else{
-            existingOrder.setOrderStatus(OrderStatus.PENDING);
         }
 
         if (orderDTO.getOrderedProductsDTO() != null) {
             for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
-                OrderedProduct p = new OrderedProduct();
-                p.setOrder(existingOrder);
                 Optional<Product> productOptional = productService.findProduct(o.getProductId());
                 if(!productOptional.isPresent()){
                     return ResponseEntity.status(404).build();
                 }
-                p.setProduct(productOptional.get());
-                p.setName(o.getName());
-                p.setSize(Size.valueOf(o.getSize()));
-                p.setColor(o.getColor());
-                p.setQuantity(o.getQuantity());
-                p.setTotalPrice(o.getTotalPrice());
-                orderedProductService.addProductToOrder(p.getOrder(), p.getProduct(), p.getSize(), p.getColor(), p.getQuantity());
+                Product product = productOptional.get();
+                OrderedProduct op = new OrderedProduct();
+                op.setOrder(existingOrder);
+                op.setProduct(product);
+                op.setName(product.getName());
+                op.setSize(Size.valueOf(o.getSize()));
+                op.setColor(o.getColor());
+                op.setQuantity(o.getQuantity());
+                op.setTotalPrice(product.getPrice() * o.getQuantity());
+                orderedProductService.saveOrderedProduct(op);
             }
         }
         orderService.saveOrder(existingOrder);
@@ -155,7 +138,7 @@ public class OrderRESTController {
 
         return ResponseEntity.status(200).build();
     }
-
+/*
     @PatchMapping("/edit/{id}")
     public ResponseEntity<OrderDTO> editOrderByPatching(@PathVariable Long id, @RequestBody OrderDTO partialOrderDTO) {
         Order existingOrder = orderService.getOrderById(id);
@@ -190,4 +173,6 @@ public class OrderRESTController {
         orderService.saveOrder(existingOrder);
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
     }
+
+ */
 }
