@@ -30,7 +30,6 @@ public class ProductRESTController {
     private CategoryService categoryService;
 
 
-
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> obtenerProducto(@PathVariable Long id) {
         Optional<Product> productOptional = productService.findProduct(id);
@@ -42,14 +41,15 @@ public class ProductRESTController {
         ProductDTO productDTO = new ProductDTO(product);
         return ResponseEntity.status(200).body(productDTO);
     }
+
     @GetMapping("/all")
-    public ResponseEntity<Collection<ProductDTO>> getAll(){
+    public ResponseEntity<Collection<ProductDTO>> getAll() {
         Collection<Product> products = productService.findAllProducts();
         Collection<ProductDTO> cDTO = new ArrayList<>();
-        if (products== null) {
+        if (products == null) {
             return ResponseEntity.notFound().build();
         }
-        for (Product c: products){
+        for (Product c : products) {
             ProductDTO pDTO = new ProductDTO(c);
             assert false;
             cDTO.add(pDTO);
@@ -59,41 +59,36 @@ public class ProductRESTController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<ProductDTO> createProducto(@RequestBody Product product) {
-        Optional<Product> existingProductOptional = productService.findProduct(product.getId());
-        if (existingProductOptional.isPresent()) {
-            return ResponseEntity.status(409).build(); // Conflict
-        }
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product requestDTO) {
+        // Obtener la categoría
+        Optional<Category> category = categoryService.findCategory(requestDTO.getCategory().getId());
+        // Crear un nuevo producto
+        Product product = new Product();
+        product.setName(requestDTO.getName());
+        product.setPrice(requestDTO.getPrice());
+        product.setCategory(category.get());
+        product.setDescription(requestDTO.getDescription());
 
-        Category category = product.getCategory();
-        Collection<Category> categoriesAvailable = categoryService.getAllCategories();
+        // Establecer la foto por defecto
+        product.setPhoto("./static/img/abrigo.jpg");
 
-        boolean categoryExists = false;
-        for (Category c : categoriesAvailable) {
-            if (c.getName().equals(category.getName()) && c.getColor().equals(category.getColor())) {
-                categoryExists = true;
-            }
-        }
+        // Guardar el producto
+        Product savedProduct = productService.saveProduct(product);
 
-        if (!categoryExists) {
-            return ResponseEntity.status(404).build(); // Category not found among available categories
-        }
-
-        Product newProduct = productService.saveProduct(product);
-        if (newProduct == null || newProduct.getCategory() == null) {
-            return ResponseEntity.status(410).build(); // Gone
-        }
-
+        // Construir la URL de la ubicación del nuevo producto
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(newProduct.getId())
+                .buildAndExpand(savedProduct.getId())
                 .toUri();
 
-        ProductDTO productDTO = new ProductDTO(newProduct);
+        // Crear el DTO del producto
+        ProductDTO productDTO = new ProductDTO(savedProduct);
 
-        return ResponseEntity.status(201).location(location).body(productDTO); // Created
+        // Devolver una respuesta con el DTO del producto y la URL de la ubicación
+        return ResponseEntity.created(location).body(productDTO);
     }
+
 
     @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
