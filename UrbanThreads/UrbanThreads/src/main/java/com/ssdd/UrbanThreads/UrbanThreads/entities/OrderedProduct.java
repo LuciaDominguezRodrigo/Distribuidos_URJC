@@ -37,4 +37,15 @@ public class OrderedProduct {
 
     public OrderedProduct() {
     }
+
+    public OrderedProduct(Long id, Order order, Product product, String name, Size size, String color, int quantity, double totalPrice) {
+        this.id = id;
+        this.order = order;
+        this.product = product;
+        this.name = name;
+        this.size = size;
+        this.color = color;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+    }
 }

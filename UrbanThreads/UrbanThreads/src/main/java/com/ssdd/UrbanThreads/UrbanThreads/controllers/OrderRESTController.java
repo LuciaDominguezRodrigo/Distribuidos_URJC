@@ -89,10 +89,12 @@ public class OrderRESTController {
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
         Order existingOrder = orderService.getOrderById(id);
 
+        //Check if order is null
         if (existingOrder == null) {
             return ResponseEntity.notFound().build();
         }
 
+        //Check if orderStatus is being updated
         if (orderDTO.getOrderStatus() != null) {
             existingOrder.setOrderStatus(orderDTO.getOrderStatus());
         }
@@ -100,18 +102,16 @@ public class OrderRESTController {
         if (orderDTO.getOrderedProductsDTO() != null) {
             for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
                 Optional<Product> productOptional = productService.findProduct(o.getProductId());
+                //Check if product exists
                 if(!productOptional.isPresent()){
                     return ResponseEntity.status(404).build();
                 }
+                //Check if modifying product is this order product
+                if(o.getOrderId() != existingOrder.getId()){
+                    return ResponseEntity.status(403).build();
+                }
                 Product product = productOptional.get();
-                OrderedProduct op = new OrderedProduct();
-                op.setOrder(existingOrder);
-                op.setProduct(product);
-                op.setName(product.getName());
-                op.setSize(Size.valueOf(o.getSize()));
-                op.setColor(o.getColor());
-                op.setQuantity(o.getQuantity());
-                op.setTotalPrice(product.getPrice() * o.getQuantity());
+                OrderedProduct op = new OrderedProduct(o.getId(), existingOrder, product, product.getName(), Size.valueOf(o.getSize()), o.getColor(), o.getQuantity(), product.getPrice() * o.getQuantity());
                 orderedProductService.saveOrderedProduct(op);
             }
         }
