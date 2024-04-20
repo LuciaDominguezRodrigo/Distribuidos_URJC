@@ -5,6 +5,7 @@ import com.ssdd.UrbanThreads.UrbanThreads.DTO.OrderedProductDTO;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.*;
 import com.ssdd.UrbanThreads.UrbanThreads.services.OrderService;
 import com.ssdd.UrbanThreads.UrbanThreads.services.OrderedProductService;
+import com.ssdd.UrbanThreads.UrbanThreads.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -23,6 +25,9 @@ public class OrderRESTController {
     @Autowired
     private OrderedProductService orderedProductService;
 
+    @Autowired
+    private ProductService productService;
+
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
         Order selectedOrder = orderService.getOrderById(id);
@@ -30,8 +35,8 @@ public class OrderRESTController {
             return ResponseEntity.status(404).build();
         }
 
-        OrderDTO OrderDTO = new OrderDTO(selectedOrder);
-        return ResponseEntity.status(200).body(OrderDTO);
+        OrderDTO oDTO = new OrderDTO(selectedOrder);
+        return ResponseEntity.status(200).body(oDTO);
     }
 
     @GetMapping("/all")
@@ -51,15 +56,21 @@ public class OrderRESTController {
     @PostMapping("/new")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO) {
         Order newOrder = new Order();
-        newOrder.setOrderStatus(OrderStatus.PENDING);
+        orderService.saveOrder(newOrder);
         for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
             OrderedProduct p = new OrderedProduct();
+            p.setOrder(newOrder);
+            Optional<Product> productOptional = productService.findProduct(o.getProductId());
+            if(!productOptional.isPresent()){
+                return ResponseEntity.status(404).build();
+            }
+            p.setProduct(productOptional.get());
             p.setName(o.getName());
-            p.setTotalPrice(o.getPrice());
             p.setSize(Size.valueOf(o.getSize()));
             p.setColor(o.getColor());
             p.setQuantity(o.getQuantity());
-            orderedProductService.saveOrderedProduct(p);
+            p.setTotalPrice(o.getTotalPrice());
+            orderedProductService.addProductToOrder(p.getOrder(), p.getProduct(), p.getSize(), p.getColor(), p.getQuantity());
         }
 
         long orderId = orderService.addNewOrder(newOrder);
@@ -71,13 +82,21 @@ public class OrderRESTController {
     @PostMapping("/complete/{id}")
     public ResponseEntity<OrderDTO> completeOrder(@PathVariable Long id) {
         Order existingOrder = orderService.getOrderById(id);
-
         if (existingOrder == null) {
             return ResponseEntity.notFound().build();
         }
-
         existingOrder.setOrderStatus(OrderStatus.COMPLETED);
+        productService.reduceProductsQuantity(existingOrder.getOrderedProducts());
         orderService.saveOrder(existingOrder);
+
+        //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
+        List<Long> allOrdersId = orderService.getAllPendingOrdersId();
+        if(!allOrdersId.isEmpty()){
+            orderService.changeCurrentOrder(allOrdersId.get(0));
+        } else{
+            Long newOrderId = orderService.addNewOrder(new Order());
+            orderService.changeCurrentOrder(newOrderId);
+        }
 
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
     }
@@ -92,17 +111,25 @@ public class OrderRESTController {
 
         if (orderDTO.getOrderStatus() != null) {
             existingOrder.setOrderStatus(orderDTO.getOrderStatus());
+        } else{
+            existingOrder.setOrderStatus(OrderStatus.PENDING);
         }
 
         if (orderDTO.getOrderedProductsDTO() != null) {
             for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
                 OrderedProduct p = new OrderedProduct();
+                p.setOrder(existingOrder);
+                Optional<Product> productOptional = productService.findProduct(o.getProductId());
+                if(!productOptional.isPresent()){
+                    return ResponseEntity.status(404).build();
+                }
+                p.setProduct(productOptional.get());
                 p.setName(o.getName());
-                p.setTotalPrice(o.getPrice());
                 p.setSize(Size.valueOf(o.getSize()));
                 p.setColor(o.getColor());
                 p.setQuantity(o.getQuantity());
-                orderedProductService.saveOrderedProduct(p);
+                p.setTotalPrice(o.getTotalPrice());
+                orderedProductService.addProductToOrder(p.getOrder(), p.getProduct(), p.getSize(), p.getColor(), p.getQuantity());
             }
         }
         orderService.saveOrder(existingOrder);
@@ -117,6 +144,15 @@ public class OrderRESTController {
         }
         orderService.deleteOrderById(id);
 
+        //When an order is removed, the current order changes to next created order or, if there´s no more orders created, a new one is created and marked as current order.
+        List<Long> allOrdersId = orderService.getAllPendingOrdersId();
+        if(!allOrdersId.isEmpty()){
+            orderService.changeCurrentOrder(allOrdersId.get(0));
+        } else{
+            Long newOrderId = orderService.addNewOrder(new Order());
+            orderService.changeCurrentOrder(newOrderId);
+        }
+
         return ResponseEntity.status(200).build();
     }
 
@@ -130,17 +166,25 @@ public class OrderRESTController {
 
         if (partialOrderDTO.getOrderStatus() != null) {
             existingOrder.setOrderStatus(partialOrderDTO.getOrderStatus());
+        } else{
+            existingOrder.setOrderStatus(OrderStatus.PENDING);
         }
 
         if (partialOrderDTO.getOrderedProductsDTO() != null) {
             for (OrderedProductDTO o : partialOrderDTO.getOrderedProductsDTO()) {
                 OrderedProduct p = new OrderedProduct();
+                p.setOrder(existingOrder);
+                Optional<Product> productOptional = productService.findProduct(o.getProductId());
+                if(!productOptional.isPresent()){
+                    return ResponseEntity.status(404).build();
+                }
+                p.setProduct(productOptional.get());
                 p.setName(o.getName());
-                p.setTotalPrice(o.getPrice());
                 p.setSize(Size.valueOf(o.getSize()));
                 p.setColor(o.getColor());
                 p.setQuantity(o.getQuantity());
-                orderedProductService.saveOrderedProduct(p);
+                p.setTotalPrice(o.getTotalPrice());
+                orderedProductService.addProductToOrder(p.getOrder(), p.getProduct(), p.getSize(), p.getColor(), p.getQuantity());
             }
         }
         orderService.saveOrder(existingOrder);

@@ -28,10 +28,10 @@ public class OrderedProductService {
         orderedProductRepository.save(orderedProduct);
     }
 
-    public void addProductToCurrentOrder(Product product, Size size, String color, int quantity) {
+    public void addProductToOrder(Order o, Product product, Size size, String color, int quantity) {
         OrderedProduct newProduct = new OrderedProduct();
 
-        newProduct.setOrder(orderService.getCurrentOrder());
+        newProduct.setOrder(o);
         newProduct.setProduct(product);
         newProduct.setName(product.getName());
         newProduct.setSize(size);
