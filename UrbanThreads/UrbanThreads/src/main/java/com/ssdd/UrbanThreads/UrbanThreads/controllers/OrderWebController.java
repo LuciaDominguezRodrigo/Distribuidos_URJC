@@ -33,7 +33,7 @@ public class OrderWebController {
                              @RequestParam("quantity") int quantity) {
         Optional<Product> product = productService.findProduct(productId);
         if (product.isPresent()) {
-            orderedProductService.addProductToCurrentOrder(product.get(), Size.valueOf(size), color, quantity);
+            orderedProductService.addProductToOrder(orderService.getCurrentOrder(),product.get(), Size.valueOf(size), color, quantity);
         }
 
         return "redirect:/orderPage";
