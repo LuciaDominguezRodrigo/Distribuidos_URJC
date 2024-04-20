@@ -129,7 +129,7 @@ public class CategoryRESTController {
     }
 
     @PatchMapping("edit/{id}")
-    public ResponseEntity<CategoryDTO> editCategoryP(@PathVariable long id, @RequestBody CategoryDTO partialCategoryDTO) {
+    public ResponseEntity<CategoryDTO> editCategoryP(@PathVariable long id, @RequestBody Category partialCategoryDTO) {
         Optional<Category> existingCategoryOptional = categoryService.findCategory(id);
         if (existingCategoryOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
