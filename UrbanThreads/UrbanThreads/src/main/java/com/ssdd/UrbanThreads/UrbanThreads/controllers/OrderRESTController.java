@@ -85,39 +85,6 @@ public class OrderRESTController {
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
     }
 
-   /* @PutMapping("/edit/{id}")
-    public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
-        Order existingOrder = orderService.getOrderById(id);
-
-        //Check if order is null
-        if (existingOrder == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        //Check if orderStatus is being updated
-        if (orderDTO.getOrderStatus() != null) {
-            existingOrder.setOrderStatus(orderDTO.getOrderStatus());
-        }
-
-        if (orderDTO.getOrderedProductsDTO() != null) {
-            for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
-                Optional<Product> productOptional = productService.findProduct(o.getProductId());
-                //Check if product exists
-                if(!productOptional.isPresent()){
-                    return ResponseEntity.status(404).build();
-                }
-                //Check if modifying product is this order product
-                if(o.getOrderId() != existingOrder.getId()){
-                    return ResponseEntity.status(403).build();
-                }
-                Product product = productOptional.get();
-                OrderedProduct op = new OrderedProduct(o.getId(), existingOrder, product, product.getName(), Size.valueOf(o.getSize()), o.getColor(), o.getQuantity(), product.getPrice() * o.getQuantity());
-                orderedProductService.saveOrderedProduct(op);
-            }
-        }
-        orderService.saveOrder(existingOrder);
-        return ResponseEntity.status(202).body(new OrderDTO(existingOrder));
-    } */
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<OrderDTO> updateOrder(@PathVariable Long id, @RequestBody OrderDTO orderDTO) {
@@ -134,31 +101,21 @@ public class OrderRESTController {
         if (orderDTO.getOrderedProductsDTO() != null) {
             for (OrderedProductDTO o : orderDTO.getOrderedProductsDTO()) {
                 Optional<Product> productOptional = productService.findProduct(o.getProductId());
+
+                //Check if a product exists
                 if (productOptional.isEmpty()) {
                     return ResponseEntity.status(404).build();
                 }
 
-                boolean productFound = existingOrder.getOrderedProducts()
-                        .stream()
-                        .anyMatch(orderedProduct -> orderedProduct.getId().equals(o.getId()));
-
-                if (!productFound) {
-                    return ResponseEntity.status(403).build();
-                }
-
                 Product product = productOptional.get();
 
-                boolean found = false;
-                for (OrderedProduct existingOrderedProduct : existingOrder.getOrderedProducts()) {
-                    if (existingOrderedProduct.getId().equals(o.getId())) {
-                        existingOrderedProduct.updateDetails(product, o.getSize(), o.getColor(), o.getQuantity());
-                        found = true;
-                    }
-                }
+                OrderedProduct foundProduct = orderedProductService.findByIdAndOrder(o.getId(), existingOrder);
 
-                if (!found) {
+                if (foundProduct == null) {
                     OrderedProduct newOrderedProduct = new OrderedProduct(null, existingOrder, product, product.getName(), Size.valueOf(o.getSize()), o.getColor(), o.getQuantity(), product.getPrice() * o.getQuantity());
                     existingOrder.addOrderedProduct(newOrderedProduct);
+                } else{
+                    foundProduct.updateDetails(product, o.getSize(), o.getColor(), o.getQuantity());
                 }
             }
         }
@@ -186,9 +143,9 @@ public class OrderRESTController {
 
         return ResponseEntity.status(200).build();
     }
-/*
+
     @PatchMapping("/edit/{id}")
-    public ResponseEntity<OrderDTO> editOrderByPatching(@PathVariable Long id, @RequestBody OrderDTO partialOrderDTO) {
+    public ResponseEntity<OrderDTO> updateOrderByPatching(@PathVariable Long id, @RequestBody OrderDTO partialOrderDTO) {
         Order existingOrder = orderService.getOrderById(id);
 
         if (existingOrder == null) {
@@ -197,30 +154,32 @@ public class OrderRESTController {
 
         if (partialOrderDTO.getOrderStatus() != null) {
             existingOrder.setOrderStatus(partialOrderDTO.getOrderStatus());
-        } else{
-            existingOrder.setOrderStatus(OrderStatus.PENDING);
         }
 
         if (partialOrderDTO.getOrderedProductsDTO() != null) {
             for (OrderedProductDTO o : partialOrderDTO.getOrderedProductsDTO()) {
-                OrderedProduct p = new OrderedProduct();
-                p.setOrder(existingOrder);
                 Optional<Product> productOptional = productService.findProduct(o.getProductId());
-                if(!productOptional.isPresent()){
+
+                //Check if a product exists
+                if (productOptional.isEmpty()) {
                     return ResponseEntity.status(404).build();
                 }
-                p.setProduct(productOptional.get());
-                p.setName(o.getName());
-                p.setSize(Size.valueOf(o.getSize()));
-                p.setColor(o.getColor());
-                p.setQuantity(o.getQuantity());
-                p.setTotalPrice(o.getTotalPrice());
-                orderedProductService.addProductToOrder(p.getOrder(), p.getProduct(), p.getSize(), p.getColor(), p.getQuantity());
+
+                Product product = productOptional.get();
+
+                OrderedProduct foundProduct = orderedProductService.findByIdAndOrder(o.getId(), existingOrder);
+
+                if (foundProduct == null) {
+                    OrderedProduct newOrderedProduct = new OrderedProduct(null, existingOrder, product, product.getName(), Size.valueOf(o.getSize()), o.getColor(), o.getQuantity(), product.getPrice() * o.getQuantity());
+                    existingOrder.addOrderedProduct(newOrderedProduct);
+                } else{
+                    foundProduct.updateDetails(product, o.getSize(), o.getColor(), o.getQuantity());
+                }
             }
         }
+
         orderService.saveOrder(existingOrder);
         return ResponseEntity.status(200).body(new OrderDTO(existingOrder));
     }
 
- */
 }

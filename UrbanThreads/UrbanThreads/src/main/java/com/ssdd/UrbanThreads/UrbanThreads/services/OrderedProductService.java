@@ -24,6 +24,10 @@ public class OrderedProductService {
     @Autowired
     private OrderedProductRepository orderedProductRepository;
 
+    public OrderedProduct findByIdAndOrder(long id, Order o){
+        return orderedProductRepository.findByIdAndOrder(id, o);
+    }
+
     public void saveOrderedProduct(OrderedProduct orderedProduct) {
         orderedProductRepository.save(orderedProduct);
     }

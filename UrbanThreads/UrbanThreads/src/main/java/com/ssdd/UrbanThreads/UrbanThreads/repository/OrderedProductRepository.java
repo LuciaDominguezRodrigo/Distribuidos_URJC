@@ -16,4 +16,7 @@ public interface OrderedProductRepository extends JpaRepository<OrderedProduct, 
     @Query("SELECT SUM(op.quantity) FROM OrderedProduct op WHERE op.product = :p AND op.size = :s AND op.order.orderStatus = :os")
     public Integer findByProductAndSize(Product p, Size s, OrderStatus os);
 
+
+    public OrderedProduct findByIdAndOrder(long id, Order o);
+
 }
