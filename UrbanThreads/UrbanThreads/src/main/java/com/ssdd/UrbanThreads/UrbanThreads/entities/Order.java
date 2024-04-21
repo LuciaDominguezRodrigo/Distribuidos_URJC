@@ -35,4 +35,9 @@ public class Order {
         this.orderedProducts = orderProducts;
     }
 
+    public void addOrderedProduct(OrderedProduct newOrderedProduct) {
+            this.orderedProducts.add(newOrderedProduct);
+            newOrderedProduct.setOrder(this); // Asegurarse de establecer la relación bidireccional
+    }
 }
+

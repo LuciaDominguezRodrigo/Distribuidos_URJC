@@ -48,4 +48,22 @@ public class OrderedProduct {
         this.quantity = quantity;
         this.totalPrice = totalPrice;
     }
+
+    public void updateDetails(Product product, String size, String color, int quantity) {
+        if (product != null) {
+            this.setProduct(product);
+            this.setName(product.getName());
+            this.setTotalPrice(product.getPrice() * quantity);
+        }
+        if (size != null) {
+            this.setSize(Size.valueOf(size));
+        }
+        if (color != null) {
+            this.setColor(color);
+        }
+        if (quantity > 0) {
+            this.setQuantity(quantity);
+            this.setTotalPrice(this.getProduct().getPrice() * quantity);
+        }
+    }
 }
