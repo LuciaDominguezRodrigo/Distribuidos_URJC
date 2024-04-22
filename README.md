@@ -64,7 +64,7 @@ Esta apliación albergará una web para una tienda de ropa. De esta manera, toda
 
 ### 🕹️Configuración del IDE
 - Hemos utizado IntelliJ IDEA, pero es posible utilizar otros IDE´S
-- Instala Maven and Spring para tu IDE
+- Instala Maven y Spring para tu IDE
 
 ## 🗃️Diagrama de la base de datos
 ![ddbbdiagram](bbdd_sql_diagram.png)
