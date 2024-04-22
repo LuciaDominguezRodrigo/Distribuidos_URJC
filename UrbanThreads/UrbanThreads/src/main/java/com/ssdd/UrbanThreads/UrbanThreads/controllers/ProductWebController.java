@@ -55,7 +55,7 @@ public class ProductWebController {
 
     @GetMapping("/product/image/{id}")
     @ResponseBody
-    public byte[] showEventImage(@PathVariable long id) throws SQLException, IOException {
+    public byte[] showProductImage(@PathVariable long id) throws SQLException, IOException {
         Optional<Product> eventOptional = productService.findProduct(id);
         if (eventOptional.isPresent()) {
             Blob photoBlob = eventOptional.get().getPhoto();
@@ -70,7 +70,7 @@ public class ProductWebController {
 
 
     @GetMapping("/newProducts")
-    public String newEvents(Model model) {
+    public String moreProductsLoad(Model model) {
         List<Product> products = productService.findByCurrentCategoryAndIdRange(nextProductIndex, (nextProductIndex + productsRefreshSize) - 1);
         nextProductIndex += products.size();
         model.addAttribute("additionalProducts", products);

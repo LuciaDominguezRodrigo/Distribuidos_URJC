@@ -68,6 +68,7 @@ public class ProductRESTController {
         product.setPrice(requestDTO.getPrice());
         product.setCategory(category.get());
         product.setDescription(requestDTO.getDescription());
+        product.setAvailableSizes(requestDTO.getAvailableSizes());
 
         // Establecer la foto por defecto
         product.setPhoto("./static/img/abrigo.jpg");

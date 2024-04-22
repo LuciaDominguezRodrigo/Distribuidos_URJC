@@ -64,6 +64,11 @@ public class OrderRESTController {
             }
             Product orderedProduct = productOptional.get();
 
+            //If ordered product quantity is bigger than available and elegible quantity (product total units of selected size - selected size product units that are already in an existing order)
+            if(o.getQuantity() > (orderedProduct.getAvailableSizes().get(Size.valueOf(o.getSize())) - productService.getSelectedProducts(orderedProduct, Size.valueOf(o.getSize())))){
+                return ResponseEntity.status(406).build();
+            }
+
             orderedProductService.addProductToOrder(newOrder, orderedProduct, Size.valueOf(o.getSize()), o.getColor(), o.getQuantity());
             o.setTotalPrice(orderedProduct.getPrice() * o.getQuantity());
         }
