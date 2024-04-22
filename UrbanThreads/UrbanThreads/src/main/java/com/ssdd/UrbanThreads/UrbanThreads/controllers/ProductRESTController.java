@@ -143,6 +143,7 @@ public class ProductRESTController {
         existingProduct.setCategory(existingCategory);
         existingProduct.setPrice(product.getPrice());
         existingProduct.setDescription(product.getDescription());
+        existingProduct.setAvailableSizes(product.getAvailableSizes());
 
         Product updatedProduct = productService.saveProduct(existingProduct);
         ProductDTO productDTO = new ProductDTO(updatedProduct);
