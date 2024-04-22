@@ -67,5 +67,7 @@ Esta apliación albergará una web para una tienda de ropa. De esta manera, toda
 - Instala Maven and Spring para tu IDE
 
 ## 🗃️Diagrama de la base de datos
-![](https://github.com/LuciaDominguezRodrigo/Distribuidos_URJC/blob/main/pruebas/diagrama_basedatos/database.png)
+![ddbbdiagram](bbdd_sql_diagram.png)
+
+
 *DataBase Diagram*
