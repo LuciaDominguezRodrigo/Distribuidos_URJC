@@ -9,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.StreamUtils;
 
 import javax.sql.rowset.serial.SerialBlob;
 import java.io.ByteArrayInputStream;
@@ -97,16 +99,11 @@ public class Product {
 
 
 
-    public void setPhoto(String photo) {
-        try {
-            byte[] bytes = photo.getBytes();
-
-            InputStream inputStream = new ByteArrayInputStream(bytes);
-
-            this.photo = new SerialBlob(bytes);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
+    public void setPhoto( ) throws IOException, SQLException {
+        ClassPathResource imgFile4 = new ClassPathResource("./static/img/logo.png");
+        byte[] photoBytes4 = StreamUtils.copyToByteArray(imgFile4.getInputStream());
+        Blob photoBlob4 = new SerialBlob(photoBytes4);
+        this.photo = photoBlob4;
     }
 
     public void st (Blob b) {

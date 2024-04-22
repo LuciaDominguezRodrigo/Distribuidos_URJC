@@ -59,7 +59,7 @@ public class ProductRESTController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product requestDTO) {
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product requestDTO) throws SQLException, IOException {
         // Obtener la categoría
         Optional<Category> category = categoryService.findCategory(requestDTO.getCategory().getId());
         // Crear un nuevo producto
@@ -71,7 +71,7 @@ public class ProductRESTController {
         product.setAvailableSizes(requestDTO.getAvailableSizes());
 
         // Establecer la foto por defecto
-        product.setPhoto("./static/img/abrigo.jpg");
+        product.setPhoto();
 
         // Guardar el producto
         Product savedProduct = productService.saveProduct(product);
@@ -79,7 +79,7 @@ public class ProductRESTController {
         // Construir la URL de la ubicación del nuevo producto
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
+                .path("{id}")
                 .buildAndExpand(savedProduct.getId())
                 .toUri();
 
