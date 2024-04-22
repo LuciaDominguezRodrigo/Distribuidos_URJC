@@ -18,7 +18,7 @@ public interface OrderedProductRepository extends JpaRepository<OrderedProduct, 
 
     public OrderedProduct findByIdAndOrder(long id, Order o);
     
-    @Query("SELECT ordP.id FROM OrderedProduct ordP WHERE ordP.product = :p AND ordP.order = :o AND ordP.quantity = :quantity AND ordP.totalPrice = :totalPrice AND ordP.color = :color AND ordP.name = :n AND ordP.size = :s")
-    public Long findOrderedProductId(Product p, Order o, int quantity, double totalPrice, String color, String n, Size s);
+    @Query("SELECT ordP.id FROM OrderedProduct ordP WHERE ordP.product = :p AND ordP.order = :o AND ordP.color = :color AND ordP.name = :n AND ordP.size = :s")
+    public Long findOrderedProductId(Product p, Order o, String color, String n, Size s);
 
 }

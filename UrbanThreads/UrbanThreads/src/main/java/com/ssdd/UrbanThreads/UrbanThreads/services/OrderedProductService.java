@@ -55,7 +55,7 @@ public class OrderedProductService {
 
         orderedProductRepository.save(newProduct);
         if(orderedProductId == -1){
-            orderedProductId = orderedProductRepository.findOrderedProductId(newProduct.getProduct(), newProduct.getOrder(), newProduct.getQuantity(), newProduct.getTotalPrice(), newProduct.getColor(), newProduct.getName(), newProduct.getSize());
+            orderedProductId = orderedProductRepository.findOrderedProductId(newProduct.getProduct(), newProduct.getOrder(), newProduct.getColor(), newProduct.getName(), newProduct.getSize());
         }
         return orderedProductId;
     }
