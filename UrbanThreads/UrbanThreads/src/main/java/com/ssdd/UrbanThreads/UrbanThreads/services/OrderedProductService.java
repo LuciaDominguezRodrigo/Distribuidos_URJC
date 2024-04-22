@@ -32,7 +32,7 @@ public class OrderedProductService {
         orderedProductRepository.save(orderedProduct);
     }
 
-    public void addProductToOrder(Order o, Product product, Size size, String color, int quantity) {
+    public Long addProductToOrder(Order o, Product product, Size size, String color, int quantity) {
         OrderedProduct newProduct = new OrderedProduct();
 
         newProduct.setOrder(o);
@@ -43,15 +43,21 @@ public class OrderedProductService {
         newProduct.setQuantity(quantity);
         newProduct.setTotalPrice(product.getPrice() * quantity);
 
+        Long orderedProductId = -1L;
         for (OrderedProduct op : o.getOrderedProducts()) {
             if(op.getOrder().getId() == op.getOrder().getId() && op.getName().equals(newProduct.getName()) && op.getSize().equals(newProduct.getSize()) && op.getColor().equals(newProduct.getColor())) {
                 op.setQuantity(op.getQuantity() + quantity);
                 op.setTotalPrice(op.getTotalPrice() + newProduct.getTotalPrice());
+                orderedProductId = op.getId();
                 orderedProductRepository.save(op);
-                return;
             }
         }
+
         orderedProductRepository.save(newProduct);
+        if(orderedProductId == -1){
+            orderedProductId = orderedProductRepository.findOrderedProductId(newProduct.getProduct(), newProduct.getOrder(), newProduct.getQuantity(), newProduct.getTotalPrice(), newProduct.getColor(), newProduct.getName(), newProduct.getSize());
+        }
+        return orderedProductId;
     }
 
     public void deleteOrderedProduct(Long productId, String productSize, String productColor, int productQuantity) {

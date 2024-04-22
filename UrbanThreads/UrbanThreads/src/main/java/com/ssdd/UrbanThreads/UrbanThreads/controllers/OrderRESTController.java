@@ -69,8 +69,10 @@ public class OrderRESTController {
                 return ResponseEntity.status(406).build();
             }
 
-            orderedProductService.addProductToOrder(newOrder, orderedProduct, Size.valueOf(o.getSize()), o.getColor(), o.getQuantity());
+            Long id = orderedProductService.addProductToOrder(newOrder, orderedProduct, Size.valueOf(o.getSize()), o.getColor(), o.getQuantity());
+            o.setId(id);
             o.setTotalPrice(orderedProduct.getPrice() * o.getQuantity());
+
         }
         orderService.changeCurrentOrder(newOrder.getId());
         orderDTO.setOrderId(newOrder.getId());
