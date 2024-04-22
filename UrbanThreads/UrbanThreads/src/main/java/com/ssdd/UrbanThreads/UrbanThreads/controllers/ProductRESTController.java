@@ -124,6 +124,7 @@ public class ProductRESTController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @PutMapping("edit/{id}")
     public ResponseEntity<ProductDTO> editP(@PathVariable Long id, @RequestBody Product product) {
         Optional<Product> existingProductOptional = productService.findProduct(id);
@@ -143,7 +144,11 @@ public class ProductRESTController {
         existingProduct.setCategory(existingCategory);
         existingProduct.setPrice(product.getPrice());
         existingProduct.setDescription(product.getDescription());
-        existingProduct.setAvailableSizes(product.getAvailableSizes());
+
+        if(product.getAvailableSizes() != null) {
+            existingProduct.setAvailableSizes(product.getAvailableSizes());
+        }
+
 
         Product updatedProduct = productService.saveProduct(existingProduct);
         ProductDTO productDTO = new ProductDTO(updatedProduct);
@@ -206,6 +211,10 @@ public class ProductRESTController {
                 return ResponseEntity.status(404).build(); // Category not found among available categories
             }
             existingProduct.setCategory(category);
+        }
+
+        if(partialProduct.getAvailableSizes() != null) {
+            existingProduct.setAvailableSizes(partialProduct.getAvailableSizes());
         }
 
         Product updatedProduct = productService.saveProduct(existingProduct);
