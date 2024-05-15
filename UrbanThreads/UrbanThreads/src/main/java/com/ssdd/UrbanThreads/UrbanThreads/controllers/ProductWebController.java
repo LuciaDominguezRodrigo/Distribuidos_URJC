@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.sql.rowset.serial.SerialBlob;
 import javax.sql.rowset.serial.SerialException;
@@ -36,7 +37,7 @@ public class ProductWebController {
 
 
     @GetMapping("/")
-    public String index(Model model) {
+    public String index(Model model, RedirectAttributes redirectAttributes) {
         nextProductIndex = productsRefreshSize;
         List<Product> products = productService.findByCurrentCategoryAndIdRange(0, nextProductIndex - 1);
 
@@ -50,7 +51,13 @@ public class ProductWebController {
         for (Category category: categoryService.findAllC()){
             model.addAttribute("name", category.getName());
         }
-        return "index";
+
+        Collection<Category> allCategories = categoryService.findAllC();
+        model.addAttribute("allCategories", allCategories);
+
+        redirectAttributes.addFlashAttribute("allCategories", allCategories);
+
+        return "redirect:/filter?selectedFilter=";
     }
 
     @GetMapping("/product/image/{id}")

@@ -6,6 +6,7 @@ import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
 import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.OrderedProductRepository;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +72,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    @Transactional
     public Optional<Product> findProduct(long id) {
         return productRepository.findById(id);
     }

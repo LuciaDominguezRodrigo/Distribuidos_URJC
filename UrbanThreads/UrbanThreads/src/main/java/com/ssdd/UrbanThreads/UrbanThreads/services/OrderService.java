@@ -18,7 +18,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Getter
-    private long selectedOrder = 1;
+    private long selectedOrder;
 
     public Order getCurrentOrder() {
         Optional<Order> orderOptional = orderRepository.findById(selectedOrder);
