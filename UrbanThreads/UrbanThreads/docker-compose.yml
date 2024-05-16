@@ -1,15 +1,14 @@
-name : my_recipe
+name : uthreads
 services:
   web:
     build:
       context: .
-      dockerfile: ./Dockerfile
-    #image: rphydra/myrecipe:latest
+      dockerfile: Dockerfile
     ports:
       - 8443:8443
       - 8080:8080
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://roach1:26257,roach2:26258/defaultdb?sslmode=disable&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&accounting?targetServerType=preferSlave&loadBalanceHosts=true
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://roach1:26257,roach2:26258/defaultdb?sslmode=disable&loadBalanceHosts=true&user=lucia&password=yj2RIWCBqs8tsid1JIdQFg
     command: [ "./wait-for-it.sh", "roach1:26257", "--", "java", "-jar", "app.jar" ]
     restart: on-failure
   #  web2:
@@ -26,7 +25,7 @@ services:
   #    restart: on-failure
 
   roach1:
-    image: cockroachdb/cockroach:v20.2.0
+    image: cockroachdb/cockroach:v20.2.6
     #still to add docker exec -it roach1 ./cockroach --host=roach1:26357 init --insecure
     command: start --advertise-addr=roach1:26357 --http-addr=roach1:8081 --listen-addr=roach1:26357 --sql-addr=roach1:26257 --insecure --join=roach1:26357,roach2:26357
     ports:
@@ -35,7 +34,7 @@ services:
     volumes:
       - ./cockroach-data/roach1:/cockroach/cockroach-data
   roach2:
-    image: cockroachdb/cockroach:v20.2.0
+    image: cockroachdb/cockroach:v20.2.6
     command: start --advertise-addr=roach2:26357 --http-addr=roach2:8082 --listen-addr=roach2:26357 --sql-addr=roach2:26258 --insecure --join=roach1:26357,roach2:26357
     ports:
       - "26258:26258"
