@@ -8,7 +8,7 @@ services:
       - 8443:8443
       - 8080:8080
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://roach1:26257,roach2:26258/defaultdb?sslmode=disable&loadBalanceHosts=true&user=lucia&password=yj2RIWCBqs8tsid1JIdQFg
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://roach1:26257,roach2:26258/defaultdb?sslmode=disable&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&accounting?targetServerType=preferSlave&loadBalanceHosts=true
     command: [ "./wait-for-it.sh", "roach1:26257", "--", "java", "-jar", "app.jar" ]
     restart: on-failure
   #  web2:
