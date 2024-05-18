@@ -18,7 +18,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Getter
-    private long selectedOrder;
+    private long selectedOrder = -1;
 
     public Order getCurrentOrder() {
         Optional<Order> orderOptional = orderRepository.findById(selectedOrder);
@@ -28,6 +28,7 @@ public class OrderService {
             return null;
         }
     }
+
 
     public Order getOrderById(Long id) {
         Optional<Order> orderOptional = orderRepository.findById(id);

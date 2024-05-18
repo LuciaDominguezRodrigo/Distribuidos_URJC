@@ -101,22 +101,31 @@ public class OrderWebController {
     }
 
     @PostMapping("/editOrder")
-    public String editOrderProductQuantity(@RequestParam Long productId,
+    public String editOrderProductQuantity(@RequestParam String productId,
                              @RequestParam String productSize,
                              @RequestParam String productColor,
                              @RequestParam("quantity") int quantity) {
+
+        Long longProductId = Long.parseLong(productId);
         Order currentOrder = orderService.getCurrentOrder();
         OrderedProduct changedProduct = new OrderedProduct();
 
         //Locates edited product and updates its quantity as desired
-        for (OrderedProduct orderProduct : currentOrder.getOrderedProducts()) { //If product is ordered, must be found
-            if(orderProduct.getId() == productId && orderProduct.getSize().equals(Size.valueOf(productSize)) && orderProduct.getColor().equals(productColor)){
+        for (OrderedProduct orderProduct : orderedProductService.orderP()) {
+            if(orderProduct.getSize().equals(Size.valueOf(productSize))
+                    && orderProduct.getColor().equals(productColor)){
                 changedProduct = orderProduct;
+                break;
             }
         }
-        changedProduct.setQuantity(quantity);
-        changedProduct.setTotalPrice(quantity * changedProduct.getProduct().getPrice());
-        orderedProductService.saveOrderedProduct(changedProduct);
+
+        if (changedProduct.getProduct() != null) {
+            changedProduct.setQuantity(quantity);
+            changedProduct.setTotalPrice(quantity * changedProduct.getProduct().getPrice());
+            orderedProductService.saveOrderedProduct(changedProduct);
+        } else {
+
+        }
 
         return "redirect:/orderPage";
     }

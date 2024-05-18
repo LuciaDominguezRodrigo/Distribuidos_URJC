@@ -20,26 +20,27 @@ import java.util.*;
 
 @Service
 public class DatabaseInitializer {
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private CategoryService categoryService;
+
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
-
+    private ProductService productService;
 
 
     @PostConstruct
     public void init() throws IOException, SQLException {
         if (categoryRepository.count() == 0) {
             // Inicializar algunas categorías si no existen
-            Category category1 = new Category("Hombre", "#D1F2EB", "Ropa urbana de confianza, para todas las edades");
-            Category category2 = new Category("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades");
-            Category category3 = new Category("Sin Categoria", "#D2B4DE", "Ropa urbana de confianza, para todas las edades");
-
-            categoryRepository.saveAll(Arrays.asList(category1, category2, category3));
+            categoryService.addNewCategory(new Category("Hombre", "#D1F2EB", "Ropa urbana de confianza, para todas las edades"));
+            categoryService.addNewCategory(new Category("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades"));
+            categoryService.addNewCategory(new Category("Sin Categoria", "#D2B4DE", "Ropa urbana de confianza, para todas las edades"));
 
             // Crear y cargar imágenes si no existen productos
             Map<Size, Integer> as = new HashMap<>();
@@ -57,24 +58,18 @@ public class DatabaseInitializer {
             Blob photoBlob5 = loadImage("./static/img/chaqueta.jpg");
             Blob photoBlob6 = loadImage("./static/img/sudadera.jpg");
 
-            List<Category> categories = categoryRepository.findAll();
+            //List<Category> categories = categoryRepository.findAll();
 
             //Category category1 = categories.stream().filter(cat -> "Hombre".equals(cat.getName())).findFirst().orElse(null);
             //Category category2 = categories.stream().filter(cat -> "Mujer".equals(cat.getName())).findFirst().orElse(null);
 
             // Inicializar algunos productos asociados a las categorías
-            Product product1 = new Product("Camiseta", category1, 10.0, photoBlob1, "Descripción 1", as);
-            Product product2 = new Product("Pantalón ancho", category1, 20.0, photoBlob2, "Descripción 2", as);
-            Product product3 = new Product("Calcetines", category2, 15.0, photoBlob3, "Descripción 3", as);
-            Product product4 = new Product("Abrigo", category1, 25.0, photoBlob4, "Descripción 4", as);
-            Product product5 = new Product("Chaqueta", category2, 12.0, photoBlob5, "Descripción 5", as);
-            Product product6 = new Product("Sudadera", category2, 18.0, photoBlob6, "Descripción 6", as);
-
-            productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6));
-
-            // Inicializar una orden si no existen órdenes
-            Order order = new Order();
-            orderRepository.save(order);
+            productService.saveProduct(new Product("Camiseta", categoryService.findCategoryByName("Hombre"), 10.0, photoBlob1, "Descripción 1", as));
+            productService.saveProduct(new Product("Pantalón ancho", categoryService.findCategoryByName("Hombre"), 20.0, photoBlob2, "Descripción 2", as));
+            productService.saveProduct(new Product("Calcetines", categoryService.findCategoryByName("Mujer"), 15.0, photoBlob3, "Descripción 3", as));
+            productService.saveProduct(new Product("Abrigo", categoryService.findCategoryByName("Hombre"), 25.0, photoBlob4, "Descripción 4", as));
+            productService.saveProduct(new Product("Chaqueta", categoryService.findCategoryByName("Mujer"), 12.0, photoBlob5, "Descripción 5", as));
+            productService.saveProduct(new Product("Sudadera", categoryService.findCategoryByName("Mujer"), 18.0, photoBlob6, "Descripción 6", as));
         }
     }
     private Blob loadImage(String path) throws IOException, SQLException {

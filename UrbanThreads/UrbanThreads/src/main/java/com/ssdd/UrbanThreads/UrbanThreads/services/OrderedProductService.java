@@ -60,6 +60,11 @@ public class OrderedProductService {
         return orderedProductId;
     }
 
+
+    public List<OrderedProduct> orderP (){
+        List<OrderedProduct> productsInOrder = orderedProductRepository.findByOrder(orderService.getCurrentOrder());
+        return productsInOrder;
+    }
     public void deleteOrderedProduct(Long productId, String productSize, String productColor, int productQuantity) {
         List<OrderedProduct> productsInOrder = orderedProductRepository.findByOrder(orderService.getCurrentOrder());
         if (productsInOrder != null) {
