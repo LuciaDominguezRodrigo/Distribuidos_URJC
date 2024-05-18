@@ -44,7 +44,8 @@ public class CategoryService {
             return categoryRepository.findAll();
     }
 
-    public void saveCategory(Category category) {
-        categoryRepository.save(category);
+    public Long saveCategory(Category category) {
+        Category save = categoryRepository.save(category);
+        return save.getId();
     }
 }

@@ -71,8 +71,8 @@ public class CategoryRESTController {
             return ResponseEntity.status(409).build(); // Category name is taken
         }
 
-        categoryService.saveCategory(category);
-
+        Long id = categoryService.saveCategory(category);
+        categoryDTO.setId(id);
 
         return ResponseEntity.status(201).body(categoryDTO);
     }

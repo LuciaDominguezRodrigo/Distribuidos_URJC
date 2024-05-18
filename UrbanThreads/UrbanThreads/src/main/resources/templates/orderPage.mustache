@@ -46,7 +46,8 @@
                         <p class="mb-1">Color: {{color}}</p>
                     </div>
                     <div class="col-sm-6 text-right" id="editButton-{{id}}">
-                        <button class="btn btn-warning mr-2" onclick="editarProducto({{id}});">Editar cantidad</button>
+
+                        <button class="btn btn-warning mr-2" onclick="editarProducto('{{id}}');">Editar cantidad</button>
                         <form action="/deleteProductOrder" method="POST">
                             <input type="hidden" name="productId" value="{{id}}">
                             <input type="hidden" name="productSize" value="{{size}}">

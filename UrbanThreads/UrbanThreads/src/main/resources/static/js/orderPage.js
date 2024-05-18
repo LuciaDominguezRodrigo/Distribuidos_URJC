@@ -45,8 +45,10 @@ function cambiarPedido(){
 }
 
 function editarProducto(id){
-    document.getElementById("editButton-"+id).classList.add("d-none");
-    document.getElementById("currentQuantity-"+id).classList.add("d-none");
-    document.getElementById("editQuantity-"+id).classList.remove("d-none");
-}
+        ids = id.toString();
+        idb = ids
+        document.getElementById("editButton-" + idb).classList.add("d-none");
+        document.getElementById("currentQuantity-" + idb).classList.add("d-none");
+        document.getElementById("editQuantity-" + idb).classList.remove("d-none");
+    }
 
