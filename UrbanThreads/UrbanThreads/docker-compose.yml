@@ -20,7 +20,7 @@ services:
       - "26257:26257"
       - "8081:8081"
     volumes:
-      - ./cockroach-data/roach1:/cockroach/cockroach-data
+      - roach1db:/cockroach/cockroach-data
   roach2:
     image: cockroachdb/cockroach:v20.2.6
     command: start --advertise-addr=roach2:26357 --http-addr=roach2:8082 --listen-addr=roach2:26357 --sql-addr=roach2:26258 --insecure --join=roach1:26357,roach2:26357
@@ -28,7 +28,7 @@ services:
       - "26258:26258"
       - "8082:8082"
     volumes:
-      - ./cockroach-data/roach2:/cockroach/cockroach-data
+      - roach2db:/cockroach/cockroach-data
 
   roachClusterInit:
     image: cockroachdb/cockroach:v20.2.0
@@ -36,3 +36,7 @@ services:
     depends_on:
       - roach1
       - roach2
+
+volumes:
+  roach2db:
+  roach1db:
