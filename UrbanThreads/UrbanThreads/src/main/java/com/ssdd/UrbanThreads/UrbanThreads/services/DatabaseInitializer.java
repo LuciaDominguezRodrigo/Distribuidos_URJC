@@ -32,67 +32,59 @@ public class DatabaseInitializer {
 
     @PostConstruct
     public void init() throws IOException, SQLException {
-        // Inicializar algunas categorías
-        Category category1 = new Category("Hombre", "#D1F2EB","Ropa urbana de confianza, para todas las edades");
-        Category category2 = new Category("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades");
-        Category category3 = new Category("Sin Categoria",  "#D2B4DE","Ropa urbana de confianza, para todas las edades");
+        // Inicializar algunas categorías si no existen
+        if (categoryRepository.count() == 0) {
+            Category category1 = new Category("Hombre", "#D1F2EB", "Ropa urbana de confianza, para todas las edades");
+            Category category2 = new Category("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades");
+            Category category3 = new Category("Sin Categoria", "#D2B4DE", "Ropa urbana de confianza, para todas las edades");
 
-        categoryRepository.save(category1);
-        categoryRepository.save(category2);
-        categoryRepository.save(category3);
+            categoryRepository.saveAll(Arrays.asList(category1, category2, category3));
+        }
 
-        Map<Size, Integer> as = new HashMap<>();
-        as.put(Size.XS, 50);
-        as.put(Size.S, 40);
-        as.put(Size.M, 30);
-        as.put(Size.L, 20);
-        as.put(Size.XL, 10);
-        as.put(Size.XXL, 0);
+        // Crear y cargar imágenes si no existen productos
+        if (productRepository.count() == 0) {
+            Map<Size, Integer> as = new HashMap<>();
+            as.put(Size.XS, 50);
+            as.put(Size.S, 40);
+            as.put(Size.M, 30);
+            as.put(Size.L, 20);
+            as.put(Size.XL, 10);
+            as.put(Size.XXL, 0);
 
-        ClassPathResource imgFile = new ClassPathResource("./static/img/camiseta.jpg");
+            Blob photoBlob1 = loadImage("./static/img/camiseta.jpg");
+            Blob photoBlob2 = loadImage("./static/img/pantalon.jpg");
+            Blob photoBlob3 = loadImage("./static/img/calcetines.jpg");
+            Blob photoBlob4 = loadImage("./static/img/abrigo.jpg");
+            Blob photoBlob5 = loadImage("./static/img/chaqueta.jpg");
+            Blob photoBlob6 = loadImage("./static/img/sudadera.jpg");
+
+            List<Category> categories = categoryRepository.findAll();
+
+            Category category1 = categories.stream().filter(cat -> "Hombre".equals(cat.getName())).findFirst().orElse(null);
+            Category category2 = categories.stream().filter(cat -> "Mujer".equals(cat.getName())).findFirst().orElse(null);
+
+            // Inicializar algunos productos asociados a las categorías
+            Product product1 = new Product("Camiseta", category1, 10.0, photoBlob1, "Descripción 1", as);
+            Product product2 = new Product("Pantalón ancho", category1, 20.0, photoBlob2, "Descripción 2", as);
+            Product product3 = new Product("Calcetines", category2, 15.0, photoBlob3, "Descripción 3", as);
+            Product product4 = new Product("Abrigo", category1, 25.0, photoBlob4, "Descripción 4", as);
+            Product product5 = new Product("Chaqueta", category2, 12.0, photoBlob5, "Descripción 5", as);
+            Product product6 = new Product("Sudadera", category2, 18.0, photoBlob6, "Descripción 6", as);
+
+            productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6));
+        }
+
+        // Inicializar una orden si no existen órdenes
+        if (orderRepository.count() == 0) {
+            Order order = new Order();
+            orderRepository.save(order);
+        }
+    }
+
+    private Blob loadImage(String path) throws IOException, SQLException {
+        ClassPathResource imgFile = new ClassPathResource(path);
         byte[] photoBytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        Blob photoBlob1 = new SerialBlob(photoBytes);
-
-        ClassPathResource imgFile2 = new ClassPathResource("./static/img/pantalon.jpg");
-        byte[] photoBytes2 = StreamUtils.copyToByteArray(imgFile2.getInputStream());
-        Blob photoBlob2 = new SerialBlob(photoBytes2);
-
-        ClassPathResource imgFile3 = new ClassPathResource("./static/img/calcetines.jpg");
-        byte[] photoBytes3 = StreamUtils.copyToByteArray(imgFile3.getInputStream());
-        Blob photoBlob3 = new SerialBlob(photoBytes3);
-
-
-        ClassPathResource imgFile4 = new ClassPathResource("./static/img/abrigo.jpg");
-        byte[] photoBytes4 = StreamUtils.copyToByteArray(imgFile4.getInputStream());
-        Blob photoBlob4 = new SerialBlob(photoBytes4);
-
-        ClassPathResource imgFile5 = new ClassPathResource("./static/img/chaqueta.jpg");
-        byte[] photoBytes5 = StreamUtils.copyToByteArray(imgFile5.getInputStream());
-        Blob photoBlob5 = new SerialBlob(photoBytes5);
-
-        ClassPathResource imgFile6 = new ClassPathResource("./static/img/sudadera.jpg");
-        byte[] photoBytes6 = StreamUtils.copyToByteArray(imgFile6.getInputStream());
-        Blob photoBlob6 = new SerialBlob(photoBytes6);
-
-        // Inicializar algunos productos asociados a las categorías
-        Product product1 = new Product("Camiseta", category1, 10.0, photoBlob1,"Descripción 1",as);
-        Product product2 = new Product("Pantalón ancho", category1, 20.0, photoBlob2,"Descripción 2",as);
-        Product product3 = new Product("Calcetines", category2, 15.0, photoBlob3,"Descripción 3",as);
-        Product product4 = new Product("Abrigo", category1, 25.0, photoBlob4,"Descripción 4",as);
-        Product product5 = new Product("Chaqueta", category2, 12.0, photoBlob5,"Descripción 5",as);
-        Product product6 = new Product("Sudadera", category2, 18.0, photoBlob6,"Descripción 6",as);
-
-        productRepository.save(product1);
-        productRepository.save(product2);
-        productRepository.save(product3);
-        productRepository.save(product4);
-        productRepository.save(product5);
-        productRepository.save(product6);
-
-        // Inicializar una orden con algunos elementos de pedido
-        Order order = new Order();
-        Set<Order> orderItems = new HashSet<>();
-        orderRepository.save(order);
+        return new SerialBlob(photoBytes);
     }
 
 }

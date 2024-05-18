@@ -11,18 +11,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://roach1:26257,roach2:26258/defaultdb?sslmode=disable&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory&accounting?targetServerType=preferSlave&loadBalanceHosts=true
     command: [ "./wait-for-it.sh", "roach1:26257", "--", "java", "-jar", "app.jar" ]
     restart: on-failure
-  #  web2:
-  #    build:
-  #      context: ..
-  #      dockerfile: docker/Dockerfile
-  #    #image: rphydra/myrecipe:latest
-  #    ports:
-  #      - 8442:8443
-  #      - 8079:8080
-  #    environment:
-  #      - SPRING_DATASOURCE_URL=jdbc:postgresql://roach2:26258/defaultdb?sslmode=disable&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory
-  #    command: [ "./wait-for-it.sh", "roach2:26258", "--", "java", "-jar", "app.jar" ]
-  #    restart: on-failure
 
   roach1:
     image: cockroachdb/cockroach:v20.2.6
