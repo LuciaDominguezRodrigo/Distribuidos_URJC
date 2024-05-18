@@ -30,19 +30,18 @@ public class DatabaseInitializer {
     private ProductRepository productRepository;
 
 
+
     @PostConstruct
     public void init() throws IOException, SQLException {
-        // Inicializar algunas categorías si no existen
         if (categoryRepository.count() == 0) {
+            // Inicializar algunas categorías si no existen
             Category category1 = new Category("Hombre", "#D1F2EB", "Ropa urbana de confianza, para todas las edades");
             Category category2 = new Category("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades");
             Category category3 = new Category("Sin Categoria", "#D2B4DE", "Ropa urbana de confianza, para todas las edades");
 
             categoryRepository.saveAll(Arrays.asList(category1, category2, category3));
-        }
 
-        // Crear y cargar imágenes si no existen productos
-        if (productRepository.count() == 0) {
+            // Crear y cargar imágenes si no existen productos
             Map<Size, Integer> as = new HashMap<>();
             as.put(Size.XS, 50);
             as.put(Size.S, 40);
@@ -60,8 +59,8 @@ public class DatabaseInitializer {
 
             List<Category> categories = categoryRepository.findAll();
 
-            Category category1 = categories.stream().filter(cat -> "Hombre".equals(cat.getName())).findFirst().orElse(null);
-            Category category2 = categories.stream().filter(cat -> "Mujer".equals(cat.getName())).findFirst().orElse(null);
+            //Category category1 = categories.stream().filter(cat -> "Hombre".equals(cat.getName())).findFirst().orElse(null);
+            //Category category2 = categories.stream().filter(cat -> "Mujer".equals(cat.getName())).findFirst().orElse(null);
 
             // Inicializar algunos productos asociados a las categorías
             Product product1 = new Product("Camiseta", category1, 10.0, photoBlob1, "Descripción 1", as);
@@ -72,15 +71,12 @@ public class DatabaseInitializer {
             Product product6 = new Product("Sudadera", category2, 18.0, photoBlob6, "Descripción 6", as);
 
             productRepository.saveAll(Arrays.asList(product1, product2, product3, product4, product5, product6));
-        }
 
-        // Inicializar una orden si no existen órdenes
-        if (orderRepository.count() == 0) {
+            // Inicializar una orden si no existen órdenes
             Order order = new Order();
             orderRepository.save(order);
         }
     }
-
     private Blob loadImage(String path) throws IOException, SQLException {
         ClassPathResource imgFile = new ClassPathResource(path);
         byte[] photoBytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
