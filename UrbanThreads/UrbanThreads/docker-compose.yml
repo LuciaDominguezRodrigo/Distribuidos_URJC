@@ -14,7 +14,6 @@ services:
 
   roach1:
     image: cockroachdb/cockroach:v20.2.6
-    #still to add docker exec -it roach1 ./cockroach --host=roach1:26357 init --insecure
     command: start --advertise-addr=roach1:26357 --http-addr=roach1:8081 --listen-addr=roach1:26357 --sql-addr=roach1:26257 --insecure --join=roach1:26357,roach2:26357
     ports:
       - "26257:26257"

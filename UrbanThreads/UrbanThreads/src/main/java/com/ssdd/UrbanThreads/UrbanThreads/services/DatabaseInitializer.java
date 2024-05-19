@@ -1,10 +1,7 @@
 package com.ssdd.UrbanThreads.UrbanThreads.services;
 
 
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Category;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Order;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Product;
-import com.ssdd.UrbanThreads.UrbanThreads.entities.Size;
+import com.ssdd.UrbanThreads.UrbanThreads.entities.*;
 import com.ssdd.UrbanThreads.UrbanThreads.repository.*;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -33,10 +31,16 @@ public class DatabaseInitializer {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private InitLogRepository initLogRepository;
+
 
     @PostConstruct
     public void init() throws IOException, SQLException {
-        if (categoryRepository.count() == 0) {
+        if (isAlreadyInitialized()) {
+            System.out.println("Database has already been initialized.");
+            return;
+        }
             // Inicializar algunas categorías si no existen
             categoryService.addNewCategory(new Category("Hombre", "#D1F2EB", "Ropa urbana de confianza, para todas las edades"));
             categoryService.addNewCategory(new Category("Mujer", "#FCF3CF", "Ropa urbana de confianza, para todas las edades"));
@@ -70,7 +74,20 @@ public class DatabaseInitializer {
             productService.saveProduct(new Product("Abrigo", categoryService.findCategoryByName("Hombre"), 25.0, photoBlob4, "Descripción 4", as));
             productService.saveProduct(new Product("Chaqueta", categoryService.findCategoryByName("Mujer"), 12.0, photoBlob5, "Descripción 5", as));
             productService.saveProduct(new Product("Sudadera", categoryService.findCategoryByName("Mujer"), 18.0, photoBlob6, "Descripción 6", as));
-        }
+
+            logInitialization();
+
+    }
+
+    private boolean isAlreadyInitialized() {
+        return initLogRepository.count() > 0;
+    }
+
+    private void logInitialization() {
+        InitLog log = new InitLog();
+        log.setInitializedAt(LocalDateTime.now());
+        log.setDescription("Initial database setup completed.");
+        initLogRepository.save(log);
     }
     private Blob loadImage(String path) throws IOException, SQLException {
         ClassPathResource imgFile = new ClassPathResource(path);
