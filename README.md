@@ -71,3 +71,21 @@ Esta apliación albergará una web para una tienda de ropa. De esta manera, toda
 
 
 *DataBase Diagram*
+
+***   
+### ♨️Entrega 3  - Dockerización y base de datos relacional distribuida
+***
+
+Se ha procedido a dockerizar la aplicación, así como a la implementaciónd e al consistencia y persistencia de datos a través de una base de datos relacional dsistribuida
+### 🕹️Base de datos
+- Se ha creado un cluster en CockroachDB, con el servicio de WSL
+- Mediante el siguiente [enlace](https://cockroachlabs.cloud/cluster/cc04cada-3e39-404f-8905-5844c1619855/overview) se podrá acceder al cluster
+
+### 📋Requerimientos y pasos para la ejecución
+- Para poder ejecutar la aplicación se deberá:
+   - Descargar el certificado de seguridad que concede acceso al cluster ejecutando `https://cockroachlabs.cloud/clusters/cc04cada-3e39-404f-8905-5844c1619855/cert)`
+   - Referencia la ruta donde se pone el archivo en la siguiente línea del archivo Application.properties: `spring.datasource.url = jdbc:postgresql://uthreads-9837.7tc.aws-eu-central-1.cockroachlabs.cloud:26257/defaultdb?sslmode=verify-full&sslrootcert=<ruta de tu certificado>`
+   - Ejecuta docker-compose up --build
+  
+
+
