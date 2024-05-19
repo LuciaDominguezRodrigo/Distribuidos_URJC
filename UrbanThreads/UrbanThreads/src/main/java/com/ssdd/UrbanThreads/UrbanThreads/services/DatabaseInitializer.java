@@ -62,10 +62,6 @@ public class DatabaseInitializer {
             Blob photoBlob5 = loadImage("./static/img/chaqueta.jpg");
             Blob photoBlob6 = loadImage("./static/img/sudadera.jpg");
 
-            //List<Category> categories = categoryRepository.findAll();
-
-            //Category category1 = categories.stream().filter(cat -> "Hombre".equals(cat.getName())).findFirst().orElse(null);
-            //Category category2 = categories.stream().filter(cat -> "Mujer".equals(cat.getName())).findFirst().orElse(null);
 
             // Inicializar algunos productos asociados a las categorías
             productService.saveProduct(new Product("Camiseta", categoryService.findCategoryByName("Hombre"), 10.0, photoBlob1, "Descripción 1", as));
@@ -74,6 +70,13 @@ public class DatabaseInitializer {
             productService.saveProduct(new Product("Abrigo", categoryService.findCategoryByName("Hombre"), 25.0, photoBlob4, "Descripción 4", as));
             productService.saveProduct(new Product("Chaqueta", categoryService.findCategoryByName("Mujer"), 12.0, photoBlob5, "Descripción 5", as));
             productService.saveProduct(new Product("Sudadera", categoryService.findCategoryByName("Mujer"), 18.0, photoBlob6, "Descripción 6", as));
+
+            Order currentOrder = orderService.getCurrentOrder();
+            if(currentOrder == null){
+                currentOrder = new Order();
+                String order = orderService.addNewOrder2(currentOrder);
+                orderService.changeCurrentOrder2(order);
+        }
 
             logInitialization();
 

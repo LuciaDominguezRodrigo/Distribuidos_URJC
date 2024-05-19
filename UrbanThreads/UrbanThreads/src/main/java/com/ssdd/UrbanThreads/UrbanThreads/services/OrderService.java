@@ -47,12 +47,21 @@ public class OrderService {
         this.selectedOrder = orderId;
     }
 
+    public void changeCurrentOrder2(String orderId){
+        this.selectedOrder = Long.parseLong(orderId);
+    }
+
+
     public List<Long> getAllPendingOrdersId() {
         return orderRepository.findIdsByOrderStatus(OrderStatus.PENDING);
     }
 
     public Long addNewOrder (Order o){
         return orderRepository.save(o).getId();
+    }
+
+    public String addNewOrder2 (Order o){
+        return orderRepository.save(o).getId().toString();
     }
 
     public void saveOrder(Order currentOrder){

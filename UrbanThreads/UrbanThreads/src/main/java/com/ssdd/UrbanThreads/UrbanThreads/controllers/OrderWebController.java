@@ -112,10 +112,9 @@ public class OrderWebController {
 
         //Locates edited product and updates its quantity as desired
         for (OrderedProduct orderProduct : orderedProductService.orderP()) {
-            if(orderProduct.getSize().equals(Size.valueOf(productSize))
+            if(orderProduct.getId().toString().equals(productId)&& orderProduct.getSize().equals(Size.valueOf(productSize))
                     && orderProduct.getColor().equals(productColor)){
                 changedProduct = orderProduct;
-                break;
             }
         }
 
